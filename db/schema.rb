@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(version: 20170129214218) do
     t.text "text", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["id"], name: "index_tweets_on_id", using: :btree
+    t.index ["id"], name: "index_tweets_on_id", unique: true, using: :btree
   end
 
 end
