@@ -5,12 +5,10 @@ class TweetsController < ApplicationController
   def create
     id = Tweet.id_from_url params[:tweet][:url]
     tweet = Tweet.find_by id: id
-    if tweet
-      render plain: 'found tweet'
-    else
+    unless tweet
       tweet = Tweet.from_id id
       tweet.save
-      render plain: tweet.inspect
     end
+    redirect_to new_thank_path(tweet)
   end
 end

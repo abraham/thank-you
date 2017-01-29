@@ -13,7 +13,9 @@ class ThanksController < ApplicationController
     @thank = Thanks.find(params[:id])
   end
 
-  def new; end
+  def new
+    @tweet = Tweet.find(params[:tweet_id])
+  end
 
   private
 
