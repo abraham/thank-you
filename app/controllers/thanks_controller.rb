@@ -5,7 +5,9 @@ class ThanksController < ApplicationController
     redirect_to thanks
   end
 
-  def index; end
+  def index
+    @thanks = Thanks.all
+  end
 
   def show
     @thanks = Thanks.find(params[:id])

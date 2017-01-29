@@ -1,1 +1,9 @@
-<h1>Thank You's</h1>
+<h1>Thank You</h1>
+
+<% @thanks.each do |thank| %>
+  <p>
+    <span><%= thank.status_id %></span>
+    <span><%= thank.text %></span>
+    <span><%= link_to 'Show', thank_path(thank) %></span>
+  </p>
+<% end %>
