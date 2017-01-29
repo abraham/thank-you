@@ -10,7 +10,7 @@ class ThanksController < ApplicationController
   end
 
   def show
-    @thanks = Thanks.find(params[:id])
+    @thank = Thanks.find(params[:id])
   end
 
   def new; end
