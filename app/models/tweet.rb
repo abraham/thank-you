@@ -1,4 +1,4 @@
-class Status < ApplicationRecord
+class Tweet < ApplicationRecord
   def self.from_tweet(tweet)
     puts 'id', tweet.id = tweet.id_str
     new(id: tweet.id, data: tweet.to_hash, text: tweet.text)
