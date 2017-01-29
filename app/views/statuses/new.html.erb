@@ -1,0 +1,10 @@
+<%= form_for :status, url: statuses_create_path do |f| %>
+  <p>
+    <%= f.label :url, 'Tweet URL' %><br>
+    <%= f.text_field :url, placeholder: 'https://twitter.com/twitter/status/825513865794293761', required: true %>
+  </p>
+
+  <p>
+    <%= f.submit 'Continue' %>
+  </p>
+<% end %>
