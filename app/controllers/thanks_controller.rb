@@ -7,6 +7,10 @@ class ThanksController < ApplicationController
 
   def index; end
 
+  def show
+    @thanks = Thanks.find(params[:id])
+  end
+
   def new; end
 
   private
