@@ -5,7 +5,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', path: "/Users/abraham/.rvm/gems/ruby-2.3.1/bundler/gems/rails-6a1c0218df1f"
+gem 'rails', github: "rails/rails"
 gem 'arel', github: "rails/arel"
 
 # Use sqlite3 as the database for Active Record

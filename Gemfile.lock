@@ -5,36 +5,8 @@ GIT
     arel (8.0.0)
 
 GIT
-  remote: https://github.com/rails/sass-rails.git
-  revision: dfbcc6a53653d8908007e26324a0f299f026ec4f
-  specs:
-    sass-rails (6.0.0.beta1)
-      railties (>= 4.0.0, < 5.1)
-      sass (~> 3.4)
-      sprockets (~> 4.x)
-      sprockets-rails (< 4.0)
-
-GIT
-  remote: https://github.com/rails/web-console.git
-  revision: 8753a1056c62da296fb0062d3bdb99f4a83d3631
-  specs:
-    web-console (3.4.0)
-      actionview (>= 5.0)
-      activemodel (>= 5.0)
-      debug_inspector
-      railties (>= 5.0)
-
-GIT
-  remote: https://github.com/rails/webpacker.git
-  revision: ef24b74b5e41c1c93ac75f658f5aa205df2347d8
-  specs:
-    webpacker (0.2)
-      activesupport (>= 3.0.0, < 5.1)
-      multi_json (~> 1.2)
-      railties (~> 5)
-
-PATH
-  remote: /Users/abraham/.rvm/gems/ruby-2.3.1/bundler/gems/rails-6a1c0218df1f
+  remote: https://github.com/rails/rails.git
+  revision: 6a1c0218df1fcffaac97e7288db07934bfef277f
   specs:
     actioncable (5.1.0.alpha)
       actionpack (= 5.1.0.alpha)
@@ -91,6 +63,35 @@ PATH
       method_source
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
+
+GIT
+  remote: https://github.com/rails/sass-rails.git
+  revision: dfbcc6a53653d8908007e26324a0f299f026ec4f
+  specs:
+    sass-rails (6.0.0.beta1)
+      railties (>= 4.0.0, < 5.1)
+      sass (~> 3.4)
+      sprockets (~> 4.x)
+      sprockets-rails (< 4.0)
+
+GIT
+  remote: https://github.com/rails/web-console.git
+  revision: 8753a1056c62da296fb0062d3bdb99f4a83d3631
+  specs:
+    web-console (3.4.0)
+      actionview (>= 5.0)
+      activemodel (>= 5.0)
+      debug_inspector
+      railties (>= 5.0)
+
+GIT
+  remote: https://github.com/rails/webpacker.git
+  revision: ef24b74b5e41c1c93ac75f658f5aa205df2347d8
+  specs:
+    webpacker (0.2)
+      activesupport (>= 3.0.0, < 5.1)
+      multi_json (~> 1.2)
+      railties (~> 5)
 
 GEM
   remote: https://rubygems.org/
