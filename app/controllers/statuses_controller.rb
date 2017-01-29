@@ -3,12 +3,8 @@ class StatusesController < ApplicationController
   end
 
   def create
-    render plain: status_params.inspect
-  end
-
-  private
-
-  def status_params
-    params.require(:status).permit(:url)
+    status = Status.from_url(url)
+    # status.save
+    render plain: status.inspect
   end
 end
