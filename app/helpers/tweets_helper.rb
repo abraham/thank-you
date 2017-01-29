@@ -1,2 +1,2 @@
-module StatusesHelper
+module TweetsHelper
 end
