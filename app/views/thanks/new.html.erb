@@ -1,6 +1,9 @@
 <%= form_for :thanks, url: thanks_path do |f| %>
   <p>
-    <%= f.text_area :text, value: 'Thank you @ for ', require: true %>
+    <%= f.text_area :text, value: 'Thank you @ for ', required: true %>
+  </p>
+  <p>
+    <%= f.text_field :name, required: true %>
   </p>
   <p>
     <%= f.text_field :in_reply_to_status_id %>
