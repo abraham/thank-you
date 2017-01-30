@@ -28,6 +28,11 @@ class TweetTest < ActiveSupport::TestCase
       .to_return(status: 200, body: TWEET_DATA, headers: {})
   end
 
+  test 'should not save without needed fields' do
+    tweet = Tweet.new
+    assert_not tweet.save
+  end
+
   test 'parses Tweet IDs from Twitter URLs' do
     assert Tweet.id_from_url('https://twitter.com/user/statues/123'), '123'
     assert Tweet.id_from_url('twitter.com/user/statues/123'), '123'

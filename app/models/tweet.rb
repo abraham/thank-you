@@ -2,6 +2,8 @@ class Tweet < ApplicationRecord
   self.primary_key = :id
   has_many :thanks
 
+  validates :id, presence: true
+
   def self.from_id(id)
     tweet = get_tweet id
 
