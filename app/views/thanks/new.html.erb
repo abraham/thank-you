@@ -1,9 +1,11 @@
-Thank you @foo for
+<%= form_for :thanks, url: thanks_path do |f| %>
 
-<%= form_for :thanks, url: create_thank_path(@tweet) do |f| %>
-  <%= hidden_field_tag :tweet_id, @tweet.id %>
-
-  <%= f.text_field :text %>
+  <p>
+    <%= f.text_area :text, value: 'Thank you @ for ', require: true %>
+  </p>
+  <p>
+    <%= f.text_field :in_reply_to_status_id %>
+  </p>
 
   <p>
     <%= f.submit 'Create Thank You' %>

@@ -1,7 +1,6 @@
 class ThanksController < ApplicationController
   def create
     thanks = Thanks.new(thanks_params)
-    thanks.tweet = Tweet.find params[:tweet_id]
 
     render plain: thanks.inspect
     # redirect_to thanks
@@ -16,12 +15,11 @@ class ThanksController < ApplicationController
   end
 
   def new
-    @tweet = Tweet.find(params[:tweet_id])
   end
 
   private
 
   def thanks_params
-    params.require(:thanks).permit(:text)
+    params.require(:thanks).permit(:text, :in_reply_to_status_id)
   end
 end
