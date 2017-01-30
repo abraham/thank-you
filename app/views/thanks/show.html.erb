@@ -3,7 +3,11 @@
 </p>
 
 <p>
-  <span><%= link_to 'Thank', thanks_ditto_path(@thank) %></span>
+  <span>Thanked by <%= @thank.dittos.count %> people</span>
+<p>
+
+<p>
+  <span><%= link_to 'Thank', dittos_new_path(@thank) %></span>
 <p>
 
 <p>

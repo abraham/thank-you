@@ -5,6 +5,6 @@ Rails.application.routes.draw do
   get 'thanks/:id', to: 'thanks#show', as: :thanks_show
   post 'thanks', to: 'thanks#create'
   get 'thanks', to: 'thanks#index'
-  get 'thanks/:id/ditto', to: 'thanks#ditto', as: :thanks_ditto
-  post 'thanks/:id/ditto', to: 'dittos#create', as: :dittos_create
+  get 'thanks/:id/dittos/new', to: 'dittos#new', as: :dittos_new
+  post 'thanks/:id/dittos', to: 'dittos#create', as: :dittos_create
 end
