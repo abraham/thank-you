@@ -3,7 +3,8 @@
 <% @thanks.each do |thank| %>
   <p>
     <span><%= thank.text %></span>
-    <span><%= thank.dittos.count %></span>
+    <br>
+    <span><%= thank.dittos.count %> thanks</span>
     <span><%= link_to 'Thank', thanks_show_path(thank) %></span>
   </p>
 <% end %>
