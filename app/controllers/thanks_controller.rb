@@ -2,12 +2,11 @@ class ThanksController < ApplicationController
   def create
     thank = Thank.create(thanks_params)
 
-    # render plain: thanks.inspect
     redirect_to thanks_show_path(thank)
   end
 
   def index
-    @thanks = Thank.all
+    @thanks = Thank.all.limit(25)
   end
 
   def show
