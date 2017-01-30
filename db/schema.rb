@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170130041215) do
+ActiveRecord::Schema.define(version: 20170130041633) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,8 @@ ActiveRecord::Schema.define(version: 20170130041215) do
     t.string "text", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "tweet_id", null: false
+    t.index ["tweet_id"], name: "index_thanks_on_tweet_id", using: :btree
   end
 
   create_table "tweets", id: false, force: :cascade do |t|
@@ -31,4 +33,5 @@ ActiveRecord::Schema.define(version: 20170130041215) do
     t.index ["id"], name: "index_tweets_on_id", unique: true, using: :btree
   end
 
+  add_foreign_key "thanks", "tweets"
 end
