@@ -7,7 +7,9 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 50.times do |_i|
-  thank = Thank.create(text: "Thank you @#{Faker::Internet.user_name} for #{Faker::Hipster.sentence}")
+  name = Faker::Internet.user_name
+  thank = Thank.create(text: "Thank you @#{name} for #{Faker::Hipster.sentence}",
+                       name: name)
   rand(50).times do |_i|
     Ditto.create(thank: thank,
                  text: thank.text,
