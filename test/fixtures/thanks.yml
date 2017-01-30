@@ -2,8 +2,8 @@
 
 one:
   text: MyString
-  status_id: MyString
+  tweet_id: MyString
 
 two:
   text: MyString
-  status_id: MyString
+  tweet_id: MyString
