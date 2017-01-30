@@ -5,4 +5,9 @@ class ThankTest < ActiveSupport::TestCase
     thank = Thank.new
     assert_not thank.save
   end
+
+  test 'should save with text' do
+    thank = Thank.new(text: Faker::Hipster.sentence)
+    assert thank.save
+  end
 end

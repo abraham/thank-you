@@ -2,8 +2,8 @@
 
 one:
   text: MyString
-  tweet_id: MyString
+  in_reply_to_status_id: MyString
 
 two:
   text: MyString
-  tweet_id: MyString
+  tweet_id:
