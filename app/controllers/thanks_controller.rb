@@ -5,6 +5,10 @@ class ThanksController < ApplicationController
     redirect_to thanks_show_path(thank)
   end
 
+  def ditto
+    @thank = Thank.find(params[:id])
+  end
+
   def index
     @thanks = Thank.all.limit(25)
   end

@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
+  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+
   get 'thanks/new'
   get 'thanks/:id', to: 'thanks#show', as: :thanks_show
   post 'thanks', to: 'thanks#create'
   get 'thanks', to: 'thanks#index'
-
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  get 'thanks/:id/ditto', to: 'thanks#ditto', as: :thanks_ditto
+  post 'thanks/:id/ditto', to: 'dittos#create', as: :dittos_create
 end
