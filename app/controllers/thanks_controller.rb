@@ -1,17 +1,17 @@
 class ThanksController < ApplicationController
   def create
-    thanks = Thanks.new(thanks_params)
+    thank = Thank.create(thanks_params)
 
-    render plain: thanks.inspect
-    # redirect_to thanks
+    # render plain: thanks.inspect
+    redirect_to thanks_show_path(thank)
   end
 
   def index
-    @thanks = Thanks.all
+    @thanks = Thank.all
   end
 
   def show
-    @thank = Thanks.find(params[:id])
+    @thank = Thank.find(params[:id])
   end
 
   def new
