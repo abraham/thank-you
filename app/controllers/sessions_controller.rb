@@ -16,6 +16,8 @@ class SessionsController < ApplicationController
 
     token = OAuth::RequestToken.new(consumer, request_token.token, request_token.secret)
 
+    request_token.delete
+
     access_token = token.get_access_token(oauth_verifier: params[:oauth_verifier],
                                           oauth_callback: sessions_create_url)
 
