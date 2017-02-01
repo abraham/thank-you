@@ -5,6 +5,7 @@ class DittosController < ApplicationController
     ditto.thank = thank
     tweet = current_user.tweet(ditto.text, nil)
     ditto.tweet_id = tweet.id
+    ditto.data = tweet.to_hash
     ditto.save
 
     redirect_to thank
