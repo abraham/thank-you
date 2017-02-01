@@ -18,10 +18,17 @@ users = (1..10).map do |_i|
 end
 
 50.times do |_i|
+  user = users.sample
   name = Faker::Internet.user_name
   thank = Thank.create(text: "Thank you @#{name} for #{Faker::Hipster.sentence}",
                        name: name,
-                       user: users.sample)
+                       user: user)
+  rand(5).times do |_i|
+    Link.create(thank: thank,
+                user: user,
+                text: Faker::Lorem.words(2).join(' '),
+                url: Faker::Internet.url('example.com'))
+  end
 
   rand(50).times do |_i|
     Ditto.create(thank: thank,
