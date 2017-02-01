@@ -4,7 +4,7 @@ class DittosController < ApplicationController
     ditto = Ditto.new(dittos_params)
     ditto.thank = thank
     tweet = current_user.tweet(ditto.text, nil)
-    ditto.status_id = tweet.id
+    ditto.tweet_id = tweet.id
     ditto.save
 
     redirect_to thank

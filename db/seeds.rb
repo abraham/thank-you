@@ -13,6 +13,6 @@
   rand(50).times do |_i|
     Ditto.create(thank: thank,
                  text: thank.text,
-                 status_id: Faker::Number.number(10))
+                 tweet_id: Faker::Number.number(10))
   end
 end
