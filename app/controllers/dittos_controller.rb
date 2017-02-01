@@ -3,7 +3,7 @@ class DittosController < ApplicationController
     thank = Thank.find(params[:id])
     ditto = Ditto.new(dittos_params)
     ditto.thank = thank
-    tweet = current_user.tweet(ditto.text, nil)
+    tweet = current_user.tweet(ditto.text, thank.reply_to_tweet_id)
     ditto.tweet_id = tweet.id
     ditto.data = tweet.to_hash
     ditto.save
