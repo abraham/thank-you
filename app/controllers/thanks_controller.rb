@@ -1,6 +1,6 @@
 class ThanksController < ApplicationController
   def create
-    thank = Thank.create(thanks_params)
+    thank = current_user.thanks.create(thanks_params)
 
     redirect_to thanks_show_path(thank)
   end
