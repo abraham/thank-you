@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  # TODO :status[active, disabled]
 
   def tweet(text, in_rpely_to_status_id)
     twitter_client.update(text, in_rpely_to_status_id: in_rpely_to_status_id)

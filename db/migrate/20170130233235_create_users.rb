@@ -8,7 +8,6 @@ class CreateUsers < ActiveRecord::Migration[5.1]
       t.json :data, null: false
       t.string :access_token, null: false
       t.string :access_token_secret, null: false
-      # TODO :status[active, disabled]
 
       t.timestamps
     end
