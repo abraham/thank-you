@@ -5,6 +5,7 @@
     <span><%= thank.text %></span>
     <br>
     <span><%= thank.dittos.count %> thanks</span>
+    <span><%= render 'dittos', dittos: thank.dittos.limit(10) %></span>
     <span><%= link_to 'Read more', thanks_show_path(thank) %></span>
   </p>
 <% end %>

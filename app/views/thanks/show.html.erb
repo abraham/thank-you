@@ -11,5 +11,9 @@
 <p>
 
 <p>
+  <%= render 'dittos', dittos: @thank.dittos.limit(25) %>
+<p>
+
+<p>
   <span><%= link_to 'All thanks', thanks_path %></span>
 <p>
