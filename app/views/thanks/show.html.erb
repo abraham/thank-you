@@ -11,11 +11,11 @@
 <p>
 
 <p>
-  <span><%= link_to "Thank @#{@thank.name}", dittos_new_path(@thank) %></span>
+  <%= render 'dittos', dittos: @thank.dittos.limit(25) %>
 <p>
 
 <p>
-  <%= render 'dittos', dittos: @thank.dittos.limit(25) %>
+  <span><%= link_to "Thank @#{@thank.name}", dittos_new_path(@thank) %></span>
 <p>
 
 <p>
