@@ -3,6 +3,7 @@ class Thank < ApplicationRecord
 
   validates :text, presence: true
 
-  has_many :dittos
   belongs_to :user
+  has_many :dittos
+  has_many :links
 end

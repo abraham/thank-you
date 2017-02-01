@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   # TODO :status[active, disabled]
   has_many :dittos
+  has_many :links
   has_many :thanks
 
   def tweet(text, in_reply_to_status_id)
