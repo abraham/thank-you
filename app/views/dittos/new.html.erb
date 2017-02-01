@@ -2,7 +2,7 @@
 <%= form_for :ditto, url: dittos_path do |f| %>
   <p>
     <% # TODO: trim text to 138 charactors %>
-    <%= f.text_area :text, value: "#{@thank.text} #{thanks_show_url(@thank)}", require: true %>
+    <%= f.text_area :text, value: "#{@thank.text} #{thanks_show_url(@thank)}", required: true %>
   </p>
 
   <p>

@@ -1,0 +1,14 @@
+<%= form_for :link, url: links_path do |f| %>
+  <p>
+    <%= f.text_field :url, placeholder: 'https://example.com', required: true %>
+  </p>
+
+  <p>
+    <%= f.text_field :text, placeholder: 'Example', required: true %>
+  </p>
+
+  <p>
+    <%= f.submit 'Add link' %>
+    <%= link_to 'Cancel', thanks_show_path(@thank) %>
+  </p>
+<% end %>

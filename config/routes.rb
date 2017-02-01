@@ -14,4 +14,6 @@ Rails.application.routes.draw do
 
   get 'thanks/:id/dittos/new', to: 'dittos#new', as: :dittos_new
   post 'thanks/:id/dittos', to: 'dittos#create', as: :dittos
+  get 'thanks/:id/links/new', to: 'links#new', as: :links_new
+  post 'thanks/:id/links/create', to: 'links#create', as: :links
 end
