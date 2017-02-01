@@ -2,7 +2,7 @@
 
 one:
   text: MyString
-  reply_tweet_id: MyString
+  reply_to_tweet_id: MyString
 
 two:
   text: MyString

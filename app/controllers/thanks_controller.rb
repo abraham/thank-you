@@ -19,6 +19,6 @@ class ThanksController < ApplicationController
   private
 
   def thanks_params
-    params.require(:thanks).permit(:text, :reply_tweet_id, :name)
+    params.require(:thanks).permit(:name, :reply_to_tweet_id, :text)
   end
 end

@@ -8,7 +8,7 @@ class DittosController < ApplicationController
     ditto.data = tweet.to_hash
     ditto.save
 
-    redirect_to thank
+    redirect_to thanks_show_path(thank)
   end
 
   def new
