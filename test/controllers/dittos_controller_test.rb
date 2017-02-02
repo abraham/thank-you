@@ -6,10 +6,20 @@ class DittosControllerTest < ActionDispatch::IntegrationTest
     @thank = create(:thank, user: @user)
   end
 
+  test 'should redirect get new to sessions new' do
+    get dittos_new_url(@thank)
+    assert_redirected_to sessions_new_url
+  end
+
   test 'should get new' do
     cookies[:user_id] = @user.id
     get dittos_new_url(@thank)
     assert_response :success
+  end
+
+  test 'should redirect post create to sessions new' do
+    post dittos_create_url(@thank)
+    assert_redirected_to sessions_new_url
   end
 
   test 'should post create' do
