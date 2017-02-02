@@ -52,3 +52,13 @@ textarea {
   border: 1px solid red;
   padding-left: 16px;
 }
+
+.warning {
+  border: 1px solid yellow;
+  padding: 16px;
+}
+
+.notice {
+  border: 1px solid green;
+  padding: 16px;
+}
