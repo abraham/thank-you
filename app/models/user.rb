@@ -22,7 +22,6 @@ class User < ApplicationRecord
   end
 
   def admin?
-    # ['abraham', 'devbraham']
-    ['9436992', '18548072'].include?(twitter_id)
+    AppConfig.admin_ids.include?(twitter_id)
   end
 end
