@@ -11,6 +11,17 @@
   <body>
     <div class='container'>
       <%= render 'partials/header' %>
+
+      <% # TODO Remove this after the alpha %>
+      <div class='error'>
+        <h2>Welcome to the Thank You Delivery Alpha</h2>
+        <p>Note these restrictions during the alpha:</p>
+        <ul>
+          <li>Data saved will be deleted before launch</li>
+          <li>Posting to Twitter is disabled</li>
+        </ul>
+      </div>
+
       <%= render 'partials/flash' %>
       <%= yield %>
       <%= render 'partials/footer' %>

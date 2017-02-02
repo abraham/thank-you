@@ -1,8 +1,8 @@
 <% @thanks.each do |thank| %>
   <p>
-    <span><%= thank.text %></span>
+    <p><strong><%= thank.text %></strong></p>
     <br>
-    <span>Thanks by <%= render 'dittos', dittos: thank.dittos.limit(10), more: thank.dittos.count - 10 %></span>
+    <span>Thanked by <%= render 'dittos', dittos: thank.dittos.limit(10), more: thank.dittos.count - 10 %></span>
     <span><%= link_to 'Read more', thanks_show_path(thank) %></span>
   </p>
   <br>
