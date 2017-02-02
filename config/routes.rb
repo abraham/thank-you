@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   post 'thanks', to: 'thanks#create'
 
   get 'thanks/:id/dittos/new', to: 'dittos#new', as: :dittos_new
-  post 'thanks/:id/dittos', to: 'dittos#create', as: :dittos
+  post 'thanks/:id/dittos', to: 'dittos#create', as: :dittos_create
   get 'thanks/:id/links/new', to: 'links#new', as: :links_new
-  post 'thanks/:id/links/create', to: 'links#create', as: :links
+  post 'thanks/:id/links/create', to: 'links#create', as: :links_create
 end
