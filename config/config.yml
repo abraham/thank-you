@@ -1,0 +1,11 @@
+development: &development
+  post_to_twitter: true
+  sign_in: true
+  admin_ids:
+    - '9436992'
+    - '18548072'
+test:
+  <<: *development
+
+production:
+  <<: *development
