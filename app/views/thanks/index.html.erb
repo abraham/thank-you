@@ -2,8 +2,8 @@
   <p>
     <p><strong><%= thank.text %></strong></p>
     <br>
-    <span>Thanked by <%= render 'dittos', dittos: thank.dittos.limit(10), more: thank.dittos.count - 10 %></span>
-    <span><%= link_to 'Read more', thanks_show_path(thank) %></span>
+    <span>Recently thanked by <%= render 'dittos', dittos: thank.dittos.limit(10), more: thank.dittos.count - 10 %></span>
+    <span><%= link_to "Thank @#{thank.name}", dittos_new_path(thank) %> <%= link_to 'Read more', thanks_show_path(thank) %></span>
   </p>
   <br>
 <% end %>
