@@ -37,6 +37,13 @@ class UserTest < ActiveSupport::TestCase
     assert_equal status, tweet.to_hash
   end
 
+  test 'tweet fails when disabled' do
+    AppConfig.posting_to_twitter_enabled = false
+    tweet = @user.tweet(Faker::Lorem.sentence(3), nil)
+    assert tweet.nil?
+    AppConfig.posting_to_twitter_enabled = true
+  end
+
   def stub_statuses_update(status, in_reply_to_status_id)
     stub_request(:post, 'https://api.twitter.com/1.1/statuses/update.json')
       .with(body: { in_reply_to_status_id: in_reply_to_status_id, status: status[:text] })

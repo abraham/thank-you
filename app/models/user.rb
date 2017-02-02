@@ -9,7 +9,7 @@ class User < ApplicationRecord
   end
 
   def tweet(text, in_reply_to_status_id)
-    twitter_client.update(text, in_reply_to_status_id: in_reply_to_status_id)
+    twitter_client.update(text, in_reply_to_status_id: in_reply_to_status_id) if AppConfig.posting_to_twitter_enabled
   end
 
   def twitter_client
