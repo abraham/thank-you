@@ -9,13 +9,7 @@
   </head>
 
   <body>
-    <p>
-      <% if current_user %>
-        <%= "Hi #{current_user.name}" %>
-      <% else %>
-       <%= link_to 'Sign in with Twitter', sessions_new_path %>
-     <% end %>
-    </p>
+    <%= render 'partials/header' %>
     <%= yield %>
   </body>
 </html>

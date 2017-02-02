@@ -1,0 +1,20 @@
+<header>
+  <h1>Thank You</h1>
+
+  <% if current_user %>
+    <%= "Hi #{current_user.name}" %>
+
+    <% if current_user.admin? %>
+      <%= link_to 'Create thank you', thanks_new_path %>
+    <% end %>
+
+    <%= form_for :session, url: sessions_destroy_path, method: :delete do |f| %>
+      <p>
+        <%= f.submit 'Sign out' %>
+      </p>
+    <% end %>
+
+  <% elsif !current_page?(controller: :sessions, action: :new) %>
+    <%= link_to 'Sign in with Twitter', sessions_new_path %>
+  <% end %>
+</header>
