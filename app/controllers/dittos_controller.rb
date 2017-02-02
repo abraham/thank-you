@@ -4,20 +4,22 @@ class DittosController < ApplicationController
   before_action :not_already_thanked
 
   def create
-    @ditto = Ditto.new(dittos_params)
-    @ditto.thank = @thank
-    @ditto.user = current_user
+    @ditto = Ditto.create(dittos_params.merge(user: current_user, thank: @thank))
 
-    # TODO: Validate Ditto before tweeting
     begin
       tweet = current_user.tweet(@ditto.text, @thank.reply_to_tweet_id)
+      if tweet
+        @ditto.tweet_id = tweet.id
+        @ditto.data = tweet.to_hash
+        @ditto.save
+      else
+        flash[:warning] = 'Posting to Twitter currently disabled.'
+      end
     rescue Twitter::Error::Forbidden => error
       logger.error "Error posting Ditto to Twitter Code: #{error.code} Message: #{error.message}"
       flash[:error] = "Something went wrong posting to Twitter. Code: #{error.code} - #{error.message}"
       redirect_to thanks_show_path(@thank) and return
     end
-    @ditto.tweet_id = tweet.id
-    @ditto.data = tweet.to_hash
 
     if @ditto.save
       flash[:notice] = 'Thank you was successfully created.'
