@@ -47,10 +47,11 @@ group :development, :test do
 end
 
 group :development do
-  # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem 'bullet'
+  gem 'factory_girl'
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'rubocop'
+  # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem 'web-console', github: 'rails/web-console'
 end
 
