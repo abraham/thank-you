@@ -38,7 +38,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_url
   end
 
-  test 'should redirect to referrer location' do
+  test 'should redirect to local referrer location' do
     @twitter_user = Faker::Twitter.user
     stub_access_token
     stub_verify_credentials
@@ -62,6 +62,31 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal @response.cookies['user_id'], user.id
     assert_equal user.screen_name, @twitter_user[:screen_name]
     assert_redirected_to thanks_show_url(thank)
+  end
+
+  test 'should not redirect to remote referrer location' do
+    @twitter_user = Faker::Twitter.user
+    stub_access_token
+    stub_verify_credentials
+    request_token = create(:request_token)
+    cookies[:request_token_id] = request_token.id
+
+    get sessions_new_url, headers: { Referer: 'http://other.com/foo/bar' }
+    assert_response :success
+    assert_equal 'http://other.com/foo/bar', @response.cookies['last_referrer']
+
+    assert_difference 'RequestToken.count', -1 do
+      assert_difference 'User.count', 1 do
+        get sessions_finish_url params: { oauth_token: request_token.token, oauth_verifier: 'verifier' }
+      end
+    end
+
+    user = User.find_by(twitter_id: @twitter_user[:id].to_s)
+
+    assert @response.cookies['request_token_id'].nil?
+    assert_equal @response.cookies['user_id'], user.id
+    assert_equal user.screen_name, @twitter_user[:screen_name]
+    assert_redirected_to root_url
   end
 
   test 'should get create with returning user' do
