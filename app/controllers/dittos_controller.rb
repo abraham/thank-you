@@ -1,4 +1,6 @@
 class DittosController < ApplicationController
+  before_action :require_signin
+
   def create
     thank = Thank.find(params[:id])
     ditto = Ditto.new(dittos_params)

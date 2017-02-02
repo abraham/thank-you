@@ -1,4 +1,6 @@
 class LinksController < ApplicationController
+  before_action :require_signin
+
   def create
     thank = Thank.find(params[:id])
     link = Link.new(links_params)

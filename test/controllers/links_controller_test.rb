@@ -7,6 +7,7 @@ class LinksControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get new' do
+    cookies[:user_id] = @user.id
     get links_new_url(@thank)
     assert_response :success
   end
