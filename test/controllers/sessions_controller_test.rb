@@ -31,7 +31,12 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_url
   end
 
+  test 'should get create with returning user' do
+    # TODO
+  end
+
   test 'should get create with auth denied' do
+    # TODO
   end
 
   test 'should delete destroy' do
