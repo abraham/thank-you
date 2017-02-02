@@ -2,11 +2,11 @@ require 'test_helper'
 
 class ThanksControllerTest < ActionDispatch::IntegrationTest
   def setup
-    @default_admin_ids = AppConfig.admin_ids
+    @default_admin_twitter_ids = AppConfig.admin_twitter_ids
   end
 
   def teardown
-    AppConfig.admin_ids = @default_admin_ids
+    AppConfig.admin_twitter_ids = @default_admin_twitter_ids
   end
 
   test 'should get root' do
@@ -53,7 +53,7 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
 
   test 'should allow admins to get new' do
     user = create(:user)
-    AppConfig.admin_ids = [user.twitter_id.to_s]
+    AppConfig.admin_twitter_ids = [user.twitter_id.to_s]
     cookies[:user_id] = user.id
     get thanks_new_path
     assert_response :success
@@ -61,7 +61,7 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
 
   test 'should allow admins to post create' do
     user = create(:user)
-    AppConfig.admin_ids = [user.twitter_id]
+    AppConfig.admin_twitter_ids = [user.twitter_id]
     cookies[:user_id] = user.id
     assert_difference 'Thank.count', 1 do
       post thanks_create_path, params: { thanks: { text: Faker::Lorem.sentence(3), name: Faker::Internet.user_name } }

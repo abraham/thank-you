@@ -22,6 +22,6 @@ class User < ApplicationRecord
   end
 
   def admin?
-    AppConfig.admin_ids.include?(twitter_id)
+    AppConfig.admin_twitter_ids.include?(twitter_id)
   end
 end
