@@ -1,4 +1,12 @@
 GIT
+  remote: https://github.com/abraham/faker.git
+  revision: f8429ecf04c1cf88b180fc38b6a407b3ee609d5b
+  branch: twitter
+  specs:
+    faker (1.7.2)
+      i18n (~> 0.5)
+
+GIT
   remote: https://github.com/rails/arel.git
   revision: f5f81be73df89011fe9bc89915b99d81e0c9a67f
   specs:
@@ -123,8 +131,6 @@ GEM
     execjs (2.7.0)
     factory_girl (4.8.0)
       activesupport (>= 3.0.0)
-    faker (1.7.2)
-      i18n (~> 0.5)
     faraday (0.11.0)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.17)
@@ -245,7 +251,7 @@ DEPENDENCIES
   byebug
   coffee-rails (~> 4.2)
   factory_girl
-  faker
+  faker!
   jbuilder (~> 2.5)
   listen (>= 3.0.5, < 3.2)
   oauth (~> 0)

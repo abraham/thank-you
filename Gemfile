@@ -42,13 +42,13 @@ gem 'jbuilder', '~> 2.5'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  gem 'faker'
+  gem 'factory_girl'
+  gem 'faker', github: 'abraham/faker', branch: 'twitter'
   gem 'webmock'
 end
 
 group :development do
   gem 'bullet'
-  gem 'factory_girl'
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'rubocop'
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
