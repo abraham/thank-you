@@ -13,6 +13,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get create' do
+    @twitter_user = Faker::Twitter.user
     stub_access_token
     stub_verify_credentials
     request_token = create(:request_token)
@@ -24,6 +25,9 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
       end
     end
     assert @response.cookies['request_token_id'].nil?
+    assert_equal @response.cookies['user_id'], User.last.id
+    assert_equal User.last.screen_name, @twitter_user[:screen_name]
+    assert_equal User.last.twitter_id, @twitter_user[:id].to_s
     assert_redirected_to root_url
   end
 
@@ -51,8 +55,8 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     params = [
       'oauth_token=6253282-eWudHldSbIaelX7swmsiHImEL4KinwaGloHANdrY',
       'oauth_token_secret=2EEfA6BG3ly3sR3RjE0IBSnlQu4ZrUzPiYKmrkVU',
-      'user_id=6253282',
-      'screen_name=twitterapi'
+      "user_id=#{@twitter_user[:id]}",
+      "screen_name=#{@twitter_user[:screen_name]}"
     ]
     stub_request(:post, 'https://api.twitter.com/oauth/access_token')
       .to_return(status: 200, body: params.join('&'))
@@ -60,6 +64,6 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
   def stub_verify_credentials
     stub_request(:get, 'https://api.twitter.com/1.1/account/verify_credentials.json')
-      .to_return(status: 200, body: Faker::Twitter.user.to_json)
+      .to_return(status: 200, body: @twitter_user.to_json)
   end
 end
