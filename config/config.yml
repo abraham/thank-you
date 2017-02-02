@@ -1,11 +1,18 @@
-development: &development
-  post_to_twitter: true
-  sign_in: true
+development:
+  post_to_twitter_enabled: true
+  sign_in_enabled: true
   admin_ids:
     - '9436992'
     - '18548072'
+
 test:
-  <<: *development
+  post_to_twitter_enabled: true
+  sign_in_enabled: true
+  admin_ids:
+    - '9436992'
+    - '18548072'
 
 production:
-  <<: *development
+  post_to_twitter_enabled: <%= ENV['POST_TO_TWITTER_ENABLED'] %>
+  sign_in_enabled: <%= ENV['SIGN_IN_ENABLED'] %>
+  admin_ids: <%= (ENV['ADMIN_IDS'] || '').split(',') %>
