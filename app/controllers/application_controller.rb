@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   private
 
   def check_for_alpha_token
+    return if Rails.env.test?
     render plain: 'Forbidden', status: :forbidden unless cookies[:alpha_token] && cookies[:alpha_token] == AppConfig.alpha_token
   end
 
