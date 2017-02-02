@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  before_action :cache_last_referrer, only: [:new]
+
   def new
     # TODO: require not be signed in
   end
@@ -41,7 +43,7 @@ class SessionsController < ApplicationController
 
     cookies[:user_id] = user.id
 
-    redirect_to root_path
+    redirect_to parsed_local_referrer_path and cookies.delete(:last_referrer)
   end
 
   def destroy
@@ -70,5 +72,17 @@ class SessionsController < ApplicationController
       config.access_token_secret = secret
     end
     client.user
+  end
+
+  def parsed_local_referrer_path
+    if cookies[:last_referrer] && cookies[:last_referrer].starts_with?(root_url)
+      URI.parse(cookies[:last_referrer]).path
+    else
+      '/'
+    end
+  end
+
+  def cache_last_referrer
+    cookies[:last_referrer] = request.referrer
   end
 end
