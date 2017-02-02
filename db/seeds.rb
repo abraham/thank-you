@@ -7,7 +7,7 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 users = (1..10).map do |_i|
-  twitter_id = Faker::Number.between(1, 10)
+  twitter_id = Faker::Number.number(10)
   User.create(twitter_id: twitter_id,
               screen_name: Faker::Internet.user_name,
               name: Faker::Name.name,
