@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
   get 'sessions/new'
   get 'sessions/create'
-  post 'sessions/destroy'
+  delete 'sessions/destroy'
 
   get 'thanks/new'
   get 'thanks/:id', to: 'thanks#show', as: :thanks_show

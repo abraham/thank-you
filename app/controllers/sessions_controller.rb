@@ -12,6 +12,8 @@ class SessionsController < ApplicationController
     request_token = RequestToken.find(cookies[:request_token_id])
     cookies.delete(:request_token_id)
 
+    # TODO: handle authorization rejection
+    # TODO: Test this failure
     raise unless request_token.token == params[:oauth_token]
 
     token = OAuth::RequestToken.new(consumer, request_token.token, request_token.secret)
