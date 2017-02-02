@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :user do
-    twitter_id = Faker::Number.between(1, 10)
+    twitter_id = Faker::Number.number(10)
     twitter_id twitter_id
     screen_name { Faker::Internet.user_name }
     name { Faker::Name.name }

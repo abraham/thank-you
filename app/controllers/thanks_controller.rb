@@ -4,7 +4,8 @@ class ThanksController < ApplicationController
 
   def create
     thank = current_user.thanks.create(thanks_params)
-
+    # TODO: catch save errors
+    flash[:notice] = 'Thank you created successfully.'
     redirect_to thanks_show_path(thank)
   end
 
