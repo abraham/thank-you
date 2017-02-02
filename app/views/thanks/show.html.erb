@@ -7,16 +7,16 @@
 <p>
 
 <p>
-  <span>Thanked by</span>
-  <%= render 'dittos', dittos: @thank.dittos.limit(25), more: @thank.dittos.count - 25 %>
-<p>
-
-<p>
   <% if current_user && current_user.dittoed?(@thank) %>
     <span> You already thanked @<%= @thank.name %></span>
   <% else %>
     <span><%= link_to "Thank @#{@thank.name}", dittos_new_path(@thank) %></span>
   <% end %>
+<p>
+
+<p>
+  <span>Thanked by</span>
+  <%= render 'dittos', dittos: @thank.dittos.limit(25), more: @thank.dittos.count - 25 %>
 <p>
 
 <p>
