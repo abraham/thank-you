@@ -35,6 +35,19 @@ class DittosControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'Thank you was successfully created.', flash[:notice]
   end
 
+  test 'should only allow creating one ditto' do
+    @twitter_status = Faker::Twitter.status
+    ditto = create(:ditto, data: @twitter_status, user: @user)
+    cookies[:user_id] = @user.id
+    stub_statuses_update
+
+    assert_difference 'Ditto.count', 0 do
+      post dittos_create_url ditto.thank, params: { ditto: { text: @twitter_status[:text] } }
+    end
+
+    assert_redirected_to thanks_show_path(ditto.thank)
+  end
+
   def stub_statuses_update
     stub_request(:post, 'https://api.twitter.com/1.1/statuses/update.json')
       .with(body: { in_reply_to_status_id: nil, status: @twitter_status[:text] })
