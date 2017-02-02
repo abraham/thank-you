@@ -1,3 +1,8 @@
-<% dittos.each do |ditto| %>
-  <%= image_tag(ditto.user.avatar_url, height: '32', width: '32') %>
-<% end %>
+<div>
+  <% dittos.each do |ditto| %>
+    <%= image_tag(ditto.user.avatar_url, height: '32', width: '32') %>
+  <% end %>
+  <% if more > 1 %>
+    <span>+<%= more %>
+  <% end %>
+</div>

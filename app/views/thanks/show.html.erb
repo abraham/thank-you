@@ -7,11 +7,8 @@
 <p>
 
 <p>
-  <span>Thanked by <%= @thank.dittos.count %> people</span>
-<p>
-
-<p>
-  <%= render 'dittos', dittos: @thank.dittos.limit(25) %>
+  <span>Thanked by</span>
+  <%= render 'dittos', dittos: @thank.dittos.limit(25), more: @thank.dittos.count - 25 %>
 <p>
 
 <p>
