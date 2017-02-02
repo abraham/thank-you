@@ -12,7 +12,11 @@
 <p>
 
 <p>
-  <span><%= link_to "Thank @#{@thank.name}", dittos_new_path(@thank) %></span>
+  <% if current_user.thanked?(@thank.id) %>
+    <span> You already thanked @<%= @thank.name %></span>
+  <% else %>
+    <span><%= link_to "Thank @#{@thank.name}", dittos_new_path(@thank) %></span>
+  <% end %>
 <p>
 
 <p>

@@ -1,5 +1,17 @@
 <% # TODO: show avatar of user tweeting %>
-<%= form_for :ditto, url: dittos_create_path do |f| %>
+
+<% if @ditto.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@ditto.errors.count, "error") %> prohibited this article from being saved:</h2>
+
+    <ul>
+    <% @ditto.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+<%= form_for @ditto, url: dittos_create_path do |f| %>
   <p>
     <% # TODO: trim text to 138 charactors %>
     <%= f.text_area :text, value: "#{@thank.text} #{thanks_show_url(@thank)}", required: true %>

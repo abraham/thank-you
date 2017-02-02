@@ -4,6 +4,10 @@ class User < ApplicationRecord
   has_many :links
   has_many :thanks
 
+  def thanked?(thank_id)
+    dittos.where(thank_id: thank_id).count > 0
+  end
+
   def tweet(text, in_reply_to_status_id)
     twitter_client.update(text, in_reply_to_status_id: in_reply_to_status_id)
   end
