@@ -1,0 +1,12 @@
+{
+  "name": "app-name-here",
+  "description": "dummy package.json for heroku/nodejs buildpack support",
+  "private": true,
+  "engines": {
+    "node": "6.5.0",
+    "yarn": "0.18.1"
+  },
+  "scripts": {
+    "heroku-postbuild": "cd vendor && yarn"
+  }
+}
