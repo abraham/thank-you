@@ -1,7 +1,9 @@
 {
   "name": "thank-you",
   "private": true,
-  "dependencies": {},
+  "dependencies": {
+    "glob": "^7.1.1"
+  },
   "devDependencies": {
     "babel-core": "^6.22.1",
     "babel-loader": "^6.2.10",

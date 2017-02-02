@@ -8,5 +8,8 @@
   },
   "scripts": {
     "heroku-postbuild": "cd vendor && yarn"
+  },
+  "dependencies": {
+    "glob": "^7.1.1"
   }
 }
