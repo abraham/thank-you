@@ -7,7 +7,9 @@ class ThankTest < ActiveSupport::TestCase
   end
 
   test 'should save with text' do
-    thank = Thank.new(text: Faker::Hipster.sentence)
+    thank = Thank.new(text: Faker::Hipster.sentence,
+                      name: Faker::Internet.user_name,
+                      user: create(:user))
     assert thank.save
   end
 end

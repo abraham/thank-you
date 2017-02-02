@@ -1,5 +1,5 @@
 <% # TODO: show avatar of user tweeting %>
-<%= form_for :ditto, url: dittos_path do |f| %>
+<%= form_for :ditto, url: dittos_create_path do |f| %>
   <p>
     <% # TODO: trim text to 138 charactors %>
     <%= f.text_area :text, value: "#{@thank.text} #{thanks_show_url(@thank)}", required: true %>

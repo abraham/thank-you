@@ -7,10 +7,13 @@ class DittosController < ApplicationController
     tweet = current_user.tweet(ditto.text, thank.reply_to_tweet_id)
     ditto.tweet_id = tweet.id
     ditto.data = tweet.to_hash
-    ditto.save
-    # TODO: check for success and add flash
 
-    redirect_to thanks_show_path(thank)
+    if ditto.save
+      flash[:notice] = 'Thank you was successfully created.'
+      redirect_to thanks_show_path(thank)
+    else
+      render 'new'
+    end
   end
 
   def new
