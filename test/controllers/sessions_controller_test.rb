@@ -2,17 +2,24 @@ require 'test_helper'
 
 class SessionsControllerTest < ActionDispatch::IntegrationTest
   test 'should get new' do
+    get sessions_new_url
+    assert_response :success
+  end
+
+  test 'should post start' do
     token = 'Z6eEdO8MOmk394WozF5oKyuAv855l4Mlqo7hhlSLik'
     stub_request_token(token)
+    cookies[:user_id] = 'foo'
     assert_difference 'RequestToken.count', 1 do
-      get sessions_new_url
+      post sessions_start_url
     end
     assert_equal @response.cookies['request_token_id'], RequestToken.last.id
+    assert @response.cookies['user_id'].nil?
     assert_equal token, RequestToken.last.token
     assert_redirected_to "https://api.twitter.com/oauth/authorize?oauth_token=#{token}"
   end
 
-  test 'should get create' do
+  test 'should get finish' do
     @twitter_user = Faker::Twitter.user
     stub_access_token
     stub_verify_credentials
@@ -21,7 +28,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_difference 'RequestToken.count', -1 do
       assert_difference 'User.count', 1 do
-        get sessions_create_url params: { oauth_token: request_token.token, oauth_verifier: 'verifier' }
+        get sessions_finish_url params: { oauth_token: request_token.token, oauth_verifier: 'verifier' }
       end
     end
     assert @response.cookies['request_token_id'].nil?

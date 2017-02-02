@@ -4,7 +4,8 @@ Rails.application.routes.draw do
   root 'thanks#index'
 
   get 'sessions/new'
-  get 'sessions/create'
+  post 'sessions/start'
+  get 'sessions/finish'
   delete 'sessions/destroy'
 
   get 'thanks/new'

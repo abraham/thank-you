@@ -1,14 +1,19 @@
 class SessionsController < ApplicationController
   def new
-    twitter_request_token = consumer.get_request_token(oauth_callback: sessions_create_url)
+    # TODO: require not be signed in
+  end
+
+  def start
+    twitter_request_token = consumer.get_request_token(oauth_callback: sessions_finish_url)
     request_token = RequestToken.create(token: twitter_request_token.token,
                                         secret: twitter_request_token.secret)
     cookies[:request_token_id] = request_token.id
+    cookies.delete(:user_id)
 
     redirect_to twitter_request_token.authorize_url
   end
 
-  def create
+  def finish
     request_token = RequestToken.find(cookies[:request_token_id])
     cookies.delete(:request_token_id)
 
@@ -21,7 +26,7 @@ class SessionsController < ApplicationController
     request_token.delete
 
     access_token = token.get_access_token(oauth_verifier: params[:oauth_verifier],
-                                          oauth_callback: sessions_create_url)
+                                          oauth_callback: sessions_start_url)
 
     twitter_user = etl_user(access_token.token, access_token.secret)
 
