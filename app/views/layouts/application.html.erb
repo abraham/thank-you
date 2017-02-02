@@ -9,9 +9,11 @@
   </head>
 
   <body>
-    <%= render 'partials/header' %>
-    <%= render 'partials/flash' %>
-    <%= yield %>
-    <%= render 'partials/footer' %>
+    <div class='container'>
+      <%= render 'partials/header' %>
+      <%= render 'partials/flash' %>
+      <%= yield %>
+      <%= render 'partials/footer' %>
+    </div>
   </body>
 </html>
