@@ -3,6 +3,8 @@ Rails.application.routes.draw do
 
   root 'thanks#index'
 
+  get 'alpha/join/:token', to: 'alpha#join'
+
   get 'sessions/new'
   post 'sessions/start'
   get 'sessions/finish'

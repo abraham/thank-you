@@ -1,9 +1,15 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
+  before_action :check_for_alpha_token
+
   helper_method :current_user
 
   private
+
+  def check_for_alpha_token
+    render plain: 'Forbidden', status: :forbidden unless cookies[:alpha_token] && cookies[:alpha_token] == AppConfig.alpha_token
+  end
 
   def current_user
     @current_user ||= User.find_by(id: cookies[:user_id])
