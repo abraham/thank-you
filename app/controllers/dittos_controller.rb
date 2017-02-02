@@ -34,7 +34,7 @@ class DittosController < ApplicationController
   private
 
   def not_already_thanked
-    redirect_to thanks_show_path(@thank) if current_user.thanked?(@thank.id)
+    redirect_to thanks_show_path(@thank) if current_user.dittoed?(@thank)
   end
 
   def find_thank

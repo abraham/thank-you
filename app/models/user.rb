@@ -4,8 +4,8 @@ class User < ApplicationRecord
   has_many :links
   has_many :thanks
 
-  def thanked?(thank_id)
-    dittos.where(thank_id: thank_id).count > 0
+  def dittoed?(thank)
+    dittos.where(thank_id: thank.id).count > 0
   end
 
   def tweet(text, in_reply_to_status_id)

@@ -12,7 +12,7 @@
 <p>
 
 <p>
-  <% if current_user && current_user.thanked?(@thank.id) %>
+  <% if current_user && current_user.dittoed?(@thank) %>
     <span> You already thanked @<%= @thank.name %></span>
   <% else %>
     <span><%= link_to "Thank @#{@thank.name}", dittos_new_path(@thank) %></span>
