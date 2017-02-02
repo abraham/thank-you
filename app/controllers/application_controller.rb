@@ -12,4 +12,10 @@ class ApplicationController < ActionController::Base
 
     redirect_to sessions_new_path
   end
+
+  def require_admin
+    return if current_user && current_user.admin?
+
+    redirect_to root_path, flash: { error: 'You do not have permission to do that' }
+  end
 end

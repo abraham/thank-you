@@ -16,4 +16,9 @@ class User < ApplicationRecord
       config.access_token_secret = access_token_secret
     end
   end
+
+  def admin?
+    # ['abraham', 'devbraham']
+    ['9436992', '18548072'].include?(twitter_id)
+  end
 end

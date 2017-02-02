@@ -1,5 +1,6 @@
 class ThanksController < ApplicationController
   before_action :require_signin, except: [:index, :show]
+  before_action :require_admin, except: [:index, :show]
 
   def create
     thank = current_user.thanks.create(thanks_params)

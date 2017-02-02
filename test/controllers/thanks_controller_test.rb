@@ -26,4 +26,20 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
     post thanks_create_path
     assert_redirected_to sessions_new_url
   end
+
+  test 'should redirect get thanks new to get thanks as a user' do
+    user = create(:user)
+    cookies[:user_id] = user.id
+    get thanks_new_path
+    assert_redirected_to root_path
+    assert_equal 'You do not have permission to do that', flash[:error]
+  end
+
+  test 'should redirect post thanks create to  get thanks as a user' do
+    user = create(:user)
+    cookies[:user_id] = user.id
+    post thanks_create_path
+    assert_redirected_to root_path
+    assert_equal 'You do not have permission to do that', flash[:error]
+  end
 end
