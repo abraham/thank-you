@@ -29,7 +29,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_difference 'RequestToken.count', -1 do
       assert_difference 'User.count', 1 do
-        get edit_session_url params: { oauth_token: request_token.token, oauth_verifier: 'verifier' }
+        get finish_session_url params: { oauth_token: request_token.token, oauth_verifier: 'verifier' }
       end
     end
     assert @response.cookies['request_token_id'].nil?
@@ -54,7 +54,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_difference 'RequestToken.count', -1 do
       assert_difference 'User.count', 1 do
-        get edit_session_url params: { oauth_token: request_token.token, oauth_verifier: 'verifier' }
+        get finish_session_url params: { oauth_token: request_token.token, oauth_verifier: 'verifier' }
       end
     end
 
@@ -80,7 +80,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_difference 'RequestToken.count', -1 do
       assert_difference 'User.count', 1 do
-        get edit_session_url params: { oauth_token: request_token.token, oauth_verifier: 'verifier' }
+        get finish_session_url params: { oauth_token: request_token.token, oauth_verifier: 'verifier' }
       end
     end
 
