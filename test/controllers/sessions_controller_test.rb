@@ -11,7 +11,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     stub_request_token(token)
     cookies[:user_id] = 'foo'
     assert_difference 'RequestToken.count', 1 do
-      post sessions_url
+      post session_url
     end
     assert_equal @response.cookies['request_token_id'], RequestToken.last.id
     assert @response.cookies['user_id'].nil?
@@ -29,7 +29,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_difference 'RequestToken.count', -1 do
       assert_difference 'User.count', 1 do
-        get edit_session_url request_token, params: { oauth_token: request_token.token, oauth_verifier: 'verifier' }
+        get edit_session_url params: { oauth_token: request_token.token, oauth_verifier: 'verifier' }
       end
     end
     assert @response.cookies['request_token_id'].nil?
@@ -54,7 +54,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_difference 'RequestToken.count', -1 do
       assert_difference 'User.count', 1 do
-        get edit_session_url request_token, params: { oauth_token: request_token.token, oauth_verifier: 'verifier' }
+        get edit_session_url params: { oauth_token: request_token.token, oauth_verifier: 'verifier' }
       end
     end
 
@@ -80,7 +80,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_difference 'RequestToken.count', -1 do
       assert_difference 'User.count', 1 do
-        get edit_session_url request_token, params: { oauth_token: request_token.token, oauth_verifier: 'verifier' }
+        get edit_session_url params: { oauth_token: request_token.token, oauth_verifier: 'verifier' }
       end
     end
 
@@ -103,7 +103,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   test 'should delete destroy' do
     user = create(:user)
     cookies[:user_id] = user.id
-    delete session_url(user.id)
+    delete session_url
     assert_redirected_to root_url
     assert @response.cookies[:user_id].nil?
     assert_equal flash[:notice], 'Signed out.'

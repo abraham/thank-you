@@ -7,8 +7,8 @@ class SessionsController < ApplicationController
 
   def create
     id = SecureRandom.uuid
-    twitter_request_token = consumer.get_request_token(oauth_callback: edit_session_url(id))
-    request_token = RequestToken.create(id:id,
+    twitter_request_token = consumer.get_request_token(oauth_callback: edit_session_url)
+    request_token = RequestToken.create(id: id,
                                         token: twitter_request_token.token,
                                         secret: twitter_request_token.secret)
     cookies[:request_token_id] = request_token.id
@@ -28,7 +28,7 @@ class SessionsController < ApplicationController
     token = OAuth::RequestToken.new(consumer, request_token.token, request_token.secret)
 
     access_token = token.get_access_token(oauth_verifier: params[:oauth_verifier],
-                                          oauth_callback: edit_session_url(request_token.id))
+                                          oauth_callback: edit_session_url)
 
     request_token.delete
     twitter_user = etl_user(access_token.token, access_token.secret)
@@ -48,10 +48,8 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    if params[:id] == cookies[:user_id] && params[:id] == current_user.id
-      cookies.delete(:user_id)
-      flash[:notice] = 'Signed out.'
-    end
+    cookies.delete(:user_id)
+    flash[:notice] = 'Signed out.'
     redirect_to root_path
   end
 

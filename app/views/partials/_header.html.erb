@@ -15,7 +15,7 @@
         <%= link_to 'Create thank you', new_thank_path %>
       <% end %>
 
-      <%= form_for :session, url: session_path(current_user.id), method: :delete do |f| %>
+      <%= form_for :session, url: session_path, method: :delete do |f| %>
         <p>
           <%= f.submit 'Sign out' %>
         </p>
