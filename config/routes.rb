@@ -12,8 +12,6 @@ Rails.application.routes.draw do
 
   resources :thanks do
     resources :dittos
+    resources :links
   end
-
-  get 'thanks/:id/links/new', to: 'links#new', as: :links_new
-  post 'thanks/:id/links/create', to: 'links#create', as: :links_create
 end

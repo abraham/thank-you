@@ -2,7 +2,7 @@ class LinksController < ApplicationController
   before_action :require_signin
 
   def create
-    thank = Thank.find(params[:id])
+    thank = Thank.find(params[:thank_id])
     link = Link.new(links_params)
     link.thank = thank
     link.user = current_user
@@ -16,7 +16,7 @@ class LinksController < ApplicationController
   end
 
   def new
-    @thank = Thank.find(params[:id])
+    @thank = Thank.find(params[:thank_id])
   end
 
   private
