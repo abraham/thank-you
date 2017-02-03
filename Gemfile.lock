@@ -8,13 +8,13 @@ GIT
 
 GIT
   remote: https://github.com/rails/arel.git
-  revision: f5f81be73df89011fe9bc89915b99d81e0c9a67f
+  revision: d6af2090b16f7d061aa43913d610c6fada58b7e2
   specs:
     arel (8.0.0)
 
 GIT
   remote: https://github.com/rails/rails.git
-  revision: 6a1c0218df1fcffaac97e7288db07934bfef277f
+  revision: 26a137b946d2e1e54993eebc2b94cd278cd69c21
   specs:
     actioncable (5.1.0.alpha)
       actionpack (= 5.1.0.alpha)
@@ -94,7 +94,7 @@ GIT
 
 GIT
   remote: https://github.com/rails/webpacker.git
-  revision: ef24b74b5e41c1c93ac75f658f5aa205df2347d8
+  revision: 69cef656e8df052b4fccacf0b18ad580355f2878
   specs:
     webpacker (0.2)
       activesupport (>= 3.0.0, < 5.1)
@@ -137,7 +137,7 @@ GEM
     globalid (0.3.7)
       activesupport (>= 4.1.0)
     hashdiff (0.3.2)
-    http (2.1.0)
+    http (2.2.0)
       addressable (~> 2.3)
       http-cookie (~> 1.0)
       http-form_data (~> 1.0.1)
@@ -146,7 +146,7 @@ GEM
       domain_name (~> 0.5)
     http-form_data (1.0.1)
     http_parser.rb (0.6.0)
-    i18n (0.7.0)
+    i18n (0.8.0)
     jbuilder (2.6.1)
       activesupport (>= 3.0.0, < 5.1)
       multi_json (~> 1.2)
@@ -267,6 +267,9 @@ DEPENDENCIES
   web-console!
   webmock
   webpacker!
+
+RUBY VERSION
+   ruby 2.3.1p112
 
 BUNDLED WITH
    1.14.3
