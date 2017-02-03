@@ -3,7 +3,7 @@
     <p><strong><%= thank.text %></strong></p>
     <br>
     <span>Recently thanked by <%= render 'dittos', dittos: thank.dittos, more: thank.dittos_count - 10 %></span>
-    <span><%= link_to "Thank @#{thank.name}", new_thank_ditto_path(thank) %> <%= link_to 'Read more', thank_path(thank) %></span>
+    <span><%= link_to "Thank @#{thank.name}", new_thank_ditto_path(thank) %> <%= link_to 'Read more', thank %></span>
   </p>
   <br>
 <% end %>
