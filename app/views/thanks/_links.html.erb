@@ -4,6 +4,6 @@
     <span><%= link_to link.text, link.url %><span>
   <% end %>
   <% if current_user == user %>
-    <span><%= link_to 'Add citation', new_thank_link_url %></span>
+    <span><%= link_to 'Add citation', new_thank_link_url(thank) %></span>
   <% end %>
 <p>
