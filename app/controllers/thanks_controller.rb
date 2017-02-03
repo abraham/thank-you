@@ -10,11 +10,11 @@ class ThanksController < ApplicationController
   end
 
   def index
-    @thanks = Thank.all.limit(25)
+    @thanks = Thank.all.includes(dittos: :user).limit(25)
   end
 
   def show
-    @thank = Thank.find(params[:id])
+    @thank = Thank.where(id: params[:id]).includes(:links, dittos: :user).first
   end
 
   def new

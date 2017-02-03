@@ -1,5 +1,5 @@
 <div>
-  <% dittos.each do |ditto| %>
+  <% dittos[0..10].each do |ditto| %>
     <%= image_tag(ditto.user.avatar_url, height: '32', width: '32') %>
   <% end %>
   <% if more > 1 %>
