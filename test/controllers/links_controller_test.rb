@@ -30,6 +30,6 @@ class LinksControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to thank_path(@thank)
-    assert_equal 'Citation was successfully created.', flash[:notice]
+    assert_equal 'Link was successfully created.', flash[:notice]
   end
 end

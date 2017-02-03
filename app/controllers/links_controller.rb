@@ -8,7 +8,7 @@ class LinksController < ApplicationController
     link.user = current_user
 
     if link.save
-      flash[:notice] = 'Citation was successfully created.'
+      flash[:notice] = 'Link was successfully created.'
       redirect_to thank_path(@thank)
     else
       render 'new'
