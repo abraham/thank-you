@@ -2,7 +2,7 @@ require 'test_helper'
 
 class SessionsControllerTest < ActionDispatch::IntegrationTest
   test 'should get new' do
-    get sessions_new_url
+    get new_session_url
     assert_response :success
   end
 
@@ -11,7 +11,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     stub_request_token(token)
     cookies[:user_id] = 'foo'
     assert_difference 'RequestToken.count', 1 do
-      post sessions_start_url
+      post sessions_url
     end
     assert_equal @response.cookies['request_token_id'], RequestToken.last.id
     assert @response.cookies['user_id'].nil?
@@ -25,10 +25,11 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     stub_verify_credentials
     request_token = create(:request_token)
     cookies[:request_token_id] = request_token.id
+    request_token = RequestToken.last
 
     assert_difference 'RequestToken.count', -1 do
       assert_difference 'User.count', 1 do
-        get sessions_finish_url params: { oauth_token: request_token.token, oauth_verifier: 'verifier' }
+        get edit_session_url request_token, params: { oauth_token: request_token.token, oauth_verifier: 'verifier' }
       end
     end
     assert @response.cookies['request_token_id'].nil?
@@ -46,13 +47,14 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     cookies[:request_token_id] = request_token.id
     thank = create(:thank)
 
-    get sessions_new_url, headers: { Referer: thank_url(thank) }
+    get new_session_url, headers: { Referer: thank_url(thank) }
     assert_response :success
     assert_equal thank_url(thank), @response.cookies['last_referrer']
+    request_token = RequestToken.last
 
     assert_difference 'RequestToken.count', -1 do
       assert_difference 'User.count', 1 do
-        get sessions_finish_url params: { oauth_token: request_token.token, oauth_verifier: 'verifier' }
+        get edit_session_url request_token, params: { oauth_token: request_token.token, oauth_verifier: 'verifier' }
       end
     end
 
@@ -71,13 +73,14 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     request_token = create(:request_token)
     cookies[:request_token_id] = request_token.id
 
-    get sessions_new_url, headers: { Referer: 'http://other.com/foo/bar' }
+    get new_session_url, headers: { Referer: 'http://other.com/foo/bar' }
     assert_response :success
     assert_equal 'http://other.com/foo/bar', @response.cookies['last_referrer']
+    request_token = RequestToken.last
 
     assert_difference 'RequestToken.count', -1 do
       assert_difference 'User.count', 1 do
-        get sessions_finish_url params: { oauth_token: request_token.token, oauth_verifier: 'verifier' }
+        get edit_session_url request_token, params: { oauth_token: request_token.token, oauth_verifier: 'verifier' }
       end
     end
 
@@ -99,7 +102,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should delete destroy' do
     cookies[:user_id] = '123'
-    delete sessions_destroy_url
+    delete session_url('123')
     assert_redirected_to root_url
     assert cookies[:user_id].nil?
   end

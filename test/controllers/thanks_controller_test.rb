@@ -27,12 +27,12 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
 
   test 'should redirect get thanks new to sessions new' do
     get new_thank_path
-    assert_redirected_to sessions_new_url
+    assert_redirected_to new_session_url
   end
 
   test 'should redirect post thanks create to sessions new' do
     post thanks_path
-    assert_redirected_to sessions_new_url
+    assert_redirected_to new_session_url
   end
 
   test 'should redirect get thanks new to get thanks as a user' do

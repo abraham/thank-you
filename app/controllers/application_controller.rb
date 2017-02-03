@@ -19,7 +19,7 @@ class ApplicationController < ActionController::Base
   def require_signin
     return if current_user
 
-    redirect_to sessions_new_path, flash: { warning: 'You must be signed in to do that' }
+    redirect_to new_session_path, flash: { warning: 'You must be signed in to do that' }
   end
 
   def require_admin

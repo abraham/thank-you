@@ -8,7 +8,7 @@ class LinksControllerTest < ActionDispatch::IntegrationTest
 
   test 'should redirect get new to sessions new' do
     get new_thank_link_url(@thank)
-    assert_redirected_to sessions_new_url
+    assert_redirected_to new_session_url
   end
 
   test 'should get new' do
@@ -19,7 +19,7 @@ class LinksControllerTest < ActionDispatch::IntegrationTest
 
   test 'should redirect post create to sessions new' do
     post thank_links_url(@thank)
-    assert_redirected_to sessions_new_url
+    assert_redirected_to new_session_url
   end
 
   test 'should post create' do

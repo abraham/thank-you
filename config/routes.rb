@@ -5,11 +5,7 @@ Rails.application.routes.draw do
 
   get 'alpha/join/:token', to: 'alpha#join', as: :alpha_join
 
-  get 'sessions/new'
-  post 'sessions/start'
-  get 'sessions/finish'
-  delete 'sessions/destroy'
-
+  resources :sessions
   resources :thanks do
     resources :dittos, only: [:new, :create]
     resources :links, only: [:new, :create]
