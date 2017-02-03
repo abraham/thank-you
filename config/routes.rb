@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   delete 'sessions/destroy'
 
   resources :thanks do
-    resources :dittos
-    resources :links
+    resources :dittos, only: [:new, :create]
+    resources :links, only: [:new, :create]
   end
 end
