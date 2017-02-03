@@ -48,7 +48,7 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    if params[:session_id] == cookies[:user_id] && params[:session_id] == current_user.id
+    if params[:id] == cookies[:user_id] && params[:id] == current_user.id
       cookies.delete(:user_id)
       flash[:notice] = 'Signed out.'
     end

@@ -101,10 +101,12 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should delete destroy' do
-    cookies[:user_id] = '123'
-    delete session_url('123')
+    user = create(:user)
+    cookies[:user_id] = user.id
+    delete session_url(user.id)
     assert_redirected_to root_url
-    assert cookies[:user_id].nil?
+    assert @response.cookies[:user_id].nil?
+    assert_equal flash[:notice], 'Signed out.'
   end
 
   def stub_request_token(token)
