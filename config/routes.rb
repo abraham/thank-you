@@ -8,7 +8,9 @@ Rails.application.routes.draw do
   resource :session do
     get :finish
   end
+
   resources :thanks do
+    root to: redirect('/')
     resources :dittos, only: [:new, :create]
     resources :links, only: [:new, :create]
   end
