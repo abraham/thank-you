@@ -5,4 +5,6 @@ class Ditto < ApplicationRecord
 
   belongs_to :thank
   belongs_to :user
+
+  after_save -> { thank.update_dittos_count }
 end
