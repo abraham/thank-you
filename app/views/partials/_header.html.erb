@@ -15,11 +15,7 @@
         <%= link_to 'Create thank you', new_thank_path %>
       <% end %>
 
-      <%= form_for :session, url: session_path, method: :delete do |f| %>
-        <p>
-          <%= f.submit 'Sign out' %>
-        </p>
-      <% end %>
+      <%= render 'sessions/sign-out' %>
 
     <% elsif !current_page?(controller: :sessions, action: :new) %>
       <%= link_to 'Sign in with Twitter', new_session_path %>
