@@ -31,7 +31,7 @@ class DittosControllerTest < ActionDispatch::IntegrationTest
       post dittos_create_url @thank, params: { ditto: { text: @twitter_status[:text] } }
     end
 
-    assert_redirected_to thanks_show_path(@thank)
+    assert_redirected_to thank_path(@thank)
     assert_equal 'Thank you was successfully created.', flash[:notice]
   end
 
@@ -45,7 +45,7 @@ class DittosControllerTest < ActionDispatch::IntegrationTest
       post dittos_create_url ditto.thank, params: { ditto: { text: @twitter_status[:text] } }
     end
 
-    assert_redirected_to thanks_show_path(ditto.thank)
+    assert_redirected_to thank_path(ditto.thank)
   end
 
   def stub_statuses_update

@@ -21,24 +21,24 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
 
   test 'should get thanks show' do
     thank = create(:thank)
-    get thanks_show_path(thank)
+    get thank_path(thank)
     assert_response :success
   end
 
   test 'should redirect get thanks new to sessions new' do
-    get thanks_new_path
+    get new_thank_path
     assert_redirected_to sessions_new_url
   end
 
   test 'should redirect post thanks create to sessions new' do
-    post thanks_create_path
+    post thanks_path
     assert_redirected_to sessions_new_url
   end
 
   test 'should redirect get thanks new to get thanks as a user' do
     user = create(:user)
     cookies[:user_id] = user.id
-    get thanks_new_path
+    get new_thank_path
     assert_redirected_to root_path
     assert_equal 'You do not have permission to do that', flash[:error]
   end
@@ -46,7 +46,7 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
   test 'should redirect post thanks create to get thanks as a user' do
     user = create(:user)
     cookies[:user_id] = user.id
-    post thanks_create_path
+    post thanks_path
     assert_redirected_to root_path
     assert_equal 'You do not have permission to do that', flash[:error]
   end
@@ -55,7 +55,7 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
     user = create(:user)
     AppConfig.admin_twitter_ids = [user.twitter_id.to_s]
     cookies[:user_id] = user.id
-    get thanks_new_path
+    get new_thank_path
     assert_response :success
   end
 
@@ -64,9 +64,9 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
     AppConfig.admin_twitter_ids = [user.twitter_id]
     cookies[:user_id] = user.id
     assert_difference 'Thank.count', 1 do
-      post thanks_create_path, params: { thanks: { text: Faker::Lorem.sentence(3), name: Faker::Internet.user_name } }
+      post thanks_path, params: { thanks: { text: Faker::Lorem.sentence(3), name: Faker::Internet.user_name } }
     end
-    assert_redirected_to thanks_show_path(Thank.last)
+    assert_redirected_to thank_path(Thank.last)
     assert_equal 'Thank you created successfully.', flash[:notice]
   end
 end

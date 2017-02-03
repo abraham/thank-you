@@ -14,11 +14,11 @@
 <%= form_for @ditto, url: dittos_create_path do |f| %>
   <p>
     <% # TODO: trim text to 138 charactors %>
-    <%= f.text_area :text, value: "#{@thank.text} #{thanks_show_url(@thank)}", required: true %>
+    <%= f.text_area :text, value: "#{@thank.text} #{thank_url(@thank)}", required: true %>
   </p>
 
   <p>
     <%= f.submit 'Tweet' %>
-    <%= link_to 'Cancel', thanks_show_path(@thank) %>
+    <%= link_to 'Cancel', thank_path(@thank) %>
   </p>
 <% end %>

@@ -29,7 +29,7 @@ class LinksControllerTest < ActionDispatch::IntegrationTest
       post links_create_url @thank, params: { link: { text: 'foo', url: 'foo' } }
     end
 
-    assert_redirected_to thanks_show_path(@thank)
+    assert_redirected_to thank_path(@thank)
     assert_equal 'Citation was successfully created.', flash[:notice]
   end
 end

@@ -10,10 +10,7 @@ Rails.application.routes.draw do
   get 'sessions/finish'
   delete 'sessions/destroy'
 
-  get 'thanks/new'
-  get 'thanks/:id', to: 'thanks#show', as: :thanks_show
-  get 'thanks', to: 'thanks#index'
-  post 'thanks', to: 'thanks#create', as: :thanks_create
+  resources :thanks
 
   get 'thanks/:id/dittos/new', to: 'dittos#new', as: :dittos_new
   post 'thanks/:id/dittos', to: 'dittos#create', as: :dittos_create

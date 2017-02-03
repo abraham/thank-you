@@ -18,12 +18,12 @@ class DittosController < ApplicationController
     rescue Twitter::Error::Forbidden => error
       logger.error "Error posting Ditto to Twitter Code: #{error.code} Message: #{error.message}"
       flash[:error] = "Something went wrong posting to Twitter. Code: #{error.code} - #{error.message}"
-      redirect_to thanks_show_path(@thank) and return
+      redirect_to thank_path(@thank) and return
     end
 
     if @ditto.save
       flash[:notice] = 'Thank you was successfully created.'
-      redirect_to thanks_show_path(@thank)
+      redirect_to thank_path(@thank)
     else
       render 'new'
     end
@@ -36,7 +36,7 @@ class DittosController < ApplicationController
   private
 
   def not_already_thanked
-    redirect_to thanks_show_path(@thank) if current_user.dittoed?(@thank)
+    redirect_to thank_path(@thank) if current_user.dittoed?(@thank)
   end
 
   def find_thank

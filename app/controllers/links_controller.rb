@@ -9,7 +9,7 @@ class LinksController < ApplicationController
 
     if link.save
       flash[:notice] = 'Citation was successfully created.'
-      redirect_to thanks_show_path(thank)
+      redirect_to thank_path(thank)
     else
       render 'new'
     end
