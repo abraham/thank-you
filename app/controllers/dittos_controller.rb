@@ -1,6 +1,6 @@
 class DittosController < ApplicationController
   before_action :require_signin
-  before_action :find_thank
+  before_action :find_thank, only: [:create, :new]
   before_action :not_already_thanked
 
   def create
