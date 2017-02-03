@@ -11,7 +11,7 @@
     </ul>
   </div>
 <% end %>
-<%= form_for @ditto, url: dittos_create_path do |f| %>
+<%= form_for @ditto, url: thank_dittos_path do |f| %>
   <p>
     <% # TODO: trim text to 138 charactors %>
     <%= f.text_area :text, value: "#{@thank.text} #{thank_url(@thank)}", required: true %>

@@ -7,18 +7,18 @@ class DittosControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect get new to sessions new' do
-    get dittos_new_url(@thank)
+    get new_thank_ditto_url(@thank)
     assert_redirected_to sessions_new_url
   end
 
   test 'should get new' do
     cookies[:user_id] = @user.id
-    get dittos_new_url(@thank)
+    get new_thank_ditto_url(@thank)
     assert_response :success
   end
 
   test 'should redirect post create to sessions new' do
-    post dittos_create_url(@thank)
+    post thank_dittos_url(@thank)
     assert_redirected_to sessions_new_url
   end
 
@@ -28,7 +28,7 @@ class DittosControllerTest < ActionDispatch::IntegrationTest
     cookies[:user_id] = @user.id
 
     assert_difference 'Ditto.count', 1 do
-      post dittos_create_url @thank, params: { ditto: { text: @twitter_status[:text] } }
+      post thank_dittos_url@thank, params: { ditto: { text: @twitter_status[:text] } }
     end
 
     assert_redirected_to thank_path(@thank)
@@ -42,7 +42,7 @@ class DittosControllerTest < ActionDispatch::IntegrationTest
     stub_statuses_update
 
     assert_difference 'Ditto.count', 0 do
-      post dittos_create_url ditto.thank, params: { ditto: { text: @twitter_status[:text] } }
+      post thank_dittos_url ditto.thank, params: { ditto: { text: @twitter_status[:text] } }
     end
 
     assert_redirected_to thank_path(ditto.thank)

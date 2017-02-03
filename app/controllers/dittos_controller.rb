@@ -40,7 +40,7 @@ class DittosController < ApplicationController
   end
 
   def find_thank
-    @thank = Thank.find(params[:id])
+    @thank = Thank.find(params[:thank_id])
   end
 
   def dittos_params
