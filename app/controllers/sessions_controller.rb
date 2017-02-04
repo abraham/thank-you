@@ -6,10 +6,8 @@ class SessionsController < ApplicationController
   end
 
   def create
-    id = SecureRandom.uuid
     twitter_request_token = consumer.get_request_token(oauth_callback: finish_session_url)
-    request_token = RequestToken.create(id: id,
-                                        token: twitter_request_token.token,
+    request_token = RequestToken.create(token: twitter_request_token.token,
                                         secret: twitter_request_token.secret)
     cookies[:request_token_id] = request_token.id
     cookies.delete(:user_id)
