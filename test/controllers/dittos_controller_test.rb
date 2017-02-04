@@ -6,6 +6,14 @@ class DittosControllerTest < ActionDispatch::IntegrationTest
     @thank = create(:thank, user: @user)
   end
 
+  test 'POST /dittos' do
+    assert_routing({ path: 'thanks/123/dittos', method: :post }, { controller: 'dittos', action: 'create', thank_id: '123' })
+  end
+
+  test 'GET /dittos/new' do
+    assert_routing({ path: 'thanks/123/dittos/new', method: :get }, { controller: 'dittos', action: 'new', thank_id: '123'  })
+  end
+
   test 'should redirect get new to sessions new' do
     get new_thank_ditto_url(@thank)
     assert_redirected_to new_session_url
