@@ -6,6 +6,14 @@ class LinksControllerTest < ActionDispatch::IntegrationTest
     @thank = create(:thank, user: @user)
   end
 
+  test 'POST /links' do
+    assert_routing({ path: 'thanks/123/links', method: :post }, { controller: 'links', action: 'create', thank_id: '123' })
+  end
+
+  test 'GET /links/new' do
+    assert_routing({ path: 'thanks/123/links/new', method: :get }, { controller: 'links', action: 'new', thank_id: '123' })
+  end
+
   test 'should redirect get new to sessions new' do
     get new_thank_link_url(@thank)
     assert_redirected_to new_session_url
