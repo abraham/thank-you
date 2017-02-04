@@ -1,6 +1,22 @@
 require 'test_helper'
 
 class SessionsControllerTest < ActionDispatch::IntegrationTest
+  test 'GET /session/finish' do
+    assert_routing({ path: '/session/finish', method: :get }, { controller: 'sessions', action: 'finish' })
+  end
+
+  test 'GET /session/new' do
+    assert_routing({ path: '/session/new', method: :get }, { controller: 'sessions', action: 'new' })
+  end
+
+  test 'DELET /session' do
+    assert_routing({ path: '/session', method: :delete }, { controller: 'sessions', action: 'destroy' })
+  end
+
+  test 'POST /session' do
+    assert_routing({ path: '/session', method: :post }, { controller: 'sessions', action: 'create' })
+  end
+
   test 'should get new' do
     get new_session_url
     assert_response :success
