@@ -9,6 +9,10 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
     AppConfig.admin_twitter_ids = @default_admin_twitter_ids
   end
 
+  test 'GET /' do
+    assert_routing({ path: '/', method: :get }, { controller: 'thanks', action: 'index' })
+  end
+
   test 'POST /thanks' do
     assert_routing({ path: 'thanks', method: :post }, { controller: 'thanks', action: 'create' })
   end
