@@ -5,7 +5,7 @@ class User < ApplicationRecord
   has_many :thanks
 
   def dittoed?(thank)
-    dittos.where(thank_id: thank.id).count > 0
+    dittos.where(thank_id: thank.id).any?
   end
 
   def tweet(text, in_reply_to_status_id)
