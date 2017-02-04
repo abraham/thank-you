@@ -3,8 +3,6 @@ class Ditto < ApplicationRecord
 
   validates :thank_id, uniqueness: { scope: :user_id, message: 'you has already been given' }
 
-  belongs_to :thank
+  belongs_to :thank, counter_cache: true
   belongs_to :user
-
-  after_save -> { thank.update_dittos_count }
 end
