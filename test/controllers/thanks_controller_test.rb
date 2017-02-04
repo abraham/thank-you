@@ -11,7 +11,7 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
 
   test 'should get root' do
     get thanks_path
-    assert_response :success
+    assert_redirected_to root_path
   end
 
   test 'should get thanks' do
