@@ -1,11 +1,14 @@
 <%= form_for [:thank, @link] do |f| %>
   <%= f.text_field :thank_id, hidden: true, required: true %>
+
   <p>
-    <%= f.text_field :url, placeholder: 'https://example.com', required: true, type: :url %>
+    <%= f.label :text %>
+    <%= f.text_field :text, placeholder: 'Example', required: true %>
   </p>
 
   <p>
-    <%= f.text_field :text, placeholder: 'Example', required: true %>
+    <%= f.label :url, 'URL' %>
+    <%= f.text_field :url, placeholder: 'https://example.com', required: true, type: :url %>
   </p>
 
   <p>
