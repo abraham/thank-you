@@ -1,8 +1,6 @@
 <p>
   Citations:
-  <% links.each do |link| %>
-    <span><%= link_to link.text, link.url %><span>
-  <% end %>
+  <%= render links %>
   <% if current_user == user %>
     <span><%= link_to 'Add link', new_thank_link_path(thank) %></span>
   <% end %>
