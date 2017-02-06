@@ -12,7 +12,7 @@
   </div>
 <% end %>
 
-<%= form_for @ditto, url: thank_dittos_path do |f| %>
+<%= form_for [:thank, @ditto] do |f| %>
   <%= f.text_field :thank_id, hidden: true, required: true %>
 
   <p>
