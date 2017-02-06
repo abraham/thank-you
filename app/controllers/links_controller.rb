@@ -9,7 +9,7 @@ class LinksController < ApplicationController
 
     if link.save
       flash[:notice] = 'Link was successfully created.'
-      redirect_to thank_path(@thank)
+      redirect_to @thank
     else
       render 'new'
     end
