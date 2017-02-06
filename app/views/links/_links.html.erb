@@ -1,7 +1,7 @@
 <p>
   Citations:
   <%= render links %>
-  <% if current_user == user %>
+  <% if current_user && current_user.admin? %>
     <span><%= link_to 'Add link', new_thank_link_path(thank) %></span>
   <% end %>
 <p>

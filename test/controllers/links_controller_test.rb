@@ -34,7 +34,7 @@ class LinksControllerTest < ActionDispatch::IntegrationTest
     cookies[:user_id] = @user.id
 
     assert_difference 'Link.count', 1 do
-      post thank_links_url @thank, params: { link: { text: 'foo', url: 'foo' } }
+      post thank_links_url @thank, params: { link: { text: 'foo', url: 'foo', thank_id: @thank.id } }
     end
 
     assert_redirected_to thank_path(@thank)

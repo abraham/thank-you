@@ -1,6 +1,7 @@
 class LinksController < ApplicationController
   before_action :require_signin
-  before_action :require_admin
+  # TODO: enable this
+  # before_action :require_admin
   before_action :find_thank, only: [:create, :new]
 
   def create
