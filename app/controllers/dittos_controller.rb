@@ -4,13 +4,14 @@ class DittosController < ApplicationController
   before_action :not_already_thanked
 
   def create
-    @ditto = Ditto.create(dittos_params.merge(user: current_user, thank: @thank))
+    @ditto = current_user.dittos.create(dittos_params)
 
     begin
       tweet = current_user.tweet(@ditto.text, @thank.reply_to_tweet_id)
       if tweet
         @ditto.tweet_id = tweet.id
         @ditto.data = tweet.to_hash
+        # TODO: error handling
         @ditto.save
       else
         flash[:warning] = 'Posting to Twitter currently disabled.'
@@ -30,7 +31,7 @@ class DittosController < ApplicationController
   end
 
   def new
-    @ditto = Ditto.new
+    @ditto = @thank.dittos.new
   end
 
   private
@@ -44,6 +45,6 @@ class DittosController < ApplicationController
   end
 
   def dittos_params
-    params.require(:ditto).permit(:text)
+    params.require(:ditto).permit(:text, :thank_id)
   end
 end

@@ -36,7 +36,7 @@ class DittosControllerTest < ActionDispatch::IntegrationTest
     cookies[:user_id] = @user.id
 
     assert_difference 'Ditto.count', 1 do
-      post thank_dittos_url@thank, params: { ditto: { text: @twitter_status[:text] } }
+      post thank_dittos_url @thank, params: { ditto: { text: @twitter_status[:text], thank_id: @thank.id } }
     end
 
     assert_redirected_to thank_path(@thank)
