@@ -1,24 +1,24 @@
 require 'test_helper'
 
 class SessionsControllerTest < ActionDispatch::IntegrationTest
-  test 'GET /session/finish' do
-    assert_routing({ path: '/session/finish', method: :get }, { controller: 'sessions', action: 'finish' })
+  test 'GET /sessions/finish' do
+    assert_routing({ path: '/sessions/finish', method: :get }, { controller: 'sessions', action: 'finish' })
   end
 
-  test 'GET /session/new' do
-    assert_routing({ path: '/session/new', method: :get }, { controller: 'sessions', action: 'new' })
+  test 'GET /sessions/new' do
+    assert_routing({ path: '/sessions/new', method: :get }, { controller: 'sessions', action: 'new' })
   end
 
-  test 'DELET /session' do
-    assert_routing({ path: '/session', method: :delete }, { controller: 'sessions', action: 'destroy' })
+  test 'DELET /sessions' do
+    assert_routing({ path: '/sessions', method: :delete }, { controller: 'sessions', action: 'destroy' })
   end
 
-  test 'POST /session' do
-    assert_routing({ path: '/session', method: :post }, { controller: 'sessions', action: 'create' })
+  test 'POST /sessions' do
+    assert_routing({ path: '/sessions', method: :post }, { controller: 'sessions', action: 'create' })
   end
 
   test 'should get new' do
-    get new_session_url
+    get new_sessions_url
     assert_response :success
   end
 
@@ -27,7 +27,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     stub_request_token(token)
     cookies[:user_id] = 'foo'
     assert_difference 'RequestToken.count', 1 do
-      post session_url
+      post sessions_url
     end
     assert_equal @response.cookies['request_token_id'], RequestToken.last.id
     assert @response.cookies['user_id'].nil?
@@ -45,7 +45,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_difference 'RequestToken.count', -1 do
       assert_difference 'User.count', 1 do
-        get finish_session_url params: { oauth_token: request_token.token, oauth_verifier: 'verifier' }
+        get finish_sessions_url params: { oauth_token: request_token.token, oauth_verifier: 'verifier' }
       end
     end
     assert @response.cookies['request_token_id'].nil?
@@ -63,14 +63,14 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     cookies[:request_token_id] = request_token.id
     thank = create(:thank)
 
-    get new_session_url, headers: { Referer: thank_url(thank) }
+    get new_sessions_url, headers: { Referer: thank_url(thank) }
     assert_response :success
     assert_equal thank_url(thank), @response.cookies['last_referrer']
     request_token = RequestToken.last
 
     assert_difference 'RequestToken.count', -1 do
       assert_difference 'User.count', 1 do
-        get finish_session_url params: { oauth_token: request_token.token, oauth_verifier: 'verifier' }
+        get finish_sessions_url params: { oauth_token: request_token.token, oauth_verifier: 'verifier' }
       end
     end
 
@@ -89,14 +89,14 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     request_token = create(:request_token)
     cookies[:request_token_id] = request_token.id
 
-    get new_session_url, headers: { Referer: 'http://other.com/foo/bar' }
+    get new_sessions_url, headers: { Referer: 'http://other.com/foo/bar' }
     assert_response :success
     assert_equal 'http://other.com/foo/bar', @response.cookies['last_referrer']
     request_token = RequestToken.last
 
     assert_difference 'RequestToken.count', -1 do
       assert_difference 'User.count', 1 do
-        get finish_session_url params: { oauth_token: request_token.token, oauth_verifier: 'verifier' }
+        get finish_sessions_url params: { oauth_token: request_token.token, oauth_verifier: 'verifier' }
       end
     end
 
@@ -119,7 +119,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   test 'should delete destroy' do
     user = create(:user)
     cookies[:user_id] = user.id
-    delete session_url
+    delete sessions_url
     assert_redirected_to root_url
     assert @response.cookies[:user_id].nil?
     assert_equal flash[:notice], 'Signed out.'

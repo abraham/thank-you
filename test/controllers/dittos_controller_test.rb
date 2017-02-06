@@ -16,7 +16,7 @@ class DittosControllerTest < ActionDispatch::IntegrationTest
 
   test 'should redirect get new to sessions new' do
     get new_thank_ditto_url(@thank)
-    assert_redirected_to new_session_url
+    assert_redirected_to new_sessions_url
   end
 
   test 'should get new' do
@@ -27,7 +27,7 @@ class DittosControllerTest < ActionDispatch::IntegrationTest
 
   test 'should redirect post create to sessions new' do
     post thank_dittos_url(@thank)
-    assert_redirected_to new_session_url
+    assert_redirected_to new_sessions_url
   end
 
   test 'should post create' do

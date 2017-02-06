@@ -18,7 +18,7 @@
       <%= render 'sessions/sign-out' %>
 
     <% elsif !current_page?(controller: :sessions, action: :new) %>
-      <%= link_to 'Sign in with Twitter', new_session_path %>
+      <%= link_to 'Sign in with Twitter', new_sessions_path %>
     <% end %>
   </div>
 </header>

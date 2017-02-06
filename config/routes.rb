@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
   get 'alpha/join/:token', to: 'alpha#join', as: :alpha_join
 
-  resource :session, only: [:new, :create, :destroy] do
+  resource :sessions, only: [:new, :create, :destroy] do
     get :finish
   end
 

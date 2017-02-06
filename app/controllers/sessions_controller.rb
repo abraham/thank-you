@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
   end
 
   def create
-    twitter_request_token = consumer.get_request_token(oauth_callback: finish_session_url)
+    twitter_request_token = consumer.get_request_token(oauth_callback: finish_sessions_url)
     request_token = RequestToken.create(token: twitter_request_token.token,
                                         secret: twitter_request_token.secret)
     cookies[:request_token_id] = request_token.id
@@ -26,7 +26,7 @@ class SessionsController < ApplicationController
     token = OAuth::RequestToken.new(consumer, request_token.token, request_token.secret)
 
     access_token = token.get_access_token(oauth_verifier: params[:oauth_verifier],
-                                          oauth_callback: finish_session_url)
+                                          oauth_callback: finish_sessions_url)
 
     request_token.delete
     twitter_user = etl_user(access_token.token, access_token.secret)
