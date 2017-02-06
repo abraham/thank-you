@@ -10,7 +10,7 @@
 
   <body>
     <div class='container'>
-      <%= render 'partials/header' %>
+      <%= render 'shared/header' %>
 
       <% # TODO Remove this after the alpha %>
       <div class='error'>
@@ -22,9 +22,9 @@
         </ul>
       </div>
 
-      <%= render 'partials/flash' %>
+      <%= render 'shared/flash' %>
       <%= yield %>
-      <%= render 'partials/footer' %>
+      <%= render 'shared/footer' %>
     </div>
   </body>
 </html>
