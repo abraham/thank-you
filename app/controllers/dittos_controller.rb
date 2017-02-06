@@ -4,7 +4,8 @@ class DittosController < ApplicationController
   before_action :not_already_thanked
 
   def create
-    @ditto = current_user.dittos.create(dittos_params)
+    @ditto = current_user.dittos.new(dittos_params)
+    @ditto.text = @ditto.text + " #{thank_url(@thank)}"
 
     begin
       tweet = current_user.tweet(@ditto.text, @thank.reply_to_tweet_id)
@@ -31,7 +32,7 @@ class DittosController < ApplicationController
   end
 
   def new
-    @ditto = @thank.dittos.new
+    @ditto = @thank.dittos.new(text: @thank.text)
   end
 
   private

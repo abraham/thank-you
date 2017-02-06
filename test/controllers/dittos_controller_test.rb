@@ -58,7 +58,7 @@ class DittosControllerTest < ActionDispatch::IntegrationTest
 
   def stub_statuses_update
     stub_request(:post, 'https://api.twitter.com/1.1/statuses/update.json')
-      .with(body: { in_reply_to_status_id: nil, status: @twitter_status[:text] })
+      .with(body: { in_reply_to_status_id: nil, status: "#{@twitter_status[:text]} #{thank_url(@thank)}" })
       .to_return(status: 200, body: @twitter_status.to_json)
   end
 end
