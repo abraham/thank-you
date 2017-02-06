@@ -4,6 +4,7 @@ class DittosController < ApplicationController
   before_action :not_already_thanked
 
   def create
+    # TODO: make sure dittos_params[:thank_id] matches @thank.id
     @ditto = current_user.dittos.new(dittos_params)
 
     begin
