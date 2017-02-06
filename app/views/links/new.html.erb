@@ -1,4 +1,5 @@
-<%= form_for :link, url: thank_links_path do |f| %>
+<%= form_for @link, url: thank_links_path do |f| %>
+  <%= f.text_field :thank_id, hidden: true, required: true %>
   <p>
     <%= f.text_field :url, placeholder: 'https://example.com', required: true, type: :url %>
   </p>

@@ -1,11 +1,11 @@
 class LinksController < ApplicationController
   before_action :require_signin
+  before_action :require_admin
   before_action :find_thank, only: [:create, :new]
 
   def create
-    link = Link.new(links_params)
-    link.thank = @thank
-    link.user = current_user
+    # TODO: validate admin
+    link = current_user.links.new(links_params)
 
     if link.save
       flash[:notice] = 'Link was successfully created.'
@@ -16,12 +16,13 @@ class LinksController < ApplicationController
   end
 
   def new
+    @link = @thank.links.new
   end
 
   private
 
   def links_params
-    params.require(:link).permit(:text, :url)
+    params.require(:link).permit(:text, :url, :thank_id)
   end
 
   def find_thank
