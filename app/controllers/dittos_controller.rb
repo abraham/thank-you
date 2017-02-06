@@ -5,10 +5,9 @@ class DittosController < ApplicationController
 
   def create
     @ditto = current_user.dittos.new(dittos_params)
-    @ditto.text = @ditto.text + " #{thank_url(@thank)}"
 
     begin
-      tweet = current_user.tweet(@ditto.text, @thank.reply_to_tweet_id)
+      tweet = current_user.tweet("#{@ditto.text} #{thank_url(@thank)}", @thank.reply_to_tweet_id)
       if tweet
         @ditto.tweet_id = tweet.id
         @ditto.data = tweet.to_hash
