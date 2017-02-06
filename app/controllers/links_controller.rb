@@ -11,7 +11,7 @@ class LinksController < ApplicationController
       flash[:notice] = 'Link was successfully created.'
       redirect_to @thank
     else
-      render 'new'
+      render :new
     end
   end
 

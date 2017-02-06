@@ -25,7 +25,7 @@ class DittosController < ApplicationController
       flash[:notice] = 'Thank you was successfully created.'
       redirect_to @thank
     else
-      render 'new'
+      render :new
     end
   end
 
