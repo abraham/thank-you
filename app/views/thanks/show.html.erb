@@ -1,18 +1,4 @@
-<p>
-  <strong><%= @thank.text %></strong>
-</p>
-
-<p>
-  <%= render 'links/links', thank: @thank, links: @thank.links, user: @thank.user %>
-<p>
-
-<p>
-<p>
-  <%= render 'new_link', thank: @thank %>
-<p>
-  <span>Thanked by</span>
-  <%= render 'dittos/dittos', dittos: @thank.dittos, more: @thank.dittos_count - 10 %>
-<p>
+<%= render @thank %>
 
 <p>
   <span><%= link_to 'All thanks', root_path %></span>

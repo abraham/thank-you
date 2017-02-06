@@ -1,9 +1,1 @@
-<% @thanks.each do |thank| %>
-  <p>
-    <p><strong><%= thank.text %></strong></p>
-    <br>
-    <span>Recently thanked by <%= render 'dittos', dittos: thank.dittos, more: thank.dittos_count - 10 %></span>
-    <span><%= render 'new_link', thank: thank %> <%= link_to 'Read more', thank %></span>
-  </p>
-  <br>
-<% end %>
+<%= render partial: 'slim_thank', collection: @thanks, as: :thank %>
