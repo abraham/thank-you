@@ -1,24 +1,24 @@
 <% # TODO: show avatar of user tweeting %>
 
-<% if @ditto.errors.any? %>
+<% if @thank.errors.any? %>
   <div id="error_explanation">
-    <h2><%= pluralize(@ditto.errors.count, "error") %> prohibited this Thank You from being saved:</h2>
+    <h2><%= pluralize(@thank.errors.count, "error") %> prohibited this Thank You from being saved:</h2>
 
     <ul>
-    <% @ditto.errors.full_messages.each do |msg| %>
+    <% @thank.errors.full_messages.each do |msg| %>
       <li><%= msg %></li>
     <% end %>
     </ul>
   </div>
 <% end %>
 
-<%= form_for [:deed, @ditto] do |f| %>
+<%= form_for [:deed, @thank] do |f| %>
   <%= f.text_field :deed_id, hidden: true, required: true %>
 
   <p>
     <% # TODO: trim text to 138 charactors %>
-    <%= f.text_area :text, value: @ditto.text, required: true %>
-    <span><%= deed_url @ditto.deed %> will be appended to the tweet</span>
+    <%= f.text_area :text, value: @thank.text, required: true %>
+    <span><%= deed_url @thank.deed %> will be appended to the tweet</span>
   </p>
 
   <p>

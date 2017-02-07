@@ -1,32 +1,32 @@
 require 'test_helper'
 
-class DittosControllerTest < ActionDispatch::IntegrationTest
+class ThanksControllerTest < ActionDispatch::IntegrationTest
   def setup
     @user = create(:user)
     @deed = create(:deed, user: @user)
   end
 
-  test 'POST /dittos' do
-    assert_routing({ path: 'deeds/123/dittos', method: :post }, { controller: 'dittos', action: 'create', deed_id: '123' })
+  test 'POST /thanks' do
+    assert_routing({ path: 'deeds/123/thanks', method: :post }, { controller: 'thanks', action: 'create', deed_id: '123' })
   end
 
-  test 'GET /dittos/new' do
-    assert_routing({ path: 'deeds/123/dittos/new', method: :get }, { controller: 'dittos', action: 'new', deed_id: '123'  })
+  test 'GET /thanks/new' do
+    assert_routing({ path: 'deeds/123/thanks/new', method: :get }, { controller: 'thanks', action: 'new', deed_id: '123'  })
   end
 
   test 'should redirect get new to sessions new' do
-    get new_deed_ditto_url(@deed)
+    get new_deed_thank_url(@deed)
     assert_redirected_to new_sessions_url
   end
 
   test 'should get new' do
     cookies[:user_id] = @user.id
-    get new_deed_ditto_url(@deed)
+    get new_deed_thank_url(@deed)
     assert_response :success
   end
 
   test 'should redirect post create to sessions new' do
-    post deed_dittos_url(@deed)
+    post deed_thanks_url(@deed)
     assert_redirected_to new_sessions_url
   end
 
@@ -35,25 +35,25 @@ class DittosControllerTest < ActionDispatch::IntegrationTest
     stub_statuses_update
     cookies[:user_id] = @user.id
 
-    assert_difference 'Ditto.count', 1 do
-      post deed_dittos_url @deed, params: { ditto: { text: @twitter_status[:text], deed_id: @deed.id } }
+    assert_difference 'Thank.count', 1 do
+      post deed_thanks_url @deed, params: { thank: { text: @twitter_status[:text], deed_id: @deed.id } }
     end
 
     assert_redirected_to deed_path(@deed)
     assert_equal 'Thank You was successfully created.', flash[:notice]
   end
 
-  test 'should only allow creating one ditto' do
+  test 'should only allow creating one thank' do
     @twitter_status = Faker::Twitter.status
-    ditto = create(:ditto, data: @twitter_status, user: @user)
+    thank = create(:thank, data: @twitter_status, user: @user)
     cookies[:user_id] = @user.id
     stub_statuses_update
 
-    assert_difference 'Ditto.count', 0 do
-      post deed_dittos_url ditto.deed, params: { ditto: { text: @twitter_status[:text] } }
+    assert_difference 'Thank.count', 0 do
+      post deed_thanks_url thank.deed, params: { thank: { text: @twitter_status[:text] } }
     end
 
-    assert_redirected_to deed_path(ditto.deed)
+    assert_redirected_to deed_path(thank.deed)
   end
 
   def stub_statuses_update

@@ -1,6 +1,6 @@
 class Deed < ApplicationRecord
   belongs_to :user, counter_cache: true
-  has_many :dittos
+  has_many :thanks
   has_many :links
 
   validates :text, presence: true

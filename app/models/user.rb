@@ -1,11 +1,11 @@
 class User < ApplicationRecord
   # TODO :status[active, disabled]
-  has_many :dittos
+  has_many :thanks
   has_many :links
   has_many :deeds
 
-  def dittoed?(deed)
-    dittos.exists?(deed_id: deed.id)
+  def thanked?(deed)
+    thanks.exists?(deed_id: deed.id)
   end
 
   def tweet(text, in_reply_to_status_id)

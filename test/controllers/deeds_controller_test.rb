@@ -82,7 +82,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_difference 'Deed.count', 1 do
       post deeds_path, params: { deeds: { text: Faker::Lorem.sentence(3), name: Faker::Internet.user_name } }
     end
-    assert_redirected_to deed_path(deed.last)
+    assert_redirected_to deed_path(Deed.last)
     assert_equal 'deed you created successfully.', flash[:notice]
   end
 end

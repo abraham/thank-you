@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170206225515) do
+ActiveRecord::Schema.define(version: 20170207032828) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,21 +23,8 @@ ActiveRecord::Schema.define(version: 20170206225515) do
     t.datetime "updated_at", null: false
     t.string "name", null: false
     t.uuid "user_id", null: false
-    t.integer "dittos_count", default: 0, null: false
+    t.integer "thanks_count", default: 0, null: false
     t.index ["user_id"], name: "index_deeds_on_user_id", using: :btree
-  end
-
-  create_table "dittos", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.text "text", null: false
-    t.uuid "deed_id", null: false
-    t.string "tweet_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.json "data"
-    t.uuid "user_id", null: false
-    t.index ["deed_id", "user_id"], name: "index_dittos_on_deed_id_and_user_id", unique: true, using: :btree
-    t.index ["deed_id"], name: "index_dittos_on_deed_id", using: :btree
-    t.index ["user_id"], name: "index_dittos_on_user_id", using: :btree
   end
 
   create_table "links", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -58,6 +45,19 @@ ActiveRecord::Schema.define(version: 20170206225515) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "thanks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.text "text", null: false
+    t.uuid "deed_id", null: false
+    t.string "tweet_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.json "data"
+    t.uuid "user_id", null: false
+    t.index ["deed_id", "user_id"], name: "index_thanks_on_deed_id_and_user_id", unique: true, using: :btree
+    t.index ["deed_id"], name: "index_thanks_on_deed_id", using: :btree
+    t.index ["user_id"], name: "index_thanks_on_user_id", using: :btree
+  end
+
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "twitter_id", null: false
     t.string "screen_name", null: false
@@ -69,11 +69,11 @@ ActiveRecord::Schema.define(version: 20170206225515) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "deeds_count", default: 0, null: false
-    t.integer "dittos_count", default: 0, null: false
+    t.integer "thanks_count", default: 0, null: false
   end
 
   add_foreign_key "deeds", "users"
-  add_foreign_key "dittos", "users"
   add_foreign_key "links", "deeds"
   add_foreign_key "links", "users"
+  add_foreign_key "thanks", "users"
 end

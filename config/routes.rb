@@ -11,7 +11,7 @@ Rails.application.routes.draw do
 
   resources :deeds, only: [:new, :create, :show, :index] do
     root to: redirect('/')
-    resources :dittos, only: [:new, :create]
+    resources :thanks, only: [:new, :create]
     resources :links, only: [:new, :create]
   end
 end

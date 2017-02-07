@@ -1,4 +1,4 @@
-class Ditto < ApplicationRecord
+class Thank < ApplicationRecord
   belongs_to :deed, counter_cache: true
   belongs_to :user, counter_cache: true
 

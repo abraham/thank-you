@@ -20,13 +20,13 @@ class UserTest < ActiveSupport::TestCase
     assert !@user.admin?
   end
 
-  test '#dittoed? with no dittos' do
-    assert !@user.dittoed?(@deed)
+  test '#thanked? with no thanks' do
+    assert !@user.thanked?(@deed)
   end
 
-  test '#dittoed? with dittos' do
-    create(:ditto, user: @user, deed: @deed)
-    assert @user.dittoed?(@deed)
+  test '#thanked? with thanks' do
+    create(:thank, user: @user, deed: @deed)
+    assert @user.thanked?(@deed)
   end
 
   test 'tweet makes request to Twitter' do

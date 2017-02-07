@@ -33,7 +33,7 @@ end
   rand(50).times do |_i|
     tweet = Faker::Twitter.status
     # NOTE: some of these fail due to thank/user uniqueness constraints
-    Ditto.create(deed: deed,
+    Thank.create(deed: deed,
                  text: deed.text,
                  tweet_id: tweet[:id_str],
                  data: tweet,

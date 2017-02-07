@@ -1,5 +1,5 @@
-<% if current_user && current_user.dittoed?(deed) %>
+<% if current_user && current_user.thanked?(deed) %>
   You already deeded @<%= deed.name %>
 <% else %>
-  <%= link_to "Thank @#{deed.name}", new_deed_ditto_path(deed) %>
+  <%= link_to "Thank @#{deed.name}", new_deed_thank_path(deed) %>
 <% end %>

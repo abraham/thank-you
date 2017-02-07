@@ -10,11 +10,11 @@ class DeedsController < ApplicationController
   end
 
   def index
-    @deeds = Deed.includes(dittos: :user).limit(25)
+    @deeds = Deed.includes(thanks: :user).limit(25)
   end
 
   def show
-    @deed = Deed.includes(:links, dittos: :user).find(params[:id])
+    @deed = Deed.includes(:links, thanks: :user).find(params[:id])
   end
 
   def new
