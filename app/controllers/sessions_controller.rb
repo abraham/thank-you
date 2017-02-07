@@ -1,31 +1,27 @@
 class SessionsController < ApplicationController
-  before_action :cache_last_referrer, only: [:new]
+  before_action :cache_last_referrer, only: :new
+  before_action :require_request_token, only: :finish
+  before_action :require_known_request_token, only: :finish
 
   def new
     # TODO: require not be signed in
   end
 
   def create
-    token = consumer.get_request_token(oauth_callback: finish_sessions_url)
+    request_token = consumer.get_request_token(oauth_callback: finish_sessions_url)
     reset_session
-    session[:request_token] = { token: token.token, secret: token.secret }
-    redirect_to token.authorize_url
+    session[:request_token] = { token: request_token.token, secret: request_token.secret }
+    redirect_to request_token.authorize_url
   end
 
   def finish
     request_token = session[:request_token]
 
-    # TODO: handle no request_token
     # TODO: handle authorization rejection
-    # TODO: Test this failure
-    raise unless request_token['token'] == params[:oauth_token]
 
     token = OAuth::RequestToken.new(consumer, request_token['token'], request_token['secret'])
-
     access_token = token.get_access_token(oauth_verifier: params[:oauth_verifier],
                                           oauth_callback: finish_sessions_url)
-
-
     twitter_user = etl_user(access_token.token, access_token.secret)
 
     # TODO: move this to a class method on User
@@ -85,5 +81,15 @@ class SessionsController < ApplicationController
 
   def cache_last_referrer
     cookies[:last_referrer] = request.referrer
+  end
+
+  def require_request_token
+    flash[:warning] = 'You have to start the Sign in with Twitter flow before finishing it.'
+    redirect_to new_sessions_path unless session[:request_token]
+  end
+
+  def require_known_request_token
+    flash[:warning] = 'Sign in with Twitter details do not match. Starting over.'
+    redirect_to new_sessions_path unless session[:request_token]['token'] == params[:oauth_token]
   end
 end

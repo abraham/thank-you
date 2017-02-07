@@ -26,6 +26,26 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_nil session['request_token']
   end
 
+  test '#finish requires request_token in session' do
+    token = TwitterHelper::TWITTER_TOKEN
+    get finish_sessions_url params: { oauth_token: token, oauth_verifier: 'verifier' }
+
+    assert_redirected_to new_sessions_url
+    assert_equal 'You have to start the Sign in with Twitter flow before finishing it.', flash[:warning]
+  end
+
+  test '#finish requires known request_tokens' do
+    token = TwitterHelper::TWITTER_TOKEN
+    secret = TwitterHelper::TWITTER_SECRET
+    stub_request_token(token, secret)
+    post sessions_url
+
+    get finish_sessions_url params: { oauth_token: 'different-token', oauth_verifier: 'verifier' }
+
+    assert_redirected_to new_sessions_url
+    assert_equal 'Sign in with Twitter details do not match. Starting over.', flash[:warning]
+  end
+
   test 'should post start' do
     token = TwitterHelper::TWITTER_TOKEN
     secret = TwitterHelper::TWITTER_SECRET
