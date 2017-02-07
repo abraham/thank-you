@@ -36,7 +36,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get finish' do
-    @twitter_user = Faker::Twitter.user
+    @twitter_user = Faker::Twitter.user.merge(email: Faker::Internet.safe_email)
     stub_access_token
     stub_verify_credentials
     request_token = create(:request_token)
@@ -56,7 +56,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should redirect to local referrer location' do
-    @twitter_user = Faker::Twitter.user
+    @twitter_user = Faker::Twitter.user.merge(email: Faker::Internet.safe_email)
     stub_access_token
     stub_verify_credentials
     request_token = create(:request_token)
@@ -83,7 +83,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should not redirect to remote referrer location' do
-    @twitter_user = Faker::Twitter.user
+    @twitter_user = Faker::Twitter.user.merge(email: Faker::Internet.safe_email)
     stub_access_token
     stub_verify_credentials
     request_token = create(:request_token)
@@ -147,7 +147,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   def stub_verify_credentials
-    stub_request(:get, 'https://api.twitter.com/1.1/account/verify_credentials.json')
+    stub_request(:get, 'https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true')
       .to_return(status: 200, body: @twitter_user.to_json)
   end
 end
