@@ -36,6 +36,7 @@ class SessionsController < ApplicationController
     user.data = twitter_user.to_hash
     user.screen_name = twitter_user.screen_name
     user.avatar_url = twitter_user.profile_image_uri_https
+    user.email = twitter_user.email
     user.access_token = access_token.token
     user.access_token_secret = access_token.secret
     user.save
@@ -66,12 +67,12 @@ class SessionsController < ApplicationController
 
   def etl_user(token, secret)
     client = Twitter::REST::Client.new do |config|
-      config.consumer_key    = Rails.application.secrets.twitter_consumer_key
+      config.consumer_key = Rails.application.secrets.twitter_consumer_key
       config.consumer_secret = Rails.application.secrets.twitter_consumer_secret
-      config.access_token        = token
+      config.access_token = token
       config.access_token_secret = secret
     end
-    client.user
+    client.user(include_email: true)
   end
 
   def parsed_local_referrer_path
