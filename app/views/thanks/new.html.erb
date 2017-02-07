@@ -12,6 +12,10 @@
   </div>
 <% end %>
 
+<p>
+  <%= image_tag current_user.avatar_url, width: 42, height: 42 %>
+</p>
+
 <%= form_for [:deed, @thank] do |f| %>
   <%= f.text_field :deed_id, hidden: true, required: true %>
 
