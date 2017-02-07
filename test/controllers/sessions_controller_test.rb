@@ -1,12 +1,6 @@
 require 'test_helper'
 
 class SessionsControllerTest < ActionDispatch::IntegrationTest
-  def setup
-    @token = 'Z6eEdO8MOmk394WozF5oKyuAv855l4Mlqo7hhlSLik'
-    @secret = 'Kd75W4OQfb2oJTV0vzGzeXftVAwgMnEK9MumzYcM'
-    @twitter_user = Faker::Twitter.user.merge(email: Faker::Internet.safe_email)
-  end
-
   test 'GET /sessions/finish' do
     assert_routing({ path: '/sessions/finish', method: :get }, controller: 'sessions', action: 'finish')
   end
@@ -32,30 +26,35 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should post start' do
-    stub_request_token(@token, @secret)
+    token = TwitterHelper::TWITTER_TOKEN
+    secret = TwitterHelper::TWITTER_SECRET
+    stub_request_token(token, secret)
 
     post sessions_url
 
-    assert_equal({ token: @token, secret: @secret }, session[:request_token])
-    assert_redirected_to "https://api.twitter.com/oauth/authorize?oauth_token=#{@token}"
+    assert_equal({ token: token, secret: secret }, session[:request_token])
+    assert_redirected_to "https://api.twitter.com/oauth/authorize?oauth_token=#{token}"
   end
 
   test 'should get finish' do
-    stub_request_token(@token, @secret)
+    token = TwitterHelper::TWITTER_TOKEN
+    secret = TwitterHelper::TWITTER_SECRET
+    twitter_user = Faker::Twitter.user.merge(email: Faker::Internet.safe_email)
+    stub_request_token(token, secret)
     post sessions_url
-    stub_access_token(@twitter_user[:id], @twitter_user[:screen_name])
-    stub_verify_credentials(@twitter_user)
+    stub_access_token(twitter_user[:id], twitter_user[:screen_name])
+    stub_verify_credentials(twitter_user)
 
     assert_difference 'User.count', 1 do
-      get finish_sessions_url params: { oauth_token: @token, oauth_verifier: 'verifier' }
+      get finish_sessions_url params: { oauth_token: token, oauth_verifier: 'verifier' }
     end
 
     user = User.find(session[:user_id])
     assert_nil session[:request_token]
     assert_equal session[:user_id], User.last.id
-    assert_equal user.screen_name, @twitter_user[:screen_name]
-    assert_equal user.twitter_id, @twitter_user[:id].to_s
-    assert_equal user.email, @twitter_user[:email]
+    assert_equal user.screen_name, twitter_user[:screen_name]
+    assert_equal user.twitter_id, twitter_user[:id].to_s
+    assert_equal user.email, twitter_user[:email]
     assert_redirected_to root_url
   end
 
@@ -66,12 +65,10 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_equal deed_url(deed), @response.cookies['last_referrer']
 
-    sign_in
-    user = User.find_by(twitter_id: @twitter_user[:id].to_s)
+    user = sign_in_as :user
 
     assert_nil session['request_token_id']
     assert_equal session['user_id'], user.id
-    assert_equal user.screen_name, @twitter_user[:screen_name]
     assert_redirected_to deed_url(deed)
   end
 
@@ -80,12 +77,10 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_equal 'http://other.com/foo/bar', @response.cookies['last_referrer']
 
-    sign_in
-    user = User.find_by(twitter_id: @twitter_user[:id].to_s)
+    user = sign_in_as :user
 
     assert_nil session['request_token']
     assert_equal session['user_id'], user.id
-    assert_equal user.screen_name, @twitter_user[:screen_name]
     assert_redirected_to root_url
   end
 
@@ -98,7 +93,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should delete destroy' do
-    sign_in
+    sign_in_as :user
 
     assert_not_nil session[:user_id]
     delete sessions_url
