@@ -6,31 +6,30 @@ class SessionsController < ApplicationController
   end
 
   def create
-    twitter_request_token = consumer.get_request_token(oauth_callback: finish_sessions_url)
-    request_token = RequestToken.create(token: twitter_request_token.token,
-                                        secret: twitter_request_token.secret)
-    cookies[:request_token_id] = request_token.id
-    cookies.delete(:user_id)
+    token = consumer.get_request_token(oauth_callback: finish_sessions_url)
 
-    redirect_to twitter_request_token.authorize_url
+    session[:request_token] = { token: token.token, secret: token.secret }
+
+    redirect_to token.authorize_url
   end
 
   def finish
-    request_token = RequestToken.find(cookies[:request_token_id])
-    cookies.delete(:request_token_id)
+    request_token = session[:request_token]
 
+    # TODO: handle no request_token
     # TODO: handle authorization rejection
     # TODO: Test this failure
-    raise unless request_token.token == params[:oauth_token]
+    raise unless request_token['token'] == params[:oauth_token]
 
-    token = OAuth::RequestToken.new(consumer, request_token.token, request_token.secret)
+    token = OAuth::RequestToken.new(consumer, request_token['token'], request_token['secret'])
 
     access_token = token.get_access_token(oauth_verifier: params[:oauth_verifier],
                                           oauth_callback: finish_sessions_url)
 
-    request_token.delete
+
     twitter_user = etl_user(access_token.token, access_token.secret)
 
+    # TODO: move this to a class method on User
     user = User.find_by(twitter_id: twitter_user.id) || User.new(twitter_id: twitter_user.id)
     user.name = twitter_user.name
     user.data = twitter_user.to_hash
@@ -41,13 +40,15 @@ class SessionsController < ApplicationController
     user.access_token_secret = access_token.secret
     user.save
 
-    cookies[:user_id] = user.id
+    reset_session
+    session[:user_id] = user.id
 
+    # TODO: Test referrer redirect
     redirect_to parsed_local_referrer_path and cookies.delete(:last_referrer)
   end
 
   def destroy
-    cookies.delete(:user_id)
+    reset_session
     flash[:notice] = 'Signed out.'
     redirect_to root_path
   end
