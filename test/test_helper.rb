@@ -22,7 +22,8 @@ module SignInHelper
   end
 
   def sign_in_as(user_type)
-    user = create(user_type)
+    user = create(:user)
+    AppConfig.admin_twitter_ids = [user.twitter_id] if user_type == :admin
     start_sign_in(TwitterHelper::TWITTER_TOKEN, TwitterHelper::TWITTER_SECRET)
     finish_sign_in(TwitterHelper::TWITTER_TOKEN, user.data)
     user

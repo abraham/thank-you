@@ -5,7 +5,7 @@ class DeedsController < ApplicationController
   def create
     deed = current_user.deeds.create(deeds_params)
     # TODO: catch save errors
-    flash[:notice] = 'Deed you created successfully.'
+    flash[:notice] = 'Thank You created successfully.'
     redirect_to deed
   end
 
