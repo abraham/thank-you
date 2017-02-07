@@ -1,9 +1,9 @@
 FactoryGirl.define do
-  factory :thank do
+  factory :deed do
     user_name = Faker::Internet.user_name
 
     text { "Thank you @#{user_name} for #{Faker::Hipster.sentence}" }
-    # reply_to_tweet_id
+    # TODO: reply_to_tweet_id
     name user_name
     user
   end

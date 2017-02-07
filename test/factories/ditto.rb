@@ -6,6 +6,6 @@ FactoryGirl.define do
     tweet_id { Faker::Number.number(10) }
     data { Faker::Twitter.status }
     user
-    thank
+    deed
   end
 end

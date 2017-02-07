@@ -1,15 +1,15 @@
 require 'test_helper'
 
-class ThankTest < ActiveSupport::TestCase
+class DeedTest < ActiveSupport::TestCase
   test 'should not save without text' do
-    thank = Thank.new
-    assert_not thank.save
+    deed = Deed.new
+    assert_not deed.save
   end
 
   test 'should save with text' do
-    thank = Thank.new(text: Faker::Hipster.sentence,
+    deed = Deed.new(text: Faker::Hipster.sentence,
                       name: Faker::Internet.user_name,
                       user: create(:user))
-    assert thank.save
+    assert deed.save
   end
 end

@@ -1,6 +1,0 @@
-<p>
-  <p><strong><%= thank.text %></strong></p>
-  <p>Recently thanked by <%= render 'dittos/dittos', dittos: thank.dittos, more: thank.dittos_count - 10 %></p>
-  <p><%= render 'new_link', thank: thank %> <%= link_to 'Read more', thank %></p>
-</p>
-<br>

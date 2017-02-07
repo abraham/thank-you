@@ -20,11 +20,11 @@ end
 50.times do |_i|
   user = users.sample
   name = Faker::Internet.user_name
-  thank = Thank.create(text: "Thank you @#{name} for #{Faker::Hipster.sentence}",
+  deed = Deed.create(text: "Thank you @#{name} for #{Faker::Hipster.sentence}",
                        name: name,
                        user: user)
   rand(5).times do |_i|
-    Link.create(thank: thank,
+    Link.create(deed: deed,
                 user: user,
                 text: Faker::Lorem.words(2).join(' '),
                 url: Faker::Internet.url('example.com'))
@@ -33,8 +33,8 @@ end
   rand(50).times do |_i|
     tweet = Faker::Twitter.status
     # NOTE: some of these fail due to thank/user uniqueness constraints
-    Ditto.create(thank: thank,
-                 text: thank.text,
+    Ditto.create(deed: deed,
+                 text: deed.text,
                  tweet_id: tweet[:id_str],
                  data: tweet,
                  user: users.sample)

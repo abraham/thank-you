@@ -12,17 +12,17 @@
   </div>
 <% end %>
 
-<%= form_for [:thank, @ditto] do |f| %>
-  <%= f.text_field :thank_id, hidden: true, required: true %>
+<%= form_for [:deed, @ditto] do |f| %>
+  <%= f.text_field :deed_id, hidden: true, required: true %>
 
   <p>
     <% # TODO: trim text to 138 charactors %>
     <%= f.text_area :text, value: @ditto.text, required: true %>
-    <span><%= thank_url @ditto.thank %> will be appended to the tweet</span>
+    <span><%= deed_url @ditto.deed %> will be appended to the tweet</span>
   </p>
 
   <p>
     <%= f.submit 'Tweet' %>
-    <%= link_to 'Cancel', @thank %>
+    <%= link_to 'Cancel', @deed %>
   </p>
 <% end %>

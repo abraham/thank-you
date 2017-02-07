@@ -1,0 +1,15 @@
+<p>
+  <strong><%= deed.text %></strong>
+</p>
+
+<p>
+  <%= render 'links/links', deed: deed, links: deed.links, user: deed.user %>
+<p>
+
+<p>
+<p>
+  <%= render 'new_link', deed: deed %>
+<p>
+  <span>Thanked by</span>
+  <%= render 'dittos/dittos', dittos: deed.dittos, more: deed.dittos_count - 10 %>
+<p>

@@ -1,5 +1,0 @@
-<% if current_user && current_user.dittoed?(thank) %>
-  You already thanked @<%= thank.name %>
-<% else %>
-  <%= link_to "Thank @#{thank.name}", new_thank_ditto_path(thank) %>
-<% end %>

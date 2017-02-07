@@ -1,5 +1,5 @@
-<%= form_for [:thank, @link] do |f| %>
-  <%= f.text_field :thank_id, hidden: true, required: true %>
+<%= form_for [:deed, @link] do |f| %>
+  <%= f.text_field :deed_id, hidden: true, required: true %>
 
   <p>
     <%= f.label :text %>
@@ -13,6 +13,6 @@
 
   <p>
     <%= f.submit 'Add link' %>
-    <%= link_to 'Cancel', @thank %>
+    <%= link_to 'Cancel', @deed %>
   </p>
 <% end %>

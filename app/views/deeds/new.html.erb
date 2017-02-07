@@ -1,6 +1,6 @@
-<%= form_for :thanks, url: thanks_path do |f| %>
+<%= form_for :deeds, url: deeds_path do |f| %>
   <p>
-    <%= f.text_area :text, value: 'Thank you @ for ', required: true %>
+    <%= f.text_area :text, value: 'Thank You @ for ', required: true %>
   </p>
   <p>
     <%= f.text_field :name, required: true, placeholder: 'name' %>
@@ -10,6 +10,6 @@
   </p>
 
   <p>
-    <%= f.submit 'Create Thank You' %>
+    <%= f.submit 'Create Deed' %>
   </p>
 <% end %>

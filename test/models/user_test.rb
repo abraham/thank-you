@@ -3,7 +3,7 @@ require 'test_helper'
 class UserTest < ActiveSupport::TestCase
   def setup
     @user = create(:user)
-    @thank = create(:thank, user: @user)
+    @deed = create(:deed, user: @user)
     @default_admin_twitter_ids = AppConfig.admin_twitter_ids
   end
 
@@ -21,12 +21,12 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test '#dittoed? with no dittos' do
-    assert !@user.dittoed?(@thank)
+    assert !@user.dittoed?(@deed)
   end
 
   test '#dittoed? with dittos' do
-    create(:ditto, user: @user, thank: @thank)
-    assert @user.dittoed?(@thank)
+    create(:ditto, user: @user, deed: @deed)
+    assert @user.dittoed?(@deed)
   end
 
   test 'tweet makes request to Twitter' do

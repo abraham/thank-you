@@ -61,11 +61,11 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     stub_verify_credentials
     request_token = create(:request_token)
     cookies[:request_token_id] = request_token.id
-    thank = create(:thank)
+    deed = create(:deed)
 
-    get new_sessions_url, headers: { Referer: thank_url(thank) }
+    get new_sessions_url, headers: { Referer: deed_url(deed) }
     assert_response :success
-    assert_equal thank_url(thank), @response.cookies['last_referrer']
+    assert_equal deed_url(deed), @response.cookies['last_referrer']
     request_token = RequestToken.last
 
     assert_difference 'RequestToken.count', -1 do
@@ -79,7 +79,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     assert @response.cookies['request_token_id'].nil?
     assert_equal @response.cookies['user_id'], user.id
     assert_equal user.screen_name, @twitter_user[:screen_name]
-    assert_redirected_to thank_url(thank)
+    assert_redirected_to deed_url(deed)
   end
 
   test 'should not redirect to remote referrer location' do
