@@ -32,7 +32,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should post start' do
-    stub_request_token
+    stub_request_token(@token, @secret)
 
     post sessions_url
 
@@ -41,10 +41,10 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get finish' do
-    stub_request_token
+    stub_request_token(@token, @secret)
     post sessions_url
-    stub_access_token
-    stub_verify_credentials
+    stub_access_token(@twitter_user[:id], @twitter_user[:screen_name])
+    stub_verify_credentials(@twitter_user)
 
     assert_difference 'User.count', 1 do
       get finish_sessions_url params: { oauth_token: @token, oauth_verifier: 'verifier' }
@@ -105,47 +105,5 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_url
     assert_nil session[:user_id]
     assert_equal flash[:notice], 'Signed out.'
-  end
-
-  def stub_request_token
-    params = [
-      "oauth_token=#{@token}",
-      "oauth_token_secret=#{@secret}",
-      'oauth_callback_confirmed=true'
-    ]
-    stub_request(:post, 'https://api.twitter.com/oauth/request_token')
-      .to_return(status: 200, body: params.join('&'))
-  end
-
-  def stub_access_token
-    params = [
-      'oauth_token=6253282-eWudHldSbIaelX7swmsiHImEL4KinwaGloHANdrY',
-      'oauth_token_secret=2EEfA6BG3ly3sR3RjE0IBSnlQu4ZrUzPiYKmrkVU',
-      "user_id=#{@twitter_user[:id]}",
-      "screen_name=#{@twitter_user[:screen_name]}"
-    ]
-    stub_request(:post, 'https://api.twitter.com/oauth/access_token')
-      .to_return(status: 200, body: params.join('&'))
-  end
-
-  def stub_verify_credentials
-    stub_request(:get, 'https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true')
-      .to_return(status: 200, body: @twitter_user.to_json)
-  end
-
-  def start_sign_in
-    stub_request_token
-    post sessions_url
-  end
-
-  def finish_sign_in
-    stub_access_token
-    stub_verify_credentials
-    get finish_sessions_url params: { oauth_token: @token, oauth_verifier: 'verifier' }
-  end
-
-  def sign_in
-    start_sign_in
-    finish_sign_in
   end
 end

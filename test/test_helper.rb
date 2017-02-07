@@ -8,3 +8,54 @@ class ActiveSupport::TestCase
   include FactoryGirl::Syntax::Methods
   FactoryGirl.find_definitions
 end
+
+module SignInHelper
+  def start_sign_in(token, secret)
+    stub_request_token(token, secret)
+    post sessions_url
+  end
+
+  def finish_sign_in(token, twitter_user)
+    stub_access_token(twitter_user[:id], twitter_user[:screen_name])
+    stub_verify_credentials(twitter_user)
+    get finish_sessions_url params: { oauth_token: token, oauth_verifier: 'verifier' }
+  end
+
+  def sign_in
+    start_sign_in(@token, @secret)
+    finish_sign_in(@token, @twitter_user)
+  end
+end
+
+module TwitterHelper
+  def stub_request_token(token, secret)
+    params = [
+      "oauth_token=#{token}",
+      "oauth_token_secret=#{secret}",
+      'oauth_callback_confirmed=true'
+    ]
+    stub_request(:post, 'https://api.twitter.com/oauth/request_token')
+      .to_return(status: 200, body: params.join('&'))
+  end
+
+  def stub_access_token(user_id, screen_name)
+    params = [
+      'oauth_token=6253282-eWudHldSbIaelX7swmsiHImEL4KinwaGloHANdrY',
+      'oauth_token_secret=2EEfA6BG3ly3sR3RjE0IBSnlQu4ZrUzPiYKmrkVU',
+      "user_id=#{user_id}",
+      "screen_name=#{screen_name}"
+    ]
+    stub_request(:post, 'https://api.twitter.com/oauth/access_token')
+      .to_return(status: 200, body: params.join('&'))
+  end
+
+  def stub_verify_credentials(twitter_user)
+    stub_request(:get, 'https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true')
+      .to_return(status: 200, body: twitter_user.to_json)
+  end
+end
+
+class ActionDispatch::IntegrationTest
+  include TwitterHelper
+  include SignInHelper
+end
