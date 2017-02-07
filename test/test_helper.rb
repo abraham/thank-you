@@ -9,7 +9,7 @@ class ActiveSupport::TestCase
   FactoryGirl.find_definitions
 end
 
-module SignInHelper
+module SessionHelper
   def start_sign_in(token, secret)
     stub_request_token(token, secret)
     post sessions_url
@@ -63,5 +63,5 @@ end
 
 class ActionDispatch::IntegrationTest
   include TwitterHelper
-  include SignInHelper
+  include SessionHelper
 end
