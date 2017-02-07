@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
   before_action :cache_last_referrer, only: :new
+  before_action :require_not_denied, only: :finish
   before_action :require_request_token, only: :finish
   before_action :require_known_request_token, only: :finish
 
@@ -16,8 +17,6 @@ class SessionsController < ApplicationController
 
   def finish
     request_token = session[:request_token]
-
-    # TODO: handle authorization rejection
 
     token = OAuth::RequestToken.new(consumer, request_token['token'], request_token['secret'])
     access_token = token.get_access_token(oauth_verifier: params[:oauth_verifier],
@@ -91,5 +90,11 @@ class SessionsController < ApplicationController
   def require_known_request_token
     flash[:warning] = 'Sign in with Twitter details do not match. Starting over.'
     redirect_to new_sessions_path unless session[:request_token]['token'] == params[:oauth_token]
+  end
+
+  def require_not_denied
+    return unless params[:denied]
+    flash[:warning] = 'To sign in you must allow access to your Twitter account.'
+    redirect_to new_sessions_path
   end
 end

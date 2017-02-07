@@ -84,6 +84,13 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_url
   end
 
+  test '#finish should handle being denied access' do
+    get finish_sessions_url params: { denied: 'D_gvkwAAAAAAy9zXAAABWhooOmA' }
+
+    assert_redirected_to new_sessions_url
+    assert_equal 'To sign in you must allow access to your Twitter account.', flash[:warning]
+  end
+
   test 'should redirect to local referrer location' do
     deed = create(:deed)
 
