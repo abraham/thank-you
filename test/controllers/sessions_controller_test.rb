@@ -8,19 +8,19 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'GET /sessions/finish' do
-    assert_routing({ path: '/sessions/finish', method: :get }, { controller: 'sessions', action: 'finish' })
+    assert_routing({ path: '/sessions/finish', method: :get }, controller: 'sessions', action: 'finish')
   end
 
   test 'GET /sessions/new' do
-    assert_routing({ path: '/sessions/new', method: :get }, { controller: 'sessions', action: 'new' })
+    assert_routing({ path: '/sessions/new', method: :get }, controller: 'sessions', action: 'new')
   end
 
   test 'DELET /sessions' do
-    assert_routing({ path: '/sessions', method: :delete }, { controller: 'sessions', action: 'destroy' })
+    assert_routing({ path: '/sessions', method: :delete }, controller: 'sessions', action: 'destroy')
   end
 
   test 'POST /sessions' do
-    assert_routing({ path: '/sessions', method: :post }, { controller: 'sessions', action: 'create' })
+    assert_routing({ path: '/sessions', method: :post }, controller: 'sessions', action: 'create')
   end
 
   test 'should get new' do
