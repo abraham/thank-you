@@ -7,9 +7,8 @@ class SessionsController < ApplicationController
 
   def create
     token = consumer.get_request_token(oauth_callback: finish_sessions_url)
-
+    reset_session
     session[:request_token] = { token: token.token, secret: token.secret }
-
     redirect_to token.authorize_url
   end
 

@@ -22,6 +22,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select 'form input[type=submit][value="Sign in with Twitter"]'
+    # TODO: test form url/action
     assert_nil session['request_token']
   end
 
@@ -29,9 +30,12 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     token = TwitterHelper::TWITTER_TOKEN
     secret = TwitterHelper::TWITTER_SECRET
     stub_request_token(token, secret)
+    get new_sessions_url
+    session_id = session.id
 
     post sessions_url
 
+    assert_not_equal session_id, session.id
     assert_equal({ token: token, secret: secret }, session[:request_token])
     assert_redirected_to "https://api.twitter.com/oauth/authorize?oauth_token=#{token}"
   end
@@ -44,12 +48,14 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     post sessions_url
     stub_access_token(twitter_user[:id], twitter_user[:screen_name])
     stub_verify_credentials(twitter_user)
+    session_id = session.id
 
     assert_difference 'User.count', 1 do
       get finish_sessions_url params: { oauth_token: token, oauth_verifier: 'verifier' }
     end
 
     user = User.find(session[:user_id])
+    assert_not_equal session_id, session.id
     assert_nil session[:request_token]
     assert_equal session[:user_id], User.last.id
     assert_equal user.screen_name, twitter_user[:screen_name]
@@ -94,9 +100,11 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should delete destroy' do
     sign_in_as :user
+    session_id = session.id
 
     assert_not_nil session[:user_id]
     delete sessions_url
+    assert_not_equal session_id, session.id
     assert_redirected_to root_url
     assert_nil session[:user_id]
     assert_equal flash[:notice], 'Signed out.'
