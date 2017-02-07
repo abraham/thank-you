@@ -7,22 +7,23 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 users = (1..50).map do |_i|
-  twitter_user = Faker::Twitter.user
+  twitter_user = Faker::Twitter.user.merge(email: Faker::Internet.safe_email)
   User.create(twitter_id: twitter_user[:id_str],
               screen_name: Faker::Internet.user_name,
               name: Faker::Name.name,
               avatar_url: Faker::Avatar.image(twitter_user[:id_str], '48x48'),
               data: twitter_user,
               access_token: Faker::Internet.password(10, 20),
-              access_token_secret: Faker::Internet.password(20, 30))
+              access_token_secret: Faker::Internet.password(20, 30),
+              email: Faker::Internet.safe_email)
 end
 
 50.times do |_i|
   user = users.sample
   name = Faker::Internet.user_name
   deed = Deed.create(text: "Thank you @#{name} for #{Faker::Hipster.sentence}",
-                       name: name,
-                       user: user)
+                     name: name,
+                     user: user)
   rand(5).times do |_i|
     Link.create(deed: deed,
                 user: user,
