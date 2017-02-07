@@ -2,16 +2,15 @@ require 'test_helper'
 
 class ThanksControllerTest < ActionDispatch::IntegrationTest
   def setup
-    @user = create(:user)
-    @deed = create(:deed, user: @user)
+    @deed = create(:deed)
   end
 
   test 'POST /thanks' do
-    assert_routing({ path: 'deeds/123/thanks', method: :post }, { controller: 'thanks', action: 'create', deed_id: '123' })
+    assert_routing({ path: 'deeds/123/thanks', method: :post }, controller: 'thanks', action: 'create', deed_id: '123')
   end
 
   test 'GET /thanks/new' do
-    assert_routing({ path: 'deeds/123/thanks/new', method: :get }, { controller: 'thanks', action: 'new', deed_id: '123'  })
+    assert_routing({ path: 'deeds/123/thanks/new', method: :get }, controller: 'thanks', action: 'new', deed_id: '123')
   end
 
   test 'should redirect get new to sessions new' do
@@ -20,7 +19,7 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get new' do
-    cookies[:user_id] = @user.id
+    sign_in_as :user
     get new_deed_thank_url(@deed)
     assert_response :success
   end
@@ -31,9 +30,9 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should post create' do
+    sign_in_as :user
     @twitter_status = Faker::Twitter.status
     stub_statuses_update
-    cookies[:user_id] = @user.id
 
     assert_difference 'Thank.count', 1 do
       post deed_thanks_url @deed, params: { thank: { text: @twitter_status[:text], deed_id: @deed.id } }
@@ -44,13 +43,13 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should only allow creating one thank' do
+    user = sign_in_as :user
     @twitter_status = Faker::Twitter.status
-    thank = create(:thank, data: @twitter_status, user: @user)
-    cookies[:user_id] = @user.id
+    thank = create(:thank, data: "#{@deed.text} first", user: user)
     stub_statuses_update
 
     assert_difference 'Thank.count', 0 do
-      post deed_thanks_url thank.deed, params: { thank: { text: @twitter_status[:text] } }
+      post deed_thanks_url thank.deed, params: { thank: { text: "#{@deed.text} second" } }
     end
 
     assert_redirected_to deed_path(thank.deed)
