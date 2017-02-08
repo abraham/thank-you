@@ -9,8 +9,7 @@ class LinksController < ApplicationController
     link = current_user.links.new(links_params)
 
     if link.save
-      flash[:notice] = 'Link was successfully created.'
-      redirect_to @deed
+      redirect_to @deed, flash: { notice: 'Link was successfully created.' }
     else
       render :new
     end
