@@ -10,7 +10,9 @@ class SessionsController < ApplicationController
 
   def create
     request_token = consumer.get_request_token(oauth_callback: finish_sessions_url)
+    next_path = session[:next_path]
     reset_session
+    session[:next_path] = next_path
     session[:request_token] = { token: request_token.token, secret: request_token.secret }
     redirect_to request_token.authorize_url
   end
@@ -34,17 +36,17 @@ class SessionsController < ApplicationController
     user.access_token_secret = access_token.secret
     user.save
 
+    path = next_path
     reset_session
     session[:user_id] = user.id
 
     # TODO: Test referrer redirect
-    redirect_to parsed_local_referrer_path and cookies.delete(:last_referrer)
+    redirect_to path
   end
 
   def destroy
     reset_session
-    flash[:notice] = 'Signed out.'
-    redirect_to root_path
+    redirect_to root_path, flash: { notice:  'Signed out.' }
   end
 
   private
@@ -70,12 +72,8 @@ class SessionsController < ApplicationController
     client.user(include_email: true)
   end
 
-  def parsed_local_referrer_path
-    if cookies[:last_referrer] && cookies[:last_referrer].starts_with?(root_url)
-      URI.parse(cookies[:last_referrer]).path
-    else
-      '/'
-    end
+  def next_path
+    session[:next_path] || '/'
   end
 
   def cache_last_referrer

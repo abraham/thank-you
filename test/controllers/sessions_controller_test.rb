@@ -93,28 +93,19 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should redirect to local referrer location' do
     deed = create(:deed)
+    get new_deed_thank_url(deed)
+    assert_redirected_to new_sessions_url
 
-    get new_sessions_url, headers: { Referer: deed_url(deed) }
+    assert_equal new_deed_thank_path(deed), session['next_path']
+
+    get new_sessions_url
     assert_response :success
-    assert_equal deed_url(deed), @response.cookies['last_referrer']
 
     user = sign_in_as :user
 
-    assert_nil session['request_token_id']
+    assert_nil session['next_path']
     assert_equal session['user_id'], user.id
-    assert_redirected_to deed_url(deed)
-  end
-
-  test 'should not redirect to remote referrer location' do
-    get new_sessions_url, headers: { Referer: 'http://other.com/foo/bar' }
-    assert_response :success
-    assert_equal 'http://other.com/foo/bar', @response.cookies['last_referrer']
-
-    user = sign_in_as :user
-
-    assert_nil session['request_token']
-    assert_equal session['user_id'], user.id
-    assert_redirected_to root_url
+    assert_redirected_to new_deed_thank_url(deed)
   end
 
   test 'should get create with returning user' do

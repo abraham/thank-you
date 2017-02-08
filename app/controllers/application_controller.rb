@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   private
 
   def check_for_alpha_token
-    return if Rails.env.test?
+    return if Rails.env.test? || Rails.env.development?
     render plain: 'Forbidden', status: :forbidden unless cookies[:alpha_token] && cookies[:alpha_token] == AppConfig.alpha_token
   end
 
@@ -18,6 +18,7 @@ class ApplicationController < ActionController::Base
 
   def require_signin
     return if current_user
+    session[:next_path] = request.path if request.get?
 
     redirect_to new_sessions_path, flash: { warning: 'You must be signed in to do that' }
   end
