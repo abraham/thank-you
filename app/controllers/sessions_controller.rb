@@ -73,7 +73,7 @@ class SessionsController < ApplicationController
   end
 
   def next_path
-    session[:next_path] || '/'
+    session[:next_path] || root_path
   end
 
   def cache_last_referrer
