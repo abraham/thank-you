@@ -55,14 +55,14 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as :user
     get new_deed_path
     assert_redirected_to root_path
-    assert_equal 'You do not have permission to do that', flash[:error]
+    assert_equal 'You do not have permission to do that', flash[:warning]
   end
 
   test 'should redirect post deeds create to get deeds as a user' do
     sign_in_as :user
     post deeds_path
     assert_redirected_to root_path
-    assert_equal 'You do not have permission to do that', flash[:error]
+    assert_equal 'You do not have permission to do that', flash[:warning]
   end
 
   test 'should allow admins to get new' do

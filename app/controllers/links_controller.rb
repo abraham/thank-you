@@ -1,11 +1,9 @@
 class LinksController < ApplicationController
   before_action :require_signin
-  # TODO: enable this
-  # before_action :require_admin
+  before_action :require_admin
   before_action :find_deed, only: [:create, :new]
 
   def create
-    # TODO: validate admin
     link = current_user.links.new(links_params)
 
     if link.save

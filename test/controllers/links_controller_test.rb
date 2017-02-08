@@ -13,27 +13,49 @@ class LinksControllerTest < ActionDispatch::IntegrationTest
     assert_routing({ path: 'deeds/123/links/new', method: :get }, controller: 'links', action: 'new', deed_id: '123')
   end
 
-  test 'should redirect get new to sessions new' do
+  test '#new requires auth' do
     get new_deed_link_url(@deed)
     assert_redirected_to new_sessions_url
+    assert_equal 'You must be signed in to do that', flash[:warning]
   end
 
-  test 'should get new' do
-    sign_in_as(:admin)
+  test '#new requires admin' do
+    sign_in_as :user
+    get new_deed_link_url(@deed)
+    assert_redirected_to root_url
+    assert_equal 'You do not have permission to do that', flash[:warning]
+  end
+
+  test '#new should return form' do
+    sign_in_as :admin
     get new_deed_link_url(@deed)
     assert_response :success
+    assert_select "form[action=\"#{deed_links_path(@deed)}\"]#new_link" do
+      assert_select 'input[hidden=hidden]#link_deed_id'
+      assert_select 'input[type=text]#link_text'
+      assert_select 'input[type=url]#link_url'
+      assert_select 'input[type=submit][value="Add link"]'
+    end
   end
 
-  test 'should redirect post create to sessions new' do
+  test '#create requires user' do
     post deed_links_url(@deed)
     assert_redirected_to new_sessions_url
+    assert_equal 'You must be signed in to do that', flash[:warning]
   end
 
-  test 'should post create' do
-    sign_in_as(:admin)
+  test '#create requires user admin' do
+    sign_in_as :user
+    post deed_links_url(@deed)
+    assert_redirected_to root_url
+    assert_equal 'You do not have permission to do that', flash[:warning]
+  end
+
+  test '#create adds a link to the Deed' do
+    sign_in_as :admin
 
     assert_difference '@deed.links.count', 1 do
-      post deed_links_url @deed, params: { link: { text: 'foo', url: 'foo', deed_id: @deed.id } }
+      post deed_links_url(@deed), params: { link: { text: 'foo', url: 'foo', deed_id: @deed.id } }
     end
 
     assert_redirected_to deed_path(@deed)
