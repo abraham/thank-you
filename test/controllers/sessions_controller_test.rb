@@ -17,13 +17,20 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_routing({ path: '/sessions', method: :post }, controller: 'sessions', action: 'create')
   end
 
-  test 'should get new' do
+  test '#new should return a form' do
     get new_sessions_url
 
     assert_response :success
     assert_select 'form input[type=submit][value="Sign in with Twitter"]'
     # TODO: test form url/action
     assert_nil session['request_token']
+  end
+
+  test '#new should redirect a user' do
+    sign_in_as :user
+    get new_sessions_url
+
+    assert_redirected_to root_url
   end
 
   test '#finish requires request_token in session' do

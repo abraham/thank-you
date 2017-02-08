@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-  before_action :cache_last_referrer, only: :new
+  before_action :require_anonymous, except: :destroy
   before_action :require_not_denied, only: :finish
   before_action :require_request_token, only: :finish
   before_action :require_known_request_token, only: :finish
@@ -76,8 +76,8 @@ class SessionsController < ApplicationController
     session[:next_path] || root_path
   end
 
-  def cache_last_referrer
-    cookies[:last_referrer] = request.referrer
+  def require_anonymous
+    redirect_to root_path if current_user
   end
 
   def require_request_token
