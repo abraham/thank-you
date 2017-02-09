@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170207035323) do
+ActiveRecord::Schema.define(version: 20170209201911) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,13 +36,6 @@ ActiveRecord::Schema.define(version: 20170207035323) do
     t.datetime "updated_at", null: false
     t.index ["deed_id"], name: "index_links_on_deed_id", using: :btree
     t.index ["user_id"], name: "index_links_on_user_id", using: :btree
-  end
-
-  create_table "request_tokens", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "token", null: false
-    t.string "secret", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "thanks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
