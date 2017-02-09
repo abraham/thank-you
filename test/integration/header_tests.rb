@@ -33,4 +33,22 @@ class HeaderTest < ActionDispatch::IntegrationTest
       end
     end
   end
+
+  test 'user has suggest deed link' do
+    sign_in_as :user
+    get root_url
+    assert_select 'header' do
+      assert_select "a[href=\"#{new_deed_path}\"]", 0
+      assert_select 'a[href="https://goo.gl/forms/D8N4bQsz3gl7kbKo2"]', 'Suggest Thank You'
+    end
+  end
+
+  test 'admin has create deed link' do
+    sign_in_as :admin
+    get root_url
+    assert_select 'header' do
+      assert_select "a[href=\"#{new_deed_path}\"]", 'Create deed'
+      assert_select 'a[href="https://goo.gl/forms/D8N4bQsz3gl7kbKo2"]', 0
+    end
+  end
 end
