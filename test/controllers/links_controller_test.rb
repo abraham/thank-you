@@ -68,7 +68,6 @@ class LinksControllerTest < ActionDispatch::IntegrationTest
       post deed_links_url(@deed), params: { link: { text: 'foo', deed_id: @deed.id } }
     end
 
-    assert_template :new
     assert_equal "Url can't be blank", flash[:error]
   end
 end

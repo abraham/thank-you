@@ -3,9 +3,14 @@ class DeedsController < ApplicationController
   before_action :require_admin, except: [:index, :show]
 
   def create
-    deed = current_user.deeds.create(deeds_params)
-    # TODO: catch save errors
-    redirect_to deed, flash: { notice: 'Thank You created successfully.' }
+    @deed = current_user.deeds.create(deeds_params)
+
+    if @deed.valid?
+      redirect_to @deed, flash: { notice: 'Thank You created successfully.' }
+    else
+      flash.now[:error] = @deed.errors.full_messages.to_sentence
+      render :new
+    end
   end
 
   def index
@@ -17,6 +22,7 @@ class DeedsController < ApplicationController
   end
 
   def new
+    @deed = Deed.new
   end
 
   private

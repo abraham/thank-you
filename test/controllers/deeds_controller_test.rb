@@ -25,58 +25,69 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_routing({ path: 'deeds/123', method: :get }, controller: 'deeds', action: 'show', id: '123')
   end
 
-  test 'should get root' do
+  test '#index redirects to root' do
     get deeds_path
     assert_redirected_to root_path
   end
 
   test 'should get deeds' do
+    # TODO: create sample deeds
     get root_path
     assert_response :success
+    # TODO: assert deed text on page
   end
 
-  test 'should get deeds show' do
+  test '#show renders deed' do
     deed = create(:deed)
     get deed_path(deed)
     assert_response :success
+    # TODO: assert deed text on page
   end
 
-  test 'should redirect get deeds new to sessions new' do
+  test '#new requires authentication' do
     get new_deed_path
     assert_redirected_to new_sessions_url
   end
 
-  test 'should redirect post deeds create to sessions new' do
+  test '#create requires authentication' do
     post deeds_path
     assert_redirected_to new_sessions_url
   end
 
-  test 'should redirect get deeds new to get deeds as a user' do
+  test '#new redirects users with error' do
     sign_in_as :user
     get new_deed_path
     assert_redirected_to root_path
     assert_equal 'You do not have permission to do that', flash[:warning]
   end
 
-  test 'should redirect post deeds create to get deeds as a user' do
+  test '#create redirects users with error' do
     sign_in_as :user
     post deeds_path
     assert_redirected_to root_path
     assert_equal 'You do not have permission to do that', flash[:warning]
   end
 
-  test 'should allow admins to get new' do
+  test '#new is available to admins' do
     sign_in_as :admin
     get new_deed_path
     assert_response :success
   end
 
-  test 'should allow admins to post create' do
+  test '#create allows admins to create Deeds' do
     sign_in_as :admin
     assert_difference 'Deed.count', 1 do
       post deeds_path, params: { deeds: { text: Faker::Lorem.sentence(3), name: Faker::Internet.user_name } }
     end
     assert_redirected_to deed_path(Deed.last)
     assert_equal 'Thank You created successfully.', flash[:notice]
+  end
+
+  test '#create shows errors' do
+    sign_in_as :admin
+    assert_difference 'Deed.count', 0 do
+      post deeds_path, params: { deeds: { text: Faker::Lorem.sentence(3) } }
+    end
+    assert_equal "Name can't be blank", flash[:error]
   end
 end
