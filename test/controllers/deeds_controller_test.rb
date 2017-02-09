@@ -75,6 +75,12 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as :admin
     get new_deed_path
     assert_response :success
+    assert_select 'form#new_deed' do
+      assert_select 'input[type=text]#deed_name'
+      assert_select 'textarea#deed_text'
+      assert_select 'input[type=text]#deed_reply_to_tweet_id'
+      assert_select 'input[type=submit][value="Create deed"]'
+    end
   end
 
   test '#create allows admins to create Deeds' do

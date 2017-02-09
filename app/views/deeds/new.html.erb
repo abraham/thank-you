@@ -2,16 +2,15 @@
 
 <%= form_for @deed do |f| %>
   <p>
-    <%= f.text_area :text, value: 'Thank You @ for ', required: true %>
+    <%= f.text_field :name, placeholder: 'name', required: true %>
   </p>
   <p>
-    <%= f.text_field :name, placeholder: 'name', required: true %>
+    <%= f.text_area :text, value: 'Thank You @ for ', required: true %>
   </p>
   <p>
     <%= f.text_field :reply_to_tweet_id, placeholder: '123456789' %>
   </p>
-
   <p>
-    <%= f.submit 'Create Deed' %>
+    <%= f.submit 'Create deed' %>
   </p>
 <% end %>
