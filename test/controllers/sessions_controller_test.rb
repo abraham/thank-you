@@ -21,8 +21,9 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     get new_sessions_url
 
     assert_response :success
-    assert_select 'form input[type=submit][value="Sign in with Twitter"]'
-    # TODO: test form url/action
+    assert_select "form[action=\"#{sessions_path}\"]" do
+      assert_select 'input[type=submit][value="Sign in with Twitter"]'
+    end
     assert_nil session['request_token']
   end
 
