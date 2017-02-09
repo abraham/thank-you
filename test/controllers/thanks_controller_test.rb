@@ -16,6 +16,13 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
   test '#new should require user' do
     get new_deed_thank_url(@deed)
     assert_redirected_to new_sessions_url
+    assert_equal 'You must be signed in to do that', flash[:warning]
+  end
+
+  test '#create should require user' do
+    post deed_thanks_url(@deed)
+    assert_redirected_to new_sessions_url
+    assert_equal 'You must be signed in to do that', flash[:warning]
   end
 
   test '#new should render a form' do
