@@ -4,6 +4,15 @@ class User < ApplicationRecord
   has_many :links
   has_many :deeds
 
+  validates :access_token_secret, presence: true
+  validates :access_token, presence: true
+  validates :avatar_url, presence: true
+  validates :data, presence: true
+  validates :email, presence: true
+  validates :name, presence: true
+  validates :screen_name, presence: true
+  validates :twitter_id, presence: true
+
   def thanked?(deed)
     thanks.exists?(deed_id: deed.id)
   end

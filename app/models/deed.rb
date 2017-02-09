@@ -3,9 +3,9 @@ class Deed < ApplicationRecord
   has_many :thanks
   has_many :links
 
-  validates :user, presence: true
-  validates :text, presence: true
   validates :name, presence: true
+  validates :text, presence: true
+  validates :user, presence: true
 
   default_scope { order(created_at: :desc) }
 end
