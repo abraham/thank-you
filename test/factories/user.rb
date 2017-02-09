@@ -3,7 +3,7 @@ FactoryGirl.define do
     data { Faker::Twitter.user.merge(email: Faker::Internet.safe_email) }
     twitter_id { data[:id].to_s }
     screen_name { data[:screen_name] }
-    name { Faker::Name.name }
+    name { data[:name] }
     email { data[:email] }
     avatar_url { data[:profile_image_url_https] }
     access_token { "#{twitter_id}-#{Faker::Internet.password(30, 40)}" }

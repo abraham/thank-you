@@ -6,10 +6,14 @@
 
   <div>
     <% if current_user %>
-      <%= "Hi #{current_user.name}" %>
+      <div id='welcome'>
+        <%= "Hi @#{current_user.screen_name}" %>
+      </div>
 
       <% if current_user.admin? %>
         <%= link_to 'Create deed', new_deed_path %>
+      <% else %>
+        <%= link_to 'Suggest Thank You', 'https://goo.gl/forms/D8N4bQsz3gl7kbKo2' %>
       <% end %>
 
       <%= render 'sessions/sign-out' %>
