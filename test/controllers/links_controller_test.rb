@@ -43,7 +43,7 @@ class LinksControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'You must be signed in to do that', flash[:warning]
   end
 
-  test '#create requires user admin' do
+  test '#create requires admin' do
     sign_in_as :user
     post deed_links_url(@deed)
     assert_redirected_to root_url
@@ -52,13 +52,18 @@ class LinksControllerTest < ActionDispatch::IntegrationTest
 
   test '#create adds a link to the Deed' do
     sign_in_as :admin
+    text = Faker::Lorem.words(2).join(' ')
+    url = Faker::Internet.url
 
     assert_difference '@deed.links.count', 1 do
-      post deed_links_url(@deed), params: { link: { text: 'foo', url: 'foo' } }
+      post deed_links_url(@deed), params: { link: { text: text, url: url } }
     end
 
+    link = @deed.links.last
     assert_redirected_to deed_path(@deed)
     assert_equal 'Link was successfully created.', flash[:notice]
+    assert_equal text, link.text
+    assert_equal url, link.url
   end
 
   test '#create shows model errors' do
