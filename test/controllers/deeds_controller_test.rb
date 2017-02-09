@@ -83,14 +83,15 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'Thank You created successfully.', flash[:notice]
   end
 
-  test '#create shows errors' do
+  test '#create shows model errors' do
     sign_in_as :admin
 
     assert_difference 'Deed.count', 0 do
-      post deeds_path, params: { deeds: { text: Faker::Lorem.sentence(3) } }
+      post deeds_path, params: { deeds: { foo: 'bar' } }
     end
     assert_select '#form-error' do
       assert_select 'li', "Name can't be blank"
+      assert_select 'li', "Text can't be blank"
     end
   end
 end
