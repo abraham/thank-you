@@ -13,15 +13,21 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
     assert_routing({ path: 'deeds/123/thanks/new', method: :get }, controller: 'thanks', action: 'new', deed_id: '123')
   end
 
-  test 'should redirect get new to sessions new' do
+  test '#new should require user' do
     get new_deed_thank_url(@deed)
     assert_redirected_to new_sessions_url
   end
 
-  test 'should get new' do
+  test '#new should render a form' do
     sign_in_as :user
     get new_deed_thank_url(@deed)
     assert_response :success
+    assert_select "form[action=\"#{deed_thanks_path(@deed)}\"]#new_thank" do
+      assert_select 'textarea#thank_text'
+      assert_select 'span', "#{deed_url(@deed)} will be appended to the tweet"
+      assert_select 'input[type=submit][value="Tweet"]'
+      assert_select "a[href=\"#{deed_path(@deed)}\"]", 'Cancel'
+    end
   end
 
   test 'should redirect post create to sessions new' do
