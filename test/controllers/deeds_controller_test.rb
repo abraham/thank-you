@@ -71,11 +71,11 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'You do not have permission to do that', flash[:warning]
   end
 
-  test '#new is available to admins' do
+  test '#new should return form' do
     sign_in_as :admin
     get new_deed_path
     assert_response :success
-    assert_select 'form#new_deed' do
+    assert_select "form[action=\"#{deeds_path}\"]#new_deed" do
       assert_select 'input[type=text]#deed_name'
       assert_select 'textarea#deed_text'
       assert_select 'input[type=text]#deed_reply_to_tweet_id'
