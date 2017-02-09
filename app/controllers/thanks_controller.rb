@@ -36,7 +36,9 @@ class ThanksController < ApplicationController
   private
 
   def not_already_thanked
-    redirect_to deed_path(@deed) if current_user.thanked?(@deed)
+    return unless current_user.thanked?(@deed)
+    flash[:error] = "You already thanked @#{@deed.name}"
+    redirect_to deed_path(@deed)
   end
 
   def find_deed

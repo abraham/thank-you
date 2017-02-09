@@ -59,6 +59,12 @@ module TwitterHelper
     stub_request(:get, 'https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true')
       .to_return(status: 200, body: twitter_user.to_json)
   end
+
+  def stub_statuses_update(tweet, status, in_reply_to_status_id: nil)
+    stub_request(:post, 'https://api.twitter.com/1.1/statuses/update.json')
+      .with(body: { in_reply_to_status_id: in_reply_to_status_id, status: status })
+      .to_return(status: 200, body: tweet.to_json)
+  end
 end
 
 class ActionDispatch::IntegrationTest
