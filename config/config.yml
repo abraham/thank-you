@@ -1,5 +1,5 @@
 development:
-  posting_to_twitter_enabled: true
+  posting_to_twitter_enabled: false
   sign_in_enabled: true
   admin_twitter_ids:
     - '9436992'

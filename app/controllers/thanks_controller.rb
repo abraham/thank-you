@@ -4,24 +4,22 @@ class ThanksController < ApplicationController
   before_action :not_already_thanked
 
   def create
-    # TODO: make sure thanks_params[:deed_id] matches @deed.id
-    @thank = current_user.thanks.new(thanks_params)
+    @thank = current_user.thanks.new(thanks_params.merge(deed: @deed))
 
-    begin
-      tweet = current_user.tweet("#{@thank.text} #{deed_url(@deed)}", @deed.reply_to_tweet_id)
-      if tweet
-        @thank.tweet_id = tweet.id
-        @thank.data = tweet.to_hash
-        # TODO: error handling
-        @thank.save
-      else
-        flash[:warning] = 'Posting to Twitter currently disabled.'
-      end
-    rescue Twitter::Error::Forbidden => error
-      logger.error "Error posting Thank You to Twitter Code: #{error.code} Message: #{error.message}"
-      flash[:error] = "Something went wrong posting to Twitter. Code: #{error.code} - #{error.message}"
-      redirect_to @deed and return
-    end
+    # begin
+    #   tweet = current_user.tweet("#{@thank.text} #{deed_url(@deed)}", @deed.reply_to_tweet_id)
+    #   if tweet
+    #     @thank.tweet_id = tweet.id
+    #     @thank.data = tweet.to_hash
+    #   else
+    #     # TODO: improve error handling
+    #     flash[:warning] = 'Posting to Twitter currently disabled.'
+    #   end
+    # rescue Twitter::Error::Forbidden => error
+    #   logger.error "Error posting Thank You to Twitter Code: #{error.code} Message: #{error.message}"
+    #   flash[:error] = "Something went wrong posting to Twitter. Code: #{error.code} - #{error.message}"
+    #   redirect_to @deed and return
+    # end
 
     if @thank.save
       flash[:notice] = 'Thank You was successfully created.'
