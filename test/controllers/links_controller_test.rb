@@ -31,7 +31,6 @@ class LinksControllerTest < ActionDispatch::IntegrationTest
     get new_deed_link_url(@deed)
     assert_response :success
     assert_select "form[action=\"#{deed_links_path(@deed)}\"]#new_link" do
-      assert_select 'input[hidden=hidden]#link_deed_id'
       assert_select 'input[type=text]#link_text'
       assert_select 'input[type=url]#link_url'
       assert_select 'input[type=submit][value="Add link"]'
@@ -60,5 +59,16 @@ class LinksControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to deed_path(@deed)
     assert_equal 'Link was successfully created.', flash[:notice]
+  end
+
+  test '#create shows invalid model errors' do
+    sign_in_as :admin
+
+    assert_difference '@deed.links.count', 0 do
+      post deed_links_url(@deed), params: { link: { text: 'foo', deed_id: @deed.id } }
+    end
+
+    assert_template :new
+    assert_equal "Url can't be blank", flash[:error]
   end
 end

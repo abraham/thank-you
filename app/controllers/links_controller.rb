@@ -4,11 +4,12 @@ class LinksController < ApplicationController
   before_action :find_deed, only: [:create, :new]
 
   def create
-    link = current_user.links.new(links_params)
+    @link = current_user.links.new(links_params.merge(deed: @deed))
 
-    if link.save
+    if @link.save
       redirect_to @deed, flash: { notice: 'Link was successfully created.' }
     else
+      flash.now[:error] = @link.errors.full_messages.to_sentence
       render :new
     end
   end

@@ -1,6 +1,4 @@
-<%= form_for [:deed, @link] do |f| %>
-  <%= f.text_field :deed_id, hidden: true, required: true %>
-
+<%= form_for [@deed, @link] do |f| %>
   <p>
     <%= f.label :text %>
     <%= f.text_field :text, placeholder: 'Example', required: true %>
