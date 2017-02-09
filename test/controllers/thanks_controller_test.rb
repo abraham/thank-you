@@ -78,4 +78,17 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to deed_path(@deed)
     assert_equal "You already thanked @#{@deed.name}", flash[:error]
   end
+
+  test '#create shows model errors' do
+    sign_in_as :user
+    tweet = Faker::Twitter.status
+    stub_statuses_update tweet, "#{tweet[:text]} #{deed_url(@deed)}"
+
+    assert_difference 'Thank.count', 0 do
+      post deed_thanks_url(@deed), params: { thank: { foo: 'bar' } }
+    end
+    assert_select '#form-error' do
+      assert_select 'li', "Text can't be blank"
+    end
+  end
 end
