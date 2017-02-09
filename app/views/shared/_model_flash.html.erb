@@ -1,0 +1,11 @@
+<% if item.errors.any? %>
+  <div id='form-error' class='error'>
+    <p><%= pluralize(item.errors.count, 'error') %> prohibited this <%= name %> from being saved:</p>
+
+    <ul>
+    <% item.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>

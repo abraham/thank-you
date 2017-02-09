@@ -5,7 +5,6 @@ class SessionsController < ApplicationController
   before_action :require_known_request_token, only: :finish
 
   def new
-    # TODO: require not be signed in
   end
 
   def create
@@ -40,13 +39,12 @@ class SessionsController < ApplicationController
     reset_session
     session[:user_id] = user.id
 
-    # TODO: Test referrer redirect
     redirect_to path
   end
 
   def destroy
     reset_session
-    redirect_to root_path, flash: { notice:  'Signed out.' }
+    redirect_to root_path, flash: { notice: 'Signed out.' }
   end
 
   private

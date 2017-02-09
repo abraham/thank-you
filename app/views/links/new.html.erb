@@ -1,3 +1,5 @@
+<%= render 'shared/model_flash', item: @link, name: 'Link' %>
+
 <%= form_for [@deed, @link] do |f| %>
   <p>
     <%= f.label :text %>

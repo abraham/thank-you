@@ -1,3 +1,5 @@
+<%= render 'shared/model_flash', item: @deed, name: 'Deed' %>
+
 <%= form_for @deed do |f| %>
   <p>
     <%= f.text_area :text, value: 'Thank You @ for ', required: true %>

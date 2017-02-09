@@ -9,7 +9,6 @@ class LinksController < ApplicationController
     if @link.save
       redirect_to @deed, flash: { notice: 'Link was successfully created.' }
     else
-      flash.now[:error] = @link.errors.full_messages.to_sentence
       render :new
     end
   end

@@ -44,6 +44,6 @@ class ThanksController < ApplicationController
   end
 
   def thanks_params
-    params.require(:thank).permit(:text, :deed_id)
+    params.require(:thank).permit(:text)
   end
 end

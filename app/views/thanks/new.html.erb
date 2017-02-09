@@ -1,24 +1,10 @@
-<% # TODO: show avatar of user tweeting %>
-
-<% if @thank.errors.any? %>
-  <div id="error_explanation">
-    <h2><%= pluralize(@thank.errors.count, "error") %> prohibited this Thank You from being saved:</h2>
-
-    <ul>
-    <% @thank.errors.full_messages.each do |msg| %>
-      <li><%= msg %></li>
-    <% end %>
-    </ul>
-  </div>
-<% end %>
+<%= render 'shared/model_flash', item: @thank, name: 'Thank You' %>
 
 <p>
   <%= image_tag current_user.avatar_url, width: 42, height: 42 %>
 </p>
 
-<%= form_for [:deed, @thank] do |f| %>
-  <%= f.text_field :deed_id, hidden: true, required: true %>
-
+<%= form_for [@deed, @thank] do |f| %>
   <p>
     <% # TODO: trim text to 138 charactors %>
     <%= f.text_area :text, value: @thank.text, required: true %>

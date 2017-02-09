@@ -8,7 +8,6 @@ class DeedsController < ApplicationController
     if @deed.valid?
       redirect_to @deed, flash: { notice: 'Thank You created successfully.' }
     else
-      flash.now[:error] = @deed.errors.full_messages.to_sentence
       render :new
     end
   end
