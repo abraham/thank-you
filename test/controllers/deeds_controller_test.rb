@@ -31,10 +31,12 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test '#root should get deeds' do
-    # TODO: create sample deeds
+    deeds = [create(:deed), create(:deed), create(:deed)]
     get root_path
     assert_response :success
-    # TODO: assert deed text on page
+    deeds.each do |deed|
+      assert_select 'strong', deed.text
+    end
   end
 
   test '#show renders deed' do
