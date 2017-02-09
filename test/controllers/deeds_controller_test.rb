@@ -85,10 +85,15 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
 
   test '#create allows admins to create Deeds' do
     sign_in_as :admin
+    text = Faker::Lorem.sentence(3)
+    name = Faker::Internet.user_name
     assert_difference 'Deed.count', 1 do
-      post deeds_path, params: { deeds: { text: Faker::Lorem.sentence(3), name: Faker::Internet.user_name } }
+      post deeds_path, params: { deeds: { text: text, name: name } }
     end
-    assert_redirected_to deed_path(Deed.last)
+    deed = Deed.last
+    assert_redirected_to deed_path(deed)
+    assert_equal text, deed.text
+    assert_equal name, deed.name
     assert_equal 'Thank You created successfully.', flash[:notice]
   end
 
