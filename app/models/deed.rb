@@ -3,7 +3,6 @@ class Deed < ApplicationRecord
   has_many :thanks
   has_many :links
 
-  validates :text, presence: true
   validates :user, presence: true
   validates :text, presence: true
   validates :name, presence: true
