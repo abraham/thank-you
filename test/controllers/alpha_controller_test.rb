@@ -2,7 +2,7 @@ require 'test_helper'
 
 class AlphaControllerTest < ActionDispatch::IntegrationTest
   test 'GET /alpha/join/123' do
-    assert_routing({ path: 'alpha/join/123', method: :get }, { controller: 'alpha', action: 'join', token: '123' })
+    assert_routing({ path: 'alpha/join/123', method: :get }, controller: 'alpha', action: 'join', token: '123')
   end
 
   test 'should redirect to root' do
