@@ -30,7 +30,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path
   end
 
-  test 'should get deeds' do
+  test '#root should get deeds' do
     # TODO: create sample deeds
     get root_path
     assert_response :success
@@ -41,7 +41,8 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     deed = create(:deed)
     get deed_path(deed)
     assert_response :success
-    # TODO: assert deed text on page
+    assert_select 'strong', deed.text
+    assert_select 'p', 'Citations:'
   end
 
   test '#new requires authentication' do
