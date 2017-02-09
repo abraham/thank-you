@@ -27,7 +27,7 @@ end
   rand(5).times do |_i|
     Link.create(deed: deed,
                 user: user,
-                text: Faker::Lorem.words(2).join(' '),
+                text: Faker::Lorem.word,
                 url: Faker::Internet.url('example.com'))
   end
 

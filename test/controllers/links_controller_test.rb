@@ -52,7 +52,7 @@ class LinksControllerTest < ActionDispatch::IntegrationTest
 
   test '#create adds a link to the Deed' do
     sign_in_as :admin
-    text = Faker::Lorem.words(2).join(' ')
+    text = Faker::Lorem.word
     url = Faker::Internet.url
 
     assert_difference '@deed.links.count', 1 do
