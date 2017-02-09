@@ -75,6 +75,8 @@ class LinksControllerTest < ActionDispatch::IntegrationTest
     assert_select '#form-error' do
       assert_select 'li', "Url can't be blank"
       assert_select 'li', "Text can't be blank"
+      assert_select 'li', 'Url must be a valid URL'
+      assert_select 'li', 3
     end
   end
 end

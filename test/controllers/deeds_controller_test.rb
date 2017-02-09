@@ -106,6 +106,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_select '#form-error' do
       assert_select 'li', "Name can't be blank"
       assert_select 'li', "Text can't be blank"
+      assert_select 'li', 2
     end
   end
 end
