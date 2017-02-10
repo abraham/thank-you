@@ -27,6 +27,6 @@ class DeedsController < ApplicationController
   private
 
   def deeds_params
-    params.require(:deeds).permit(:name, :reply_to_tweet_id, :text)
+    params.require(:deed).permit(:name, :reply_to_tweet_id, :text)
   end
 end

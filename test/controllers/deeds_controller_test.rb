@@ -88,7 +88,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     text = Faker::Lorem.sentence(3)
     name = Faker::Internet.user_name
     assert_difference 'Deed.count', 1 do
-      post deeds_path, params: { deeds: { text: text, name: name } }
+      post deeds_path, params: { deed: { text: text, name: name } }
     end
     deed = Deed.last
     assert_redirected_to deed_path(deed)
@@ -101,7 +101,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as :admin
 
     assert_difference 'Deed.count', 0 do
-      post deeds_path, params: { deeds: { foo: 'bar' } }
+      post deeds_path, params: { deed: { foo: 'bar' } }
     end
     assert_select '#form-error' do
       assert_select 'li', "Name can't be blank"
