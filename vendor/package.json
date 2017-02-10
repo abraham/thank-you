@@ -2,7 +2,8 @@
   "name": "thank-you",
   "private": true,
   "dependencies": {
-    "glob": "^7.1.1"
+    "glob": "^7.1.1",
+    "twitter-text": "^1.14.3"
   },
   "devDependencies": {
     "babel-core": "^6.22.1",
