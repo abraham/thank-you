@@ -109,4 +109,23 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
       assert_select 'li', 2
     end
   end
+
+  test '#show links tweet text' do
+    deed = create(:deed, text: 'Thank you @cat for cool stuff http://example.com/cool/stuff')
+    get deed_path(deed)
+    assert_response :success
+    assert_select 'strong', deed.text
+    assert_select 'strong a', 2
+    assert_select 'strong a', 'cat'
+    assert_select 'strong a', 'http://example.com/cool/stuff'
+  end
+
+  test '#show escapes evil deed text' do
+    deed = create(:deed, text: 'Thank you <a href="javascript:alert(666)">evil</a> <script>alert(666)</script>')
+    get deed_path(deed)
+    assert_response :success
+    assert_select 'strong', 'Thank you evil alert(666)'
+    assert_select 'strong a[href]', 0
+    assert_select 'strong script', 0
+  end
 end
