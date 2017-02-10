@@ -10,7 +10,7 @@ document.addEventListener('turbolinks:load', function() {
 
   var thankText = thankForm.querySelector('#thank_text');
   var remaningTextLength = thankForm.querySelector('#remaining_thank_text_length');
-  var thankUrl = thankForm.querySelector('#thank_url');
+  var deedUrl = thankForm.querySelector('#deed_url');
   var submitButton = thankForm.querySelector('input[type=submit]');
 
   thankText.addEventListener('input', validateText);
@@ -21,7 +21,7 @@ document.addEventListener('turbolinks:load', function() {
   }
 
   function thankTweetText() {
-    return thankText.value + ' ' + thankUrl.innerText;
+    return thankText.value + ' ' + deedUrl.innerText;
   }
 
   function validateText() {
