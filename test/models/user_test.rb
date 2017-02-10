@@ -32,7 +32,7 @@ class UserTest < ActiveSupport::TestCase
   test 'tweet makes request to Twitter' do
     status = Faker::Twitter.status
     in_reply_to_status_id = Faker::Number.number(10)
-    stub_statuses_update(status, in_reply_to_status_id)
+    stub_statuses_update(status, status[:text], in_reply_to_status_id: in_reply_to_status_id)
     tweet = @user.tweet(status[:text], in_reply_to_status_id)
     assert_equal status, tweet.to_hash
   end
@@ -42,11 +42,5 @@ class UserTest < ActiveSupport::TestCase
     tweet = @user.tweet(Faker::Lorem.sentence(3), nil)
     assert tweet.nil?
     AppConfig.posting_to_twitter_enabled = true
-  end
-
-  def stub_statuses_update(status, in_reply_to_status_id)
-    stub_request(:post, 'https://api.twitter.com/1.1/statuses/update.json')
-      .with(body: { in_reply_to_status_id: in_reply_to_status_id, status: status[:text] })
-      .to_return(status: 200, body: status.to_json)
   end
 end

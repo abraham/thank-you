@@ -71,3 +71,7 @@ class ActionDispatch::IntegrationTest
   include TwitterHelper
   include SessionHelper
 end
+
+class ActiveSupport::TestCase
+  include TwitterHelper
+end
