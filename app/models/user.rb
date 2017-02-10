@@ -1,5 +1,4 @@
 class User < ApplicationRecord
-  # TODO :status[active, disabled]
   has_many :thanks
   has_many :links
   has_many :deeds

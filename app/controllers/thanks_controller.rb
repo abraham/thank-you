@@ -12,7 +12,6 @@ class ThanksController < ApplicationController
     #     @thank.tweet_id = tweet.id
     #     @thank.data = tweet.to_hash
     #   else
-    #     # TODO: improve error handling
     #     flash[:warning] = 'Posting to Twitter currently disabled.'
     #   end
     # rescue Twitter::Error::Forbidden => error

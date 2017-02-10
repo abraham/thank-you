@@ -6,7 +6,6 @@
 
 <%= form_for [@deed, @thank] do |f| %>
   <p>
-    <% # TODO: trim text to 138 charactors %>
     <%= f.text_area :text, value: @thank.text, required: true %>
     <p><span id='thank_url'><%= deed_url @thank.deed %></span> will be appended to the tweet<p>
     <p><span id='remaining_thank_text_length'></span> charactors remaining</p>

@@ -24,7 +24,6 @@ class SessionsController < ApplicationController
                                           oauth_callback: finish_sessions_url)
     twitter_user = etl_user(access_token.token, access_token.secret)
 
-    # TODO: move this to a class method on User
     user = User.find_by(twitter_id: twitter_user.id) || User.new(twitter_id: twitter_user.id)
     user.name = twitter_user.name
     user.data = twitter_user.to_hash
