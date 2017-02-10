@@ -95,10 +95,10 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   test '#finish signs in existing users' do
     token = TwitterHelper::TWITTER_TOKEN
     secret = TwitterHelper::TWITTER_SECRET
-    user = create(:user)
+    old_user = create(:user)
     twitter_user = Faker::Twitter.user.merge(email: Faker::Internet.safe_email)
-    twitter_user[:id] = user.data['id']
-    twitter_user[:id_str] = user.data['id_str']
+    twitter_user[:id] = old_user.data['id']
+    twitter_user[:id_str] = old_user.data['id_str']
     stub_request_token(token, secret)
     post sessions_url
     stub_access_token(twitter_user[:id], twitter_user[:screen_name])
@@ -111,6 +111,10 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
 
     user = User.find(session[:user_id])
     assert_not_equal session_id, session.id
+    assert_equal user.id, old_user.id
+    assert_equal user.twitter_id, old_user.twitter_id
+    assert_not_equal user.screen_name, old_user.screen_name
+    assert_not_equal user.email, old_user.email
     assert_nil session[:request_token]
     assert_equal session[:user_id], User.last.id
     assert_equal user.screen_name, twitter_user[:screen_name]
