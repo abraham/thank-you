@@ -32,4 +32,17 @@ class User < ApplicationRecord
   def admin?
     AppConfig.admin_twitter_ids.include?(twitter_id)
   end
+
+  def self.from_twitter(twitter_user, access_token)
+    User.find_or_initialize_by(twitter_id: twitter_user.id).tap do |user|
+      user.data = twitter_user.to_hash
+      user.name = twitter_user.name
+      user.screen_name = twitter_user.screen_name
+      user.avatar_url = twitter_user.profile_image_uri_https
+      user.email = twitter_user.email
+      user.access_token = access_token.token
+      user.access_token_secret = access_token.secret
+      user.save
+    end
+  end
 end
