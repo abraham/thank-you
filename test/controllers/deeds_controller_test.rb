@@ -35,8 +35,9 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     get root_path
     assert_response :success
     deeds.each do |deed|
-      assert_select 'strong', deed.text
+      assert_select 'h2 a', deed.text
     end
+    assert_select 'h2 a', 3
   end
 
   test '#show renders deed' do
