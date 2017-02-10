@@ -35,7 +35,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     get root_path
     assert_response :success
     deeds.each do |deed|
-      assert_select 'h2 a', deed.text
+      assert_select "h2 a[href=\"#{deed_path(deed)}\"]", deed.text
     end
     assert_select 'h2 a', 3
   end
