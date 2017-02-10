@@ -31,7 +31,7 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "form[action=\"#{deed_thanks_path(@deed)}\"]#new_thank" do
       assert_select 'textarea#thank_text'
-      assert_select 'span', "#{deed_url(@deed)} will be appended to the tweet"
+      assert_select 'p', "#{deed_url(@deed)} will be appended to the tweet"
       assert_select 'input[type=submit][value="Tweet"]'
       assert_select "a[href=\"#{deed_path(@deed)}\"]", 'Cancel'
     end
@@ -89,7 +89,8 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
     end
     assert_select '#form-error' do
       assert_select 'li', "Text can't be blank"
-      assert_select 'li', 1
+      assert_select 'li', "Text is not a valid tweet"
+      assert_select 'li', 2
     end
   end
 end
