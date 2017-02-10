@@ -43,4 +43,13 @@ class UserTest < ActiveSupport::TestCase
     assert tweet.nil?
     AppConfig.posting_to_twitter_enabled = true
   end
+
+  test '#etled? knows if Twitter data is present' do
+    user = build(:user)
+    assert user.send(:etled?)
+    user.data = nil
+    assert_not user.send(:etled?)
+    user.data = {}
+    assert_not user.send(:etled?)
+  end
 end

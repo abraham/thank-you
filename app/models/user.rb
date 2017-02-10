@@ -45,4 +45,10 @@ class User < ApplicationRecord
       user.save
     end
   end
+
+  private
+
+  def etled?
+    data.present?
+  end
 end
