@@ -42,7 +42,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'You have to start the Sign in with Twitter flow before finishing it.', flash[:warning]
   end
 
-  test '#finish requires known request_tokens' do
+  test '#finish requires known request_token' do
     token = TwitterHelper::TWITTER_TOKEN
     secret = TwitterHelper::TWITTER_SECRET
     stub_request_token(token, secret)
@@ -54,7 +54,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'Sign in with Twitter details do not match. Starting over.', flash[:warning]
   end
 
-  test 'should post start' do
+  test '#create starts session flow' do
     token = TwitterHelper::TWITTER_TOKEN
     secret = TwitterHelper::TWITTER_SECRET
     stub_request_token(token, secret)
@@ -68,7 +68,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to "https://api.twitter.com/oauth/authorize?oauth_token=#{token}"
   end
 
-  test 'should get finish' do
+  test '#finish signs in new users' do
     token = TwitterHelper::TWITTER_TOKEN
     secret = TwitterHelper::TWITTER_SECRET
     twitter_user = Faker::Twitter.user.merge(email: Faker::Internet.safe_email)
@@ -92,6 +92,33 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_url
   end
 
+  test '#finish signs in existing users' do
+    token = TwitterHelper::TWITTER_TOKEN
+    secret = TwitterHelper::TWITTER_SECRET
+    user = create(:user)
+    twitter_user = Faker::Twitter.user.merge(email: Faker::Internet.safe_email)
+    twitter_user[:id] = user.data['id']
+    twitter_user[:id_str] = user.data['id_str']
+    stub_request_token(token, secret)
+    post sessions_url
+    stub_access_token(twitter_user[:id], twitter_user[:screen_name])
+    stub_verify_credentials(twitter_user)
+    session_id = session.id
+
+    assert_difference 'User.count', 0 do
+      get finish_sessions_url params: { oauth_token: token, oauth_verifier: 'verifier' }
+    end
+
+    user = User.find(session[:user_id])
+    assert_not_equal session_id, session.id
+    assert_nil session[:request_token]
+    assert_equal session[:user_id], User.last.id
+    assert_equal user.screen_name, twitter_user[:screen_name]
+    assert_equal user.twitter_id, twitter_user[:id].to_s
+    assert_equal user.email, twitter_user[:email]
+    assert_redirected_to root_url
+  end
+
   test '#finish should handle being denied access' do
     get finish_sessions_url params: { denied: 'D_gvkwAAAAAAy9zXAAABWhooOmA' }
 
@@ -99,7 +126,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'To sign in you must allow access to your Twitter account.', flash[:warning]
   end
 
-  test 'should redirect to local referrer location' do
+  test '#finish returns to previous location' do
     deed = create(:deed)
     get new_deed_thank_url(deed)
     assert_redirected_to new_sessions_url
@@ -116,15 +143,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_deed_thank_url(deed)
   end
 
-  test 'should get create with returning user' do
-    # TODO
-  end
-
-  test 'should get create with auth denied' do
-    # TODO
-  end
-
-  test 'should delete destroy' do
+  test '#destroy should sign out the user' do
     sign_in_as :user
     session_id = session.id
 

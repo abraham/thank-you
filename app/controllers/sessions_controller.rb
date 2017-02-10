@@ -25,8 +25,8 @@ class SessionsController < ApplicationController
     twitter_user = etl_user(access_token.token, access_token.secret)
 
     user = User.find_by(twitter_id: twitter_user.id) || User.new(twitter_id: twitter_user.id)
-    user.name = twitter_user.name
     user.data = twitter_user.to_hash
+    user.name = twitter_user.name
     user.screen_name = twitter_user.screen_name
     user.avatar_url = twitter_user.profile_image_uri_https
     user.email = twitter_user.email
