@@ -12,9 +12,10 @@ module ThankYou
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
-    config.generators.javascript_engine = :js
     config.generators do |g|
+      g.javascript_engine :js
       g.orm :active_record, primary_key_type: :uuid
+      g.test_framework :test_unit, fixture: false
     end
   end
 end

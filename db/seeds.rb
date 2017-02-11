@@ -22,7 +22,7 @@ end
   user = users.sample
   name = Faker::Internet.user_name
   deed = Deed.create(text: "Thank you @#{name} for #{Faker::Hipster.sentence}",
-                     name: name,
+                     names: [name],
                      user: user)
   rand(5).times do |_i|
     Link.create(deed: deed,
@@ -36,7 +36,7 @@ end
     # NOTE: some of these fail due to thank/user uniqueness constraints
     Thank.create(deed: deed,
                  text: deed.text,
-                 tweet_id: tweet[:id_str],
+                #  tweet_id: tweet[:id_str],
                  data: tweet,
                  user: users.sample)
   end

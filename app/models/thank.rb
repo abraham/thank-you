@@ -3,6 +3,7 @@ class Thank < ApplicationRecord
 
   belongs_to :deed, counter_cache: true
   belongs_to :user, counter_cache: true
+  has_one :tweet, as: :tweetable, dependent: :destroy
 
   validate :text_length
   validates :deed_id, uniqueness: { scope: :user_id, message: 'you has already been given' }

@@ -17,4 +17,20 @@ class ThankTest < ActiveSupport::TestCase
     assert !thank.valid?
     assert_equal 'Text is not a valid tweet', thank.errors.full_messages.first
   end
+
+  test '#new' do
+    thank = build(:thank)
+    assert thank.valid?
+    assert_not thank.tweet.valid?
+    assert thank.new_record?
+    assert thank.tweet.new_record?
+  end
+
+  test '#create' do
+    thank = create(:thank)
+    assert thank
+    assert thank.tweet
+    assert_not thank.new_record?
+    assert_not thank.tweet.new_record?
+  end
 end

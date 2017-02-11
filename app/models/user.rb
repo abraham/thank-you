@@ -1,9 +1,10 @@
 class User < ApplicationRecord
   enum status: { active: 0, disabled: 1, expired: 2 }
 
-  has_many :thanks
-  has_many :links
   has_many :deeds
+  has_many :links
+  has_many :thanks
+  has_many :tweets
 
   validates :access_token_secret, presence: true
   validates :access_token, presence: true
