@@ -126,13 +126,13 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test '#show links tweet text' do
-    deed = create(:deed, text: 'cool stuff http://example.com/cool/stuff')
+    deed = create(:deed, text: 'cool stuff https://example.com/cool/stuff')
     get deed_path(deed)
     assert_response :success
     assert_select 'strong', deed.display_text
     assert_select 'strong a', 2
     assert_select 'strong a', deed.names.first
-    assert_select 'strong a', 'http://example.com/cool/stuff'
+    assert_select 'strong a', 'https://example.com/cool/stuff'
   end
 
   test '#show escapes evil deed text' do
