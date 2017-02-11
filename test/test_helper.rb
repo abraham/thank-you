@@ -16,7 +16,7 @@ module SessionHelper
   end
 
   def finish_sign_in(token, twitter_user)
-    stub_access_token(twitter_user[:id], twitter_user[:screen_name])
+    stub_access_token(twitter_user['id'], twitter_user['screen_name'])
     stub_verify_credentials(twitter_user)
     get finish_sessions_url params: { oauth_token: token, oauth_verifier: 'verifier' }
   end

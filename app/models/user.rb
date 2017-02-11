@@ -33,22 +33,36 @@ class User < ApplicationRecord
     AppConfig.admin_twitter_ids.include?(twitter_id)
   end
 
-  def self.from_twitter(twitter_user, access_token)
-    User.find_or_initialize_by(twitter_id: twitter_user.id).tap do |user|
-      user.data = twitter_user.to_hash
-      user.name = twitter_user.name
-      user.screen_name = twitter_user.screen_name
-      user.avatar_url = twitter_user.profile_image_uri_https
-      user.email = twitter_user.email
+  def self.from_access_token(access_token)
+    User.find_or_initialize_by(twitter_id: access_token.params['user_id']).tap do |user|
       user.access_token = access_token.token
       user.access_token_secret = access_token.secret
+      user.etl!
       user.save
     end
   end
 
-  private
-
   def etled?
     data.present?
+  end
+
+  def etl!
+    twitter_user = client.user(include_email: true)
+    self.data = twitter_user.to_hash
+    self.name = twitter_user.name
+    self.screen_name = twitter_user.screen_name
+    self.avatar_url = twitter_user.profile_image_uri_https
+    self.email = twitter_user.email
+  end
+
+  private
+
+  def client
+    Twitter::REST::Client.new do |config|
+      config.consumer_key = Rails.application.secrets.twitter_consumer_key
+      config.consumer_secret = Rails.application.secrets.twitter_consumer_secret
+      config.access_token = access_token
+      config.access_token_secret = access_token_secret
+    end
   end
 end

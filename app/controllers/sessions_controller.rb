@@ -18,10 +18,7 @@ class SessionsController < ApplicationController
 
   def finish
     access_token = exchange_request_token(session[:request_token], params[:oauth_verifier])
-    twitter_user = etl_user(access_token.token, access_token.secret)
-
-    user = User.from_twitter(twitter_user, access_token)
-
+    user = User.from_access_token(access_token)
     path = next_path
     reset_session
     session[:user_id] = user.id
@@ -46,20 +43,6 @@ class SessionsController < ApplicationController
                         Rails.application.secrets.twitter_consumer_secret,
                         site: 'https://api.twitter.com',
                         scheme: :header)
-  end
-
-  def consumer_with_request_token(consumer, token, secret)
-    OAuth::RequestToken.new(consumer, token, secret)
-  end
-
-  def etl_user(token, secret)
-    client = Twitter::REST::Client.new do |config|
-      config.consumer_key = Rails.application.secrets.twitter_consumer_key
-      config.consumer_secret = Rails.application.secrets.twitter_consumer_secret
-      config.access_token = token
-      config.access_token_secret = secret
-    end
-    client.user(include_email: true)
   end
 
   def next_path

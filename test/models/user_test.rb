@@ -2,8 +2,8 @@ require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
   def setup
-    @user = create(:user)
-    @deed = create(:deed, user: @user)
+    @deed = create(:deed)
+    @user = @deed.user
     @default_admin_twitter_ids = AppConfig.admin_twitter_ids
   end
 
@@ -11,12 +11,61 @@ class UserTest < ActiveSupport::TestCase
     AppConfig.admin_twitter_ids = @default_admin_twitter_ids
   end
 
-  test 'admin? works for admins' do
+  test '#etl! sets user' do
+    twitter_user = Faker::Twitter.user.merge(email: Faker::Internet.safe_email)
+    stub_verify_credentials(twitter_user)
+    user = User.new(twitter_id: twitter_user[:id],
+                    access_token: TwitterHelper::TWITTER_TOKEN,
+                    access_token_secret: TwitterHelper::TWITTER_SECRET)
+    user.etl!
+    assert user.etled?
+    assert user.save
+    assert_equal twitter_user[:id].to_s, user.twitter_id
+    assert_equal twitter_user[:email], user.email
+    assert_equal twitter_user[:name], user.name
+    assert_equal twitter_user[:screen_name], user.screen_name
+    assert_equal twitter_user[:profile_image_url_https], user.avatar_url
+  end
+
+  test '#etl! sets user.data' do
+    twitter_user = Faker::Twitter.user.merge(email: Faker::Internet.safe_email)
+    stub_verify_credentials(twitter_user)
+    user = User.new(twitter_id: twitter_user[:id],
+                    access_token: TwitterHelper::TWITTER_TOKEN,
+                    access_token_secret: TwitterHelper::TWITTER_SECRET)
+    user.etl!
+    assert user.etled?
+    assert user.save
+    assert_equal twitter_user[:id], user.data['id']
+    assert_equal twitter_user[:email], user.data['email']
+    assert_equal twitter_user[:name], user.data['name']
+    assert_equal twitter_user[:screen_name], user.data['screen_name']
+    assert_equal twitter_user[:profile_image_url_https], user.data['profile_image_url_https']
+  end
+
+  test '#etl! updates existing user' do
+    twitter_user = Faker::Twitter.user.merge(email: Faker::Internet.safe_email)
+    stub_verify_credentials(twitter_user)
+    user = create(:user,
+                  twitter_id: twitter_user[:id],
+                  access_token: TwitterHelper::TWITTER_TOKEN,
+                  access_token_secret: TwitterHelper::TWITTER_SECRET)
+    user.etl!
+    assert user.etled?
+    assert user.save
+    assert_equal twitter_user[:id].to_s, user.twitter_id
+    assert_equal twitter_user[:email], user.email
+    assert_equal twitter_user[:name], user.name
+    assert_equal twitter_user[:screen_name], user.screen_name
+    assert_equal twitter_user[:profile_image_url_https], user.avatar_url
+  end
+
+  test '#admin? works for admins' do
     AppConfig.admin_twitter_ids = [@user.twitter_id]
     assert @user.admin?
   end
 
-  test 'admin? does not work for users' do
+  test '#admin? does not work for users' do
     assert !@user.admin?
   end
 
