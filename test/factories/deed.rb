@@ -1,9 +1,7 @@
 FactoryGirl.define do
   factory :deed do
-    user_name = Faker::Internet.user_name
-
     text { Faker::Hipster.sentence }
-    names [user_name]
+    names { [Faker::Internet.user_name.sub('.', '_')] }
     user
   end
 end
