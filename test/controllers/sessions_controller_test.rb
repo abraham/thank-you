@@ -123,6 +123,22 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_url
   end
 
+  test '#finish does not change User.status' do
+    token = TwitterHelper::TWITTER_TOKEN
+    secret = TwitterHelper::TWITTER_SECRET
+    user = create(:user, status: :disabled)
+    stub_request_token(token, secret)
+    post sessions_url
+    stub_access_token(user[:twitter_id], user[:screen_name])
+    stub_verify_credentials(user.data)
+
+    get finish_sessions_url params: { oauth_token: token, oauth_verifier: 'verifier' }
+
+    user = User.find(session[:user_id])
+    assert user.disabled?
+    assert_redirected_to root_url
+  end
+
   test '#finish should handle being denied access' do
     get finish_sessions_url params: { denied: 'D_gvkwAAAAAAy9zXAAABWhooOmA' }
 
