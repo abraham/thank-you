@@ -1,11 +1,15 @@
 <%= render 'shared/model_flash', item: @deed, name: 'Deed' %>
 
 <%= form_for @deed do |f| %>
+  <p>Thank You</p>
   <p>
-    <%= f.text_field :name, placeholder: 'name', required: true %>
+    <%= text_field_tag 'deed[name][]', nil, placeholder: 'name', required: true %>
+    <%= text_field_tag 'deed[name][]', nil, placeholder: 'name' %>
+    <%= text_field_tag 'deed[name][]', nil, placeholder: 'name' %>
   </p>
+  <p>for</p>
   <p>
-    <%= f.text_area :text, value: 'Thank You @ for ', required: true %>
+    <%= f.text_area :text, placeholder: 'awesome thing that you did', required: true %>
   </p>
   <p>
     <%= f.text_field :reply_to_tweet_id, placeholder: '123456789' %>

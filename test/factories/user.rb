@@ -1,7 +1,10 @@
 FactoryGirl.define do
   factory :user do
     status :active
-    data { Faker::Twitter.user.merge(email: Faker::Internet.safe_email) }
+    data do
+      Faker::Twitter.user.merge(email: Faker::Internet.safe_email,
+                                screen_name: Faker::Internet.user_name.sub('.', '_'))
+    end
     twitter_id { data[:id].to_s }
     screen_name { data[:screen_name] }
     name { data[:name] }

@@ -29,14 +29,14 @@ class ThanksController < ApplicationController
   end
 
   def new
-    @thank = @deed.thanks.new(text: @deed.text)
+    @thank = @deed.thanks.new(text: @deed.display_text)
   end
 
   private
 
   def not_already_thanked
     return unless current_user.thanked?(@deed)
-    flash[:error] = "You already thanked @#{@deed.name}"
+    flash[:error] = "You already thanked #{@deed.display_names}"
     redirect_to deed_path(@deed)
   end
 

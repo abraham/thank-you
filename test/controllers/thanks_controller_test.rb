@@ -64,7 +64,7 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
     create(:thank, data: "#{@deed.text} first", user: user, deed: @deed)
     get new_deed_thank_url(@deed)
     assert_redirected_to deed_path(@deed)
-    assert_equal "You already thanked @#{@deed.name}", flash[:error]
+    assert_equal "You already thanked #{@deed.display_names}", flash[:error]
   end
 
   test '#create should only allow creating one thank' do
@@ -78,7 +78,7 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to deed_path(@deed)
-    assert_equal "You already thanked @#{@deed.name}", flash[:error]
+    assert_equal "You already thanked #{@deed.display_names}", flash[:error]
   end
 
   test '#create shows model errors' do

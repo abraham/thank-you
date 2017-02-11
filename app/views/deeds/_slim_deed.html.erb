@@ -1,5 +1,5 @@
 <p>
-  <h2><%= link_to deed.text, deed %></h2>
+  <h2><%= link_to deed.display_text, deed %></h2>
   <p>Recently thanked by <%= render 'thanks/thanks', thanks: deed.thanks, more: deed.thanks_count - 10 %></p>
   <p><%= render 'new_link', deed: deed %> <%= link_to 'Read more', deed %></p>
 </p>

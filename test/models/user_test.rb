@@ -143,7 +143,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test '#default_avatar?' do
-    user = create(:user)
+    user = create(:user, default_avatar: false)
     assert_not user.default_avatar?
     user.default_avatar = true
     assert user.default_avatar?
