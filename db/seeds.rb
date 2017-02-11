@@ -6,38 +6,75 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-users = (1..50).map do |_i|
+thank_names = Array.new(rand(40..50)).map { Faker::Internet.user_name.sub('.', '_') }
+
+users = Array.new(rand(40..50)).map do |_i|
   twitter_user = Faker::Twitter.user.merge(email: Faker::Internet.safe_email)
-  User.create(twitter_id: twitter_user[:id_str],
-              screen_name: Faker::Internet.user_name,
-              name: Faker::Name.name,
-              avatar_url: Faker::Avatar.image(twitter_user[:id_str], '48x48'),
-              data: twitter_user,
-              access_token: Faker::Internet.password(10, 20),
-              access_token_secret: Faker::Internet.password(20, 30),
-              email: Faker::Internet.safe_email)
+  twitter_user[:screen_name] = twitter_user[:screen_name].sub('.', '_')
+  user = User.create(twitter_id: twitter_user[:id_str],
+                     screen_name: twitter_user[:screen_name],
+                     name: twitter_user[:name],
+                     avatar_url: twitter_user[:profile_image_url_https],
+                     data: twitter_user,
+                     access_token: Faker::Internet.password(10, 20),
+                     access_token_secret: Faker::Internet.password(20, 30),
+                     email: Faker::Internet.safe_email,
+                     default_avatar: twitter_user[:default_profile_image])
+  puts "Error seeding user: #{user.errors.full_messages.to_sentence}" if user.new_record?
+
+  user
 end
 
-50.times do |_i|
-  user = users.sample
-  name = Faker::Internet.user_name
-  deed = Deed.create(text: "Thank you @#{name} for #{Faker::Hipster.sentence}",
-                     names: [name],
-                     user: user)
-  rand(5).times do |_i|
-    Link.create(deed: deed,
-                user: user,
-                text: Faker::Lorem.word,
-                url: Faker::Internet.url('example.com'))
+puts "Seeded #{users.size} users"
+
+deeds = Array.new(rand(40..50)).map do |_i|
+  deed = Deed.create(text: Faker::Hipster.sentence,
+                     names: thank_names.sample(rand(1..3)),
+                     user: users.sample)
+  puts "Error seeding deed: #{deed.errors.full_messages.to_sentence}" if deed.new_record?
+
+  deed
+end
+
+puts "Seeded #{deeds.size} deeds"
+
+links = deeds.map do |deed|
+  deed_links = Array.new(rand(5)).map do |_i|
+    link = Link.create(deed: deed,
+                       user: deed.user,
+                       text: Faker::Lorem.word,
+                       url: Faker::Internet.url('example.com'))
+    puts "Error seeding link: #{link.errors.full_messages.to_sentence}" if link.new_record?
+
+    link
   end
 
-  rand(50).times do |_i|
-    tweet = Faker::Twitter.status
-    # NOTE: some of these fail due to thank/user uniqueness constraints
-    Thank.create(deed: deed,
-                 text: deed.text,
-                #  tweet_id: tweet[:id_str],
-                 data: tweet,
-                 user: users.sample)
+  deed_links
+end.flatten
+
+puts "Seeded #{links.size} links"
+
+thanks = deeds.map do |deed|
+  deed_thanks = Array.new(rand(25)).map do |_i|
+    user = users.sample
+    status = Faker::Twitter.status
+    thank = Thank.new(deed: deed,
+                      text: deed.text,
+                      user: user)
+    thank.tweet = Tweet.new(tweetable: thank,
+                            user: user,
+                            data: status,
+                            twitter_id: status[:id],
+                            text: thank.text)
+    next if user.thanked?(deed)
+
+    thank.save
+    puts "Error seeding thank: #{thank.errors.full_messages.to_sentence}" if thank.new_record?
+
+    thank
   end
-end
+
+  deed_thanks
+end.flatten
+
+puts "Seeded #{thanks.size} thanks"
