@@ -32,4 +32,40 @@ class ThankTest < ActiveSupport::TestCase
     assert_not thank.new_record?
     assert_not thank.tweet.new_record?
   end
+
+  test '#save also saves tweet' do
+    thank = build(:thank)
+    assert thank.new_record?
+    assert thank.tweet.new_record?
+    assert_difference 'Thank.count', 1 do
+      assert_difference 'Tweet.count', 1 do
+        assert thank.save
+      end
+    end
+    assert_not thank.new_record?
+    assert_not thank.tweet.new_record?
+  end
+
+  test '#destroy also deletes tweet' do
+    thank = create(:thank)
+    assert_difference 'Thank.count', -1 do
+      assert_difference 'Tweet.count', -1 do
+        assert thank.destroy
+      end
+    end
+  end
+
+  test '#save requires tweet' do
+    thank = build(:thank)
+    thank.tweet = nil
+    assert thank.new_record?
+    assert_nil thank.tweet
+    assert_no_difference 'Thank.count' do
+      assert_no_difference 'Tweet.count' do
+        assert_not thank.save
+      end
+    end
+    assert thank.new_record?
+    assert_equal ["Tweet can't be blank"], thank.errors.full_messages
+  end
 end
