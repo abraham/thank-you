@@ -123,4 +123,22 @@ class UserTest < ActiveSupport::TestCase
     end
     assert_equal User.last.twitter_id, @user.data['id_str']
   end
+
+  test '#active?' do
+    user = create(:user)
+    assert user.active?
+    assert_not user.disabled?
+  end
+
+  test '#disabled?' do
+    user = create(:user, status: :disabled)
+    assert_not user.active?
+    assert user.disabled?
+  end
+
+  test '#expired?' do
+    user = create(:user, status: :expired)
+    assert_not user.active?
+    assert user.expired?
+  end
 end
