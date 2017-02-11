@@ -9,5 +9,6 @@ FactoryGirl.define do
     avatar_url { data[:profile_image_url_https] }
     access_token { "#{twitter_id}-#{Faker::Internet.password(30, 40)}" }
     access_token_secret { Faker::Internet.password(40, 50) }
+    default_avatar { data[:default_profile_image] }
   end
 end

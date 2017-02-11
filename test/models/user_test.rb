@@ -141,4 +141,11 @@ class UserTest < ActiveSupport::TestCase
     assert_not user.active?
     assert user.expired?
   end
+
+  test '#default_avatar?' do
+    user = create(:user)
+    assert_not user.default_avatar?
+    user.default_avatar = true
+    assert user.default_avatar?
+  end
 end

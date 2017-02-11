@@ -46,6 +46,7 @@ class User < ApplicationRecord
     self.screen_name = twitter_user.screen_name
     self.avatar_url = twitter_user.profile_image_uri_https
     self.email = twitter_user.email
+    self.default_avatar = twitter_user.default_profile_image?
   end
 
   private
