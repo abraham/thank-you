@@ -2,8 +2,7 @@ require 'test_helper'
 
 class ThankTest < ActiveSupport::TestCase
   test 'text length conforms to Twitter spec' do
-    deed = create(:deed)
-    thank = deed.thanks.new(user: deed.user, text: 'Hello World')
+    thank = build(:thank)
     assert thank.valid?
     thank.text = 'n' * 200
     assert !thank.valid?
@@ -18,15 +17,15 @@ class ThankTest < ActiveSupport::TestCase
     assert_equal 'Text is not a valid tweet', thank.errors.full_messages.first
   end
 
-  test '#new' do
+  test '#new works with factory girl' do
     thank = build(:thank)
     assert thank.valid?
-    assert_not thank.tweet.valid?
+    assert thank.tweet.valid?
     assert thank.new_record?
     assert thank.tweet.new_record?
   end
 
-  test '#create' do
+  test '#create works with factory girl' do
     thank = create(:thank)
     assert thank
     assert thank.tweet

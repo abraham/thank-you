@@ -7,11 +7,11 @@ FactoryGirl.define do
     user
     deed
 
-    after(:create) do |thank|
+    before(:create) do |thank|
       unless thank.tweet
         thank.build_tweet(attributes_for(:tweet))
         thank.tweet.user = thank.user
-        thank.tweet.save
+        thank.tweet.tweetable = thank
       end
     end
 
@@ -20,6 +20,7 @@ FactoryGirl.define do
         build(:tweet, tweetable: thank)
         thank.build_tweet(attributes_for(:tweet))
         thank.tweet.user = thank.user
+        thank.tweet.tweetable = thank
       end
     end
   end

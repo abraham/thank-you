@@ -4,6 +4,6 @@ FactoryGirl.define do
     text { data[:text] }
     add_attribute(:twitter_id) { data[:id] }
     user
-    # association :tweetable, factory: :thank
+    association :tweetable, factory: :thank
   end
 end
