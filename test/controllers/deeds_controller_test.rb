@@ -77,7 +77,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     get new_deed_path
     assert_response :success
     assert_select "form[action=\"#{deeds_path}\"]#new_deed" do
-      assert_select 'input[type=text]#deed_name_', 3
+      assert_select 'input[type=text]#deed_names_', 3
       assert_select 'textarea#deed_text'
       assert_select 'input[type=text]#deed_reply_to_tweet_id'
       assert_select 'input[type=submit][value="Create deed"]'
@@ -89,12 +89,12 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     text = Faker::Lorem.sentence(3)
     names = [Faker::Internet.user_name]
     assert_difference 'Deed.count', 1 do
-      post deeds_path, params: { deed: { text: text, name: names } }
+      post deeds_path, params: { deed: { text: text, names: names } }
     end
     deed = Deed.last
     assert_redirected_to deed_path(deed)
     assert_equal text, deed.text
-    assert_equal names, deed.name
+    assert_equal names, deed.names
     assert_equal 'Thank You created successfully.', flash[:notice]
   end
 
@@ -103,12 +103,12 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     text = Faker::Lorem.sentence(3)
     names = [Faker::Internet.user_name, Faker::Internet.user_name, Faker::Internet.user_name]
     assert_difference 'Deed.count', 1 do
-      post deeds_path, params: { deed: { text: text, name: names } }
+      post deeds_path, params: { deed: { text: text, names: names } }
     end
     deed = Deed.last
     assert_redirected_to deed_path(deed)
     assert_equal text, deed.text
-    assert_equal names, deed.name
+    assert_equal names, deed.names
     assert_equal 'Thank You created successfully.', flash[:notice]
   end
 
@@ -119,7 +119,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
       post deeds_path, params: { deed: { foo: 'bar' } }
     end
     assert_select '#form-error' do
-      assert_select 'li', "Name can't be blank"
+      assert_select 'li', "Names can't be blank"
       assert_select 'li', "Text can't be blank"
       assert_select 'li', 2
     end
@@ -131,7 +131,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select 'strong', deed.display_text
     assert_select 'strong a', 2
-    assert_select 'strong a', deed.name.first
+    assert_select 'strong a', deed.names.first
     assert_select 'strong a', 'http://example.com/cool/stuff'
   end
 
@@ -141,7 +141,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select 'strong', "Thank You #{deed.display_names} for evil alert(666)"
     assert_select 'strong a[href]', 1
-    assert_select "strong a[href=\"https://twitter.com/#{deed.name.first}\"]", 1
+    assert_select "strong a[href=\"https://twitter.com/#{deed.names.first}\"]", 1
     assert_select 'strong script', 0
   end
 end

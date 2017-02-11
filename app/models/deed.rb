@@ -3,8 +3,8 @@ class Deed < ApplicationRecord
   has_many :thanks
   has_many :links
 
-  validate :name_size
-  validates :name, presence: true
+  validate :names_size
+  validates :names, presence: true
   validates :text, presence: true
   validates :user, presence: true
 
@@ -15,12 +15,12 @@ class Deed < ApplicationRecord
   end
 
   def display_names
-    name.map { |n| "@#{n}" }.to_sentence
+    names.map { |n| "@#{n}" }.to_sentence
   end
 
   private
 
-  def name_size
-    errors.add(:name, 'has too many values') if name && name.size > 3
+  def names_size
+    errors.add(:names, 'has too many values') if names && names.size > 3
   end
 end

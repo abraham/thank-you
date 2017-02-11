@@ -3,7 +3,7 @@ FactoryGirl.define do
     user_name = Faker::Internet.user_name
 
     text { Faker::Hipster.sentence }
-    name [user_name]
+    names [user_name]
     user
   end
 end
