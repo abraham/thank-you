@@ -24,10 +24,10 @@ class User < ApplicationRecord
     AppConfig.admin_twitter_ids.include?(twitter_id)
   end
 
-  def self.from_access_token(access_token)
-    User.find_or_initialize_by(twitter_id: access_token.params['user_id']).tap do |user|
-      user.access_token = access_token.token
-      user.access_token_secret = access_token.secret
+  def self.from_access_token(user_id, access_token, access_token_secret)
+    User.find_or_initialize_by(twitter_id: user_id).tap do |user|
+      user.access_token = access_token
+      user.access_token_secret = access_token_secret
       user.etl!
       user.save
     end

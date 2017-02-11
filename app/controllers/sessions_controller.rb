@@ -18,7 +18,7 @@ class SessionsController < ApplicationController
 
   def finish
     access_token = exchange_request_token(session[:request_token], params[:oauth_verifier])
-    user = User.from_access_token(access_token)
+    user = User.from_access_token(access_token.params['user_id'], access_token.token, access_token.secret)
     path = next_path
     reset_session
     session[:user_id] = user.id
