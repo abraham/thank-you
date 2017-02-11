@@ -115,7 +115,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
   test '#create shows model errors' do
     sign_in_as :admin
 
-    assert_difference 'Deed.count', 0 do
+    assert_no_difference 'Deed.count' do
       post deeds_path, params: { deed: { foo: 'bar' } }
     end
     assert_select '#form-error' do

@@ -118,7 +118,7 @@ class UserTest < ActiveSupport::TestCase
     access_token = TwitterHelper::TWITTER_TOKEN
     access_token_secret = TwitterHelper::TWITTER_SECRET
     stub_verify_credentials(@user.data)
-    assert_difference 'User.count', 0 do
+    assert_no_difference 'User.count' do
       User.from_access_token(@user.data['id'], access_token, access_token_secret)
     end
     assert_equal User.last.twitter_id, @user.data['id_str']

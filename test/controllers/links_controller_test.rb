@@ -69,7 +69,7 @@ class LinksControllerTest < ActionDispatch::IntegrationTest
   test '#create shows model errors' do
     sign_in_as :admin
 
-    assert_difference 'Link.count', 0 do
+    assert_no_difference 'Link.count' do
       post deed_links_url(@deed), params: { link: { foo: 'bar' } }
     end
     assert_select '#form-error' do

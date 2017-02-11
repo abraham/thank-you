@@ -105,7 +105,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     stub_verify_credentials(twitter_user)
     session_id = session.id
 
-    assert_difference 'User.count', 0 do
+    assert_no_difference 'User.count' do
       get finish_sessions_url params: { oauth_token: token, oauth_verifier: 'verifier' }
     end
 

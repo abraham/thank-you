@@ -73,7 +73,7 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
     create(:thank, data: "#{@deed.text} first", user: user, deed: @deed)
     stub_statuses_update tweet, "#{tweet[:text]} #{deed_url(@deed)}"
 
-    assert_difference 'Thank.count', 0 do
+    assert_no_difference 'Thank.count' do
       post deed_thanks_url(@deed), params: { thank: { text: "#{@deed.text} second" } }
     end
 
@@ -86,12 +86,12 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
     tweet = Faker::Twitter.status
     stub_statuses_update tweet, "#{tweet[:text]} #{deed_url(@deed)}"
 
-    assert_difference 'Thank.count', 0 do
+    assert_no_difference 'Thank.count' do
       post deed_thanks_url(@deed), params: { thank: { foo: 'bar' } }
     end
     assert_select '#form-error' do
       assert_select 'li', "Text can't be blank"
-      assert_select 'li', "Text is not a valid tweet"
+      assert_select 'li', 'Text is not a valid tweet'
       assert_select 'li', 2
     end
   end
