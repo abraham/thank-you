@@ -66,11 +66,11 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test '#admin? does not work for users' do
-    assert !@user.admin?
+    assert_not @user.admin?
   end
 
   test '#thanked? with no thanks' do
-    assert !@user.thanked?(@deed)
+    assert_not @user.thanked?(@deed)
   end
 
   test '#thanked? with thanks' do
@@ -78,7 +78,7 @@ class UserTest < ActiveSupport::TestCase
     assert @user.thanked?(@deed)
   end
 
-  test 'tweet makes request to Twitter' do
+  test '#tweet makes request to Twitter' do
     status = Faker::Twitter.status
     in_reply_to_status_id = Faker::Number.number(10)
     stub_statuses_update(status, status[:text], in_reply_to_status_id: in_reply_to_status_id)
@@ -86,7 +86,7 @@ class UserTest < ActiveSupport::TestCase
     assert_equal status, tweet.to_hash
   end
 
-  test 'tweet fails when disabled' do
+  test '#tweet fails when disabled' do
     AppConfig.posting_to_twitter_enabled = false
     tweet = @user.tweet(Faker::Lorem.sentence(3), nil)
     assert tweet.nil?
