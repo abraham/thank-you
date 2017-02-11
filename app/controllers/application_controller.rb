@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   before_action :check_for_alpha_token
+  before_action :require_active_user
 
   helper_method :current_user
 
@@ -14,6 +15,12 @@ class ApplicationController < ActionController::Base
 
   def current_user
     @_current_user ||= session[:user_id] && User.find_by(id: session[:user_id])
+  end
+
+  def require_active_user
+    return unless current_user && current_user.disabled?
+    reset_session
+    redirect_to root_url, flash: { warning: 'Your account is not activated' }
   end
 
   def require_signin
