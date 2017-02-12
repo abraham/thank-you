@@ -45,19 +45,20 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   test '#finish requires known request_token' do
     token = TwitterHelper::TWITTER_TOKEN
     secret = TwitterHelper::TWITTER_SECRET
-    stub_request_token(token, secret)
+    stub = stub_request_token(token, secret)
     post sessions_url
 
     get finish_sessions_url params: { oauth_token: 'different-token', oauth_verifier: 'verifier' }
 
     assert_redirected_to new_sessions_url
     assert_equal 'Sign in with Twitter details do not match. Starting over.', flash[:warning]
+    remove_request_stub stub
   end
 
   test '#create starts session flow' do
     token = TwitterHelper::TWITTER_TOKEN
     secret = TwitterHelper::TWITTER_SECRET
-    stub_request_token(token, secret)
+    stub = stub_request_token(token, secret)
     get new_sessions_url
     session_id = session.id
 
@@ -66,16 +67,19 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_not_equal session_id, session.id
     assert_equal({ token: token, secret: secret }, session[:request_token])
     assert_redirected_to "https://api.twitter.com/oauth/authorize?oauth_token=#{token}"
+    remove_request_stub stub
   end
 
   test '#finish signs in new users' do
     token = TwitterHelper::TWITTER_TOKEN
     secret = TwitterHelper::TWITTER_SECRET
     twitter_user = Faker::Twitter.user.merge(email: Faker::Internet.safe_email)
-    stub_request_token(token, secret)
+    stubs = [
+      stub_request_token(token, secret),
+      stub_access_token(twitter_user[:id], twitter_user[:screen_name]),
+      stub_verify_credentials(twitter_user)
+    ]
     post sessions_url
-    stub_access_token(twitter_user[:id], twitter_user[:screen_name])
-    stub_verify_credentials(twitter_user)
     session_id = session.id
 
     assert_difference 'User.count', 1 do
@@ -90,6 +94,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal user.twitter_id, twitter_user[:id].to_s
     assert_equal user.email, twitter_user[:email]
     assert_redirected_to root_url
+    stubs.each { |stub| remove_request_stub stub }
   end
 
   test '#finish signs in existing users' do
@@ -99,10 +104,12 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     twitter_user = Faker::Twitter.user.merge(email: Faker::Internet.safe_email)
     twitter_user[:id] = old_user.data['id']
     twitter_user[:id_str] = old_user.data['id_str']
-    stub_request_token(token, secret)
+    stubs = [
+      stub_request_token(token, secret),
+      stub_access_token(twitter_user[:id], twitter_user[:screen_name]),
+      stub_verify_credentials(twitter_user),
+    ]
     post sessions_url
-    stub_access_token(twitter_user[:id], twitter_user[:screen_name])
-    stub_verify_credentials(twitter_user)
     session_id = session.id
 
     assert_no_difference 'User.count' do
@@ -121,22 +128,24 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal user.twitter_id, twitter_user[:id].to_s
     assert_equal user.email, twitter_user[:email]
     assert_redirected_to root_url
+    stubs.each { |stub| remove_request_stub stub }
   end
 
   test '#finish does not change User.status' do
     token = TwitterHelper::TWITTER_TOKEN
     secret = TwitterHelper::TWITTER_SECRET
     user = create(:user, status: :disabled)
-    stub_request_token(token, secret)
+    stubs = [
+      stub_request_token(token, secret),
+      stub_access_token(user[:twitter_id], user[:screen_name]),
+      stub_verify_credentials(user.data)
+    ]
     post sessions_url
-    stub_access_token(user[:twitter_id], user[:screen_name])
-    stub_verify_credentials(user.data)
-
     get finish_sessions_url params: { oauth_token: token, oauth_verifier: 'verifier' }
-
     user = User.find(session[:user_id])
     assert user.disabled?
     assert_redirected_to root_url
+    stubs.each { |stub| remove_request_stub stub }
   end
 
   test '#finish should handle being denied access' do

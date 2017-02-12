@@ -47,7 +47,7 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
   test '#create should succeed' do
     sign_in_as :user
     tweet = Faker::Twitter.status
-    stub_statuses_update tweet, "#{tweet[:text]} #{deed_url(@deed)}"
+    stub = stub_statuses_update tweet, "#{tweet[:text]} #{deed_url(@deed)}"
 
     assert_difference '@deed.thanks.count', 1 do
       post deed_thanks_url(@deed), params: { thank: { text: tweet[:text] } }
@@ -57,6 +57,7 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to deed_path(@deed)
     assert_equal thank.text, tweet[:text]
     assert_equal 'Thank You was successfully created.', flash[:notice]
+    remove_request_stub stub
   end
 
   test '#new should only allow creating one thank' do
@@ -71,7 +72,7 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
     user = sign_in_as :user
     tweet = Faker::Twitter.status
     create(:thank, text: "#{@deed.text} first", user: user, deed: @deed)
-    stub_statuses_update tweet, "#{tweet[:text]} #{deed_url(@deed)}"
+    stub = stub_statuses_update tweet, "#{tweet[:text]} #{deed_url(@deed)}"
 
     assert_no_difference 'Thank.count' do
       post deed_thanks_url(@deed), params: { thank: { text: "#{@deed.text} second" } }
@@ -79,12 +80,13 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to deed_path(@deed)
     assert_equal "You already thanked #{@deed.display_names}", flash[:error]
+    remove_request_stub stub
   end
 
   test '#create shows model errors' do
     sign_in_as :user
     tweet = Faker::Twitter.status
-    stub_statuses_update tweet, "#{tweet[:text]} #{deed_url(@deed)}"
+    stub = stub_statuses_update tweet, "#{tweet[:text]} #{deed_url(@deed)}"
 
     assert_no_difference 'Thank.count' do
       post deed_thanks_url(@deed), params: { thank: { foo: 'bar' } }
@@ -94,5 +96,6 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
       assert_select 'li', 'Text is not a valid tweet'
       assert_select 'li', 2
     end
+    remove_request_stub stub
   end
 end
