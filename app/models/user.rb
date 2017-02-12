@@ -19,7 +19,8 @@ class User < ApplicationRecord
   end
 
   def tweet(text, in_reply_to_status_id)
-    client.update(text, in_reply_to_status_id: in_reply_to_status_id) if AppConfig.posting_to_twitter_enabled
+    raise 'Posting to Twitter disabled' unless AppConfig.posting_to_twitter_enabled
+    client.update(text, in_reply_to_status_id: in_reply_to_status_id)
   end
 
   def admin?

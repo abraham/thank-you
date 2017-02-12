@@ -92,8 +92,9 @@ class UserTest < ActiveSupport::TestCase
 
   test '#tweet fails when disabled' do
     AppConfig.posting_to_twitter_enabled = false
-    tweet = @user.tweet(Faker::Lorem.sentence(3), nil)
-    assert_nil tweet
+    assert_raise RuntimeError, 'Posting to Twitter disabled' do
+      @user.tweet(Faker::Lorem.sentence(3), nil)
+    end
     AppConfig.posting_to_twitter_enabled = true
   end
 
