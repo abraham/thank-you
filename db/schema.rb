@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170211161118) do
+ActiveRecord::Schema.define(version: 20170212141710) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -43,11 +43,12 @@ ActiveRecord::Schema.define(version: 20170211161118) do
     t.uuid "deed_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.json "data", null: false
     t.uuid "user_id", null: false
-    t.json "data"
-    t.uuid "tweet_id"
+    t.string "twitter_id", null: false
     t.index ["deed_id", "user_id"], name: "index_thanks_on_deed_id_and_user_id", unique: true, using: :btree
     t.index ["deed_id"], name: "index_thanks_on_deed_id", using: :btree
+    t.index ["twitter_id"], name: "index_thanks_on_twitter_id", unique: true, using: :btree
     t.index ["user_id"], name: "index_thanks_on_user_id", using: :btree
   end
 

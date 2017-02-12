@@ -57,18 +57,14 @@ puts "Seeded #{links.size} links"
 thanks = deeds.map do |deed|
   deed_thanks = Array.new(rand(25)).map do |_i|
     user = users.sample
-    status = Faker::Twitter.status
-    thank = Thank.new(deed: deed,
-                      text: deed.text,
-                      user: user)
-    thank.tweet = Tweet.new(tweetable: thank,
-                            user: user,
-                            data: status,
-                            twitter_id: status[:id],
-                            text: thank.text)
     next if user.thanked?(deed)
+    status = Faker::Twitter.status
+    thank = Thank.create(deed: deed,
+                         text: deed.display_text,
+                         data: status,
+                         twitter_id: status[:id],
+                         user: user)
 
-    thank.save
     puts "Error seeding thank: #{thank.errors.full_messages.to_sentence}" if thank.new_record?
 
     thank
