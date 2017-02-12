@@ -3,7 +3,6 @@ FactoryGirl.define do
     user_name = Faker::Internet.user_name
 
     text { "Thank you @#{user_name} for #{Faker::Hipster.sentence}" }
-    data { Faker::Twitter.status }
     user
     deed
 

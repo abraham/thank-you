@@ -61,7 +61,7 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
 
   test '#new should only allow creating one thank' do
     user = sign_in_as :user
-    create(:thank, data: "#{@deed.text} first", user: user, deed: @deed)
+    create(:thank, text: "#{@deed.text} first", user: user, deed: @deed)
     get new_deed_thank_url(@deed)
     assert_redirected_to deed_path(@deed)
     assert_equal "You already thanked #{@deed.display_names}", flash[:error]
@@ -70,7 +70,7 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
   test '#create should only allow creating one thank' do
     user = sign_in_as :user
     tweet = Faker::Twitter.status
-    create(:thank, data: "#{@deed.text} first", user: user, deed: @deed)
+    create(:thank, text: "#{@deed.text} first", user: user, deed: @deed)
     stub_statuses_update tweet, "#{tweet[:text]} #{deed_url(@deed)}"
 
     assert_no_difference 'Thank.count' do
