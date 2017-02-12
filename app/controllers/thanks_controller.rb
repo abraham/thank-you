@@ -4,21 +4,11 @@ class ThanksController < ApplicationController
   before_action :not_already_thanked
 
   def create
-    @thank = current_user.thanks.new(thanks_params.merge(deed: @deed))
+    text = params[:thank][:text]
+    text = "#{params[:thank][:text]} #{deed_url(@deed)}" unless text && text.include?(deed_url(@deed))
+    @thank = current_user.thanks.new(deed: @deed, text: text)
 
-    # begin
-    #   tweet = current_user.tweet("#{@thank.text} #{deed_url(@deed)}", @deed.twitter_id)
-    #   if tweet
-    #     @thank.tweet_id = tweet.id
-    #     @thank.data = tweet.to_hash
-    #   else
-    #     flash[:warning] = 'Posting to Twitter currently disabled.'
-    #   end
-    # rescue Twitter::Error::Forbidden => error
-    #   logger.error "Error posting Thank You to Twitter Code: #{error.code} Message: #{error.message}"
-    #   flash[:error] = "Something went wrong posting to Twitter. Code: #{error.code} - #{error.message}"
-    #   redirect_to @deed and return
-    # end
+    @thank.tweet if params[:thank][:text]
 
     if @thank.save
       flash[:notice] = 'Thank You was successfully created.'

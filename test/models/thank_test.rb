@@ -27,6 +27,7 @@ class ThankTest < ActiveSupport::TestCase
       assert_difference 'deed.thanks.count', 1 do
         assert_difference 'user.thanks.count', 1 do
           assert thank.tweet
+          assert thank.save
         end
       end
     end
