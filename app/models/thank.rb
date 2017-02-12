@@ -12,6 +12,13 @@ class Thank < ApplicationRecord
 
   default_scope { order(created_at: :desc) }
 
+  def tweet
+    status = user.tweet(text, deed.twitter_id)
+    self.data = status.to_hash
+    self.twitter_id = status.id
+    save
+  end
+
   private
 
   def text_length

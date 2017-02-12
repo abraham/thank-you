@@ -16,4 +16,23 @@ class ThankTest < ActiveSupport::TestCase
     assert !thank.valid?
     assert_equal 'Text is not a valid tweet', thank.errors.full_messages.first
   end
+
+  test '#tweet posts to Twitter' do
+    status = Faker::Twitter.status
+    user = create(:user)
+    deed = create(:deed, text: status[:text])
+    stub = stub_statuses_update(status, status[:text], in_reply_to_status_id: nil)
+    thank = user.thanks.new(deed: deed, text: deed.text)
+    assert_difference 'Thank.count', 1 do
+      assert_difference 'deed.thanks.count', 1 do
+        assert_difference 'user.thanks.count', 1 do
+          assert thank.tweet
+        end
+      end
+    end
+    assert_not thank.new_record?
+    assert_equal thank.twitter_id, status[:id].to_s
+    assert_equal thank.text, status[:text]
+    remove_request_stub stub
+  end
 end
