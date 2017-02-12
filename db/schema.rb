@@ -54,8 +54,8 @@ ActiveRecord::Schema.define(version: 20170212000200) do
     t.string "text", null: false
     t.uuid "user_id", null: false
     t.json "data", null: false
-    t.string "tweetable_type"
-    t.uuid "tweetable_id"
+    t.string "tweetable_type", null: false
+    t.uuid "tweetable_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["tweetable_type", "tweetable_id"], name: "index_tweets_on_tweetable_type_and_tweetable_id", unique: true, using: :btree
