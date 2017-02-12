@@ -7,7 +7,7 @@ class ThanksController < ApplicationController
     @thank = current_user.thanks.new(thanks_params.merge(deed: @deed))
 
     # begin
-    #   tweet = current_user.tweet("#{@thank.text} #{deed_url(@deed)}", @deed.reply_to_tweet_id)
+    #   tweet = current_user.tweet("#{@thank.text} #{deed_url(@deed)}", @deed.twitter_id)
     #   if tweet
     #     @thank.tweet_id = tweet.id
     #     @thank.data = tweet.to_hash
