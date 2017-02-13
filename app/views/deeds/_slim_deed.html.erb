@@ -1,6 +1,8 @@
 <div class="mdc-card">
   <section class="mdc-card__primary">
-    <h2 class="mdc-card__title mdc-card__title--large"><%= link_to deed.display_text, deed %></h2>
+    <h2 class="mdc-card__title mdc-card__title--large">
+      <%= link_to deed.display_text, deed %>
+    </h2>
   </section>
   <section class="mdc-card__supporting-text">
     Recently thanked by <%= render 'thanks/thanks', thanks: deed.thanks, more: deed.thanks_count - 10 %>
