@@ -56,6 +56,13 @@ header .mdc-toolbar__title a {
   @include mdc-theme-prop(color, text-primary-on-primary);
 }
 
+footer {
+  max-width: 600px;
+  margin-top: 48px;
+  margin: 48px auto 0 auto;
+  border-top: 1px solid #64B5F6;
+}
+
 .card-notice {
   background-color: #4CAF50;
 }
