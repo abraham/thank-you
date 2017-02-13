@@ -61,4 +61,6 @@ Rails.application.configure do
   #   Bullet.console = true
   #   Bullet.rails_logger = true
   # end
+
+  config.sass.inline_source_maps = true
 end
