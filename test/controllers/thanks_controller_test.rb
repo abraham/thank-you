@@ -96,4 +96,19 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
       assert_select 'li', 3
     end
   end
+
+  test '#create shows Twitter errors' do
+    sign_in_as :user
+    stub = stub_over_140
+
+    assert_no_difference 'Thank.count' do
+      post deed_thanks_url(@deed), params: { thank: { text: @deed.text } }
+    end
+    assert_select '#form-error' do
+      assert_select 'li', 'Twitter error: Status is over 140 characters'
+      assert_select 'li', 1
+    end
+
+    remove_request_stub stub
+  end
 end

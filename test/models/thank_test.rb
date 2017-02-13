@@ -37,4 +37,20 @@ class ThankTest < ActiveSupport::TestCase
     assert_equal thank.text, status[:text]
     remove_request_stub stub
   end
+
+  test '#tweet text gets URL appended' do
+    status = Faker::Twitter.status
+    text = Faker::Lorem.sentence
+    url = 'https://example.com'
+    user = create(:user)
+    deed = create(:deed, text: text)
+    status[:text] = "#{text} #{url}"
+    stub = stub_statuses_update(status, status[:text], in_reply_to_status_id: nil)
+    thank = user.thanks.new(deed: deed, text: text, url: url)
+    assert thank.tweet
+    assert thank.save
+    assert_equal thank.text, text
+    assert_equal thank.data['text'], "#{text} #{url}"
+    remove_request_stub stub
+  end
 end
