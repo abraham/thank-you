@@ -1,12 +1,19 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
+  before_action :set_raven_context
+
   before_action :check_for_alpha_token
   before_action :require_active_user
 
   helper_method :current_user
 
   private
+
+  def set_raven_context
+    Raven.user_context(id: session[:user_id])
+    Raven.extra_context(params: params.to_unsafe_h, url: request.url)
+  end
 
   def check_for_alpha_token
     return if Rails.env.test? || Rails.env.development?
