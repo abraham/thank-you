@@ -1,4 +1,4 @@
-<% if current_user && current_user.thanked?(deed) %>
+<% if thanked %>
   You already thanked <%= deed.display_names %>
 <% else %>
   <%= link_to "Thank #{deed.display_names}", new_deed_thank_path(deed) %>
