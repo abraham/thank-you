@@ -44,8 +44,10 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     deed = create(:deed)
     get deed_path(deed)
     assert_response :success
-    assert_select 'strong', deed.display_text
-    assert_select 'p', 'Citations:'
+    assert_select 'main' do
+      assert_select 'h1', deed.display_text
+      assert_select 'p', 'Citations:'
+    end
   end
 
   test '#new requires authentication' do
@@ -135,7 +137,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_no_difference 'Deed.count' do
       post deeds_path, params: { deed: { foo: 'bar' } }
     end
-    assert_select '#form-error' do
+    assert_select '.card-error' do
       assert_select 'li', "Names can't be blank"
       assert_select 'li', "Text can't be blank"
       assert_select 'li', 2
@@ -146,20 +148,20 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     deed = create(:deed, text: 'cool stuff https://example.com/cool/stuff')
     get deed_path(deed)
     assert_response :success
-    assert_select 'strong', deed.display_text
-    assert_select 'strong a', 2
-    assert_select 'strong a', deed.names.first
-    assert_select 'strong a', 'https://example.com/cool/stuff'
+    assert_select 'h1', deed.display_text
+    assert_select 'h1 a', 2
+    assert_select 'h1 a', deed.names.first
+    assert_select 'h1 a', 'https://example.com/cool/stuff'
   end
 
   test '#show escapes evil deed text' do
     deed = create(:deed, text: '<a href="javascript:alert(666)">evil</a> <script>alert(666)</script>')
     get deed_path(deed)
     assert_response :success
-    assert_select 'strong', "Thank You #{deed.display_names} for evil alert(666)"
-    assert_select 'strong a[href]', 1
-    assert_select "strong a[href=\"https://twitter.com/#{deed.names.first}\"]", 1
-    assert_select 'strong script', 0
+    assert_select 'h1', "Thank You #{deed.display_names} for evil alert(666)"
+    assert_select 'h1 a[href]', 1
+    assert_select "h1 a[href=\"https://twitter.com/#{deed.names.first}\"]", 1
+    assert_select 'h1 script', 0
   end
 
   test '#create renders names on error' do
@@ -176,7 +178,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
       assert_select 'textarea#deed_text'
       assert_select 'input[type=submit][value="Create deed"]'
     end
-    assert_select '#form-error' do
+    assert_select '.card-error' do
       assert_select 'li', "Text can't be blank"
       assert_select 'li', 1
     end
@@ -196,7 +198,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
       assert_select 'input[value="123"]#deed_twitter_id'
       assert_select 'input[type=submit][value="Create deed"]'
     end
-    assert_select '#form-error' do
+    assert_select '.card-error' do
       assert_select 'li', 'Twitter error: No status found with that ID.'
       assert_select 'li', "Data can't be blank"
       assert_select 'li', 2

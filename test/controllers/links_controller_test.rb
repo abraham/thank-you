@@ -72,7 +72,7 @@ class LinksControllerTest < ActionDispatch::IntegrationTest
     assert_no_difference 'Link.count' do
       post deed_links_url(@deed), params: { link: { foo: 'bar' } }
     end
-    assert_select '#form-error' do
+    assert_select '.card-error' do
       assert_select 'li', "Url can't be blank"
       assert_select 'li', "Text can't be blank"
       assert_select 'li', 'Url must be a valid URL'

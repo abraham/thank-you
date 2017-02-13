@@ -89,7 +89,7 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
     assert_no_difference 'Thank.count' do
       post deed_thanks_url(@deed), params: { thank: { foo: 'bar' } }
     end
-    assert_select '#form-error' do
+    assert_select '.card-error' do
       assert_select 'li', "Text can't be blank"
       assert_select 'li', "Twitter can't be blank"
       assert_select 'li', 2
@@ -103,7 +103,7 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
     assert_no_difference 'Thank.count' do
       post deed_thanks_url(@deed), params: { thank: { text: @deed.text } }
     end
-    assert_select '#form-error' do
+    assert_select '.card-error' do
       assert_select 'li', 'Twitter error: Could not authenticate you'
       assert_select 'li', "Twitter can't be blank"
       assert_select 'li', 2
@@ -118,7 +118,7 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
     assert_no_difference 'Thank.count' do
       post deed_thanks_url(@deed), params: { thank: { text: @deed.text * 10 } }
     end
-    assert_select '#form-error' do
+    assert_select '.card-error' do
       assert_select 'li', "Twitter can't be blank"
       assert_select 'li', 'Twitter is not a valid tweet'
       assert_select 'li', 2
