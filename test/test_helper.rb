@@ -1,15 +1,9 @@
 require File.expand_path('../../config/environment', __FILE__)
+require 'factory_girl'
 require 'rails/test_help'
 require 'webmock/minitest'
-require 'factory_girl'
 
-class ActiveSupport::TestCase
-  # Add more helper methods to be used by all tests here...
-  include FactoryGirl::Syntax::Methods
-  FactoryGirl.find_definitions
-end
-
-module SessionHelper
+module SessionsHelper
   def start_sign_in(token, secret)
     stub_request_token(token, secret)
     post sessions_url
@@ -31,8 +25,8 @@ module SessionHelper
 end
 
 module TwitterHelper
-  TWITTER_TOKEN = 'Z6eEdO8MOmk394WozF5oKyuAv855l4Mlqo7hhlSLik'.freeze
   TWITTER_SECRET = 'Kd75W4OQfb2oJTV0vzGzeXftVAwgMnEK9MumzYcM'.freeze
+  TWITTER_TOKEN = 'Z6eEdO8MOmk394WozF5oKyuAv855l4Mlqo7hhlSLik'.freeze
 
   def stub_request_token(token, secret)
     params = [
@@ -68,10 +62,13 @@ module TwitterHelper
 end
 
 class ActionDispatch::IntegrationTest
+  include SessionsHelper
   include TwitterHelper
-  include SessionHelper
 end
 
 class ActiveSupport::TestCase
+  include FactoryGirl::Syntax::Methods
   include TwitterHelper
+
+  FactoryGirl.find_definitions
 end
