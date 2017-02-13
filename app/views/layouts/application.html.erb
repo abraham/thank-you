@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Thank You</title>
+    <title><%= content_for?(:title) ? yield(:title) : 'Thank You' %></title>
+    <meta name="description" content="Be an addvocate for positive action.">
+
     <%= csrf_meta_tags %>
 
     <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1.0">
     <%= favicon_link_tag image_path('heart.png') %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag 'https://fonts.googleapis.com/css?family=Roboto' %>
+    <%= stylesheet_link_tag 'https://fonts.googleapis.com/icon?family=Material+Icons' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   </head>
 
   <body>
