@@ -34,7 +34,18 @@ a {
 
 header a, header span {
   text-decoration: none;
+}
+
+header .auth {
   @include mdc-theme-prop(color, text-primary-on-primary);
+}
+
+header .mdc-toolbar__title a {
+  @include mdc-theme-prop(color, text-primary-on-primary);
+}
+
+header .mdc-simple-menu {
+  margin-top: 32px;
 }
 
 main {

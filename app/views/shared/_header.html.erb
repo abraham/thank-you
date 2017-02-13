@@ -15,20 +15,26 @@
   <section class="mdc-toolbar__section mdc-toolbar__section--align-end">
     <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
     <% if current_user %>
-      <div id='welcome'>
-        <%= "Hi @#{current_user.screen_name}" %>
+      <%= "Hi @#{current_user.screen_name}" %>
+      <i class="material-icons menu">menu</i>
+
+      <div class="mdc-simple-menu" tabindex="-1">
+        <ul class="mdc-simple-menu__items mdc-list" role="menu" aria-hidden="true">
+          <li class="mdc-list-item" role="menuitem" tabindex="0">
+            <% if current_user.admin? %>
+              <%= link_to 'Create deed', new_deed_path, class: 'mdc-button' %>
+            <% else %>
+              <%= link_to 'Suggest Thank You', 'https://goo.gl/forms/D8N4bQsz3gl7kbKo2', class: 'mdc-button' %>
+            <% end %>
+          </li>
+          <li class="mdc-list-item" role="menuitem" tabindex="0">
+            <%= render 'sessions/sign-out' %>
+          </li>
+        </ul>
       </div>
 
-      <% if current_user.admin? %>
-        <%= link_to 'Create deed', new_deed_path %>
-      <% else %>
-        <%= link_to 'Suggest Thank You', 'https://goo.gl/forms/D8N4bQsz3gl7kbKo2' %>
-      <% end %>
-
-      <%= render 'sessions/sign-out' %>
-
     <% elsif !current_page?(controller: :sessions, action: :new) %>
-      <%= link_to 'Sign in with Twitter', new_sessions_path %>
+      <%= link_to 'Sign in with Twitter', new_sessions_path, class: 'mdc-button auth' %>
     <% end %>
   </section>
 </section>

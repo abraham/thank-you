@@ -15,4 +15,9 @@
 //= require turbolinks
 //= require_tree .
 
-mdc.autoInit();
+document.addEventListener('turbolinks:load', function() {
+  mdc.autoInit();
+  if (document.querySelector('.mdc-button')) {
+    mdc.ripple.MDCRipple.attachTo(document.querySelector('.mdc-button'));
+  }
+});
