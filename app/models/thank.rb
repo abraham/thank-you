@@ -9,7 +9,7 @@ class Thank < ApplicationRecord
   validates :deed, presence: true
   validates :text, presence: true
   validates :user, presence: true
-  validates :data, presence: true
+  validates :data, presence: true, if: :twitter_id
   validates :twitter_id, presence: true
   # TODO: validate ready to tweet
 

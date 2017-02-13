@@ -67,7 +67,7 @@ class ThankTest < ActiveSupport::TestCase
     end
     thank_two = user.thanks.new(deed: deed, text: status_two[:text], url: 'https://example.com')
     assert_not thank_two.valid?
-    assert_equal ['Deed has already been thanked', "Data can't be blank", "Twitter can't be blank"], thank_two.errors.full_messages
+    assert_equal ['Deed has already been thanked', "Twitter can't be blank"], thank_two.errors.full_messages
     remove_request_stub stub
   end
 end

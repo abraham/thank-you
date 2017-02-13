@@ -91,9 +91,8 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
     end
     assert_select '#form-error' do
       assert_select 'li', "Text can't be blank"
-      assert_select 'li', "Data can't be blank"
       assert_select 'li', "Twitter can't be blank"
-      assert_select 'li', 3
+      assert_select 'li', 2
     end
   end
 
