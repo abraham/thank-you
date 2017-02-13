@@ -27,7 +27,7 @@ module ThankYou
     Raven.configure do |config|
       config.dsn = 'https://5e69813822924122ae73456b7057c338:aa26ed7c63124ce6a297dc2ff28d869f@sentry.io/135599'
       config.sanitize_fields = Rails.application.config.filter_parameters.map(&:to_s)
-      # config.environments = [:production]
+      config.environments = [:production]
     end
   end
 end
