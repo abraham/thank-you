@@ -161,4 +161,46 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_select "strong a[href=\"https://twitter.com/#{deed.names.first}\"]", 1
     assert_select 'strong script', 0
   end
+
+  test '#create renders names on error' do
+    sign_in_as :admin
+    names = [:one, :two, :three]
+    assert_no_difference 'Deed.count' do
+      post deeds_path, params: { deed: { names: names } }
+    end
+    assert_select "form[action=\"#{deeds_path}\"]#new_deed" do
+      assert_select 'input[type=text]#deed_names_', 3
+      assert_select 'input[value=one]#deed_names_', 1
+      assert_select 'input[value=two]#deed_names_', 1
+      assert_select 'input[value=three]#deed_names_', 1
+      assert_select 'textarea#deed_text'
+      assert_select 'input[type=submit][value="Create deed"]'
+    end
+    assert_select '#form-error' do
+      assert_select 'li', "Text can't be blank"
+      assert_select 'li', 1
+    end
+  end
+
+  test '#create shows Twitter errors' do
+    sign_in_as :admin
+    text = Faker::Lorem.sentence
+    names = [Faker::Internet.user_name]
+    stub = stub_status_not_found
+    assert_no_difference 'Deed.count' do
+      post deeds_path, params: { deed: { text: text, names: names, twitter_id: '123' } }
+    end
+    assert_select "form[action=\"#{deeds_path}\"]#new_deed" do
+      assert_select 'input[type=text]#deed_names_', 3
+      assert_select 'textarea#deed_text'
+      assert_select 'input[value="123"]#deed_twitter_id'
+      assert_select 'input[type=submit][value="Create deed"]'
+    end
+    assert_select '#form-error' do
+      assert_select 'li', 'Twitter error: No status found with that ID.'
+      assert_select 'li', "Data can't be blank"
+      assert_select 'li', 2
+    end
+    remove_request_stub stub
+  end
 end

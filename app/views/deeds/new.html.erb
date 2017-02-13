@@ -3,9 +3,9 @@
 <%= form_for @deed do |f| %>
   <p>Thank You</p>
   <p>
-    <%= text_field_tag 'deed[names][]', nil, placeholder: 'name', required: true %>
-    <%= text_field_tag 'deed[names][]', nil, placeholder: 'name' %>
-    <%= text_field_tag 'deed[names][]', nil, placeholder: 'name' %>
+    <%= text_field_tag 'deed[names][]', (@deed.names || []).first, placeholder: 'name', required: true %>
+    <%= text_field_tag 'deed[names][]', (@deed.names || []).second, placeholder: 'name' %>
+    <%= text_field_tag 'deed[names][]', (@deed.names || []).third, placeholder: 'name' %>
   </p>
   <p>for</p>
   <p>
