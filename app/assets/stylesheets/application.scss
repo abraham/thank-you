@@ -32,6 +32,12 @@ body, html {
   @include mdc-theme-prop(background-color, background);
 }
 
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
 header {
   z-index: 1;
 }
@@ -57,10 +63,7 @@ header .mdc-toolbar__title a {
 }
 
 footer {
-  max-width: 600px;
-  margin-top: 48px;
-  margin: 48px auto 0 auto;
-  border-top: 1px solid #64B5F6;
+  margin: 0 auto;
 }
 
 .card-notice {
@@ -82,6 +85,10 @@ header .mdc-simple-menu {
 main {
   max-width: 600px;
   margin: 0 auto;
+}
+
+.content {
+  flex: 1;
 }
 
 h1 a {

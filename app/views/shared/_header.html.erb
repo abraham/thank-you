@@ -20,13 +20,13 @@
       <div class="mdc-simple-menu" tabindex="-1">
         <ul class="mdc-simple-menu__items mdc-list" role="menu" aria-hidden="true">
           <li class="mdc-list-item" role="menuitem" tabindex="0">
-            <%= link_to "Hi @#{current_user.screen_name}", "https://twitter.com/#{current_user.screen_name}", class: 'mdc-button' %>
+            <%= link_to "Hi @#{current_user.screen_name}", "https://twitter.com/#{current_user.screen_name}", class: 'mdc-button', target: '_blank' %>
           </li>
           <li class="mdc-list-item" role="menuitem" tabindex="0">
             <% if current_user.admin? %>
               <%= link_to 'Create deed', new_deed_path, class: 'mdc-button' %>
             <% else %>
-              <%= link_to 'Suggest Thank You', 'https://goo.gl/forms/D8N4bQsz3gl7kbKo2', class: 'mdc-button' %>
+              <%= link_to 'Suggest Thank You', 'https://goo.gl/forms/D8N4bQsz3gl7kbKo2', class: 'mdc-button', target: '_blank' %>
             <% end %>
           </li>
           <li class="mdc-list-item" role="menuitem" tabindex="0">

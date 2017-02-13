@@ -18,17 +18,19 @@
   <body>
       <%= render 'shared/header' %>
 
-      <main class='mdc-layout-grid mdc-toolbar__fixed-adjust'>
-        <div class='mdc-layout-grid__cell mdc-layout-grid__cell--span-12'>
-          <p>
-            <strong>What is Thank You?</strong>
-            <em>Thank You aims to make the world a better place by publicly recognizing people on Twitter for their good deeds.</em>
-          </p>
-        </div>
+      <div class='content'>
+        <main class='mdc-layout-grid mdc-toolbar__fixed-adjust'>
+          <div class='mdc-layout-grid__cell mdc-layout-grid__cell--span-12'>
+            <p>
+              <strong>What is Thank You?</strong>
+              <em>Thank You aims to make the world a better place by publicly recognizing people on Twitter for their good deeds.</em>
+            </p>
+          </div>
 
-        <%= render 'shared/flash' %>
-        <%= yield %>
-      </main>
+          <%= render 'shared/flash' %>
+          <%= yield %>
+        </main>
+      </div>
 
       <%= render 'shared/footer' %>
 
