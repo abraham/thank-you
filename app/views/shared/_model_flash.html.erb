@@ -1,11 +1,17 @@
 <% if item.errors.any? %>
-  <div id='form-error' class='error'>
-    <p><%= pluralize(item.errors.count, 'error') %> prohibited this <%= name %> from being saved:</p>
+  <div class='mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12 card-error'>
+    <section class="mdc-card__primary">
+      <h3 class="mdc-card__title mdc-card__title--large">
+        <%= pluralize(item.errors.count, 'error') %> where found
+      </h3>
+    </section>
 
-    <ul>
-    <% item.errors.full_messages.each do |msg| %>
-      <li><%= msg %></li>
-    <% end %>
-    </ul>
+    <section class="mdc-card__supporting-text">
+      <ul>
+      <% item.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </section>
   </div>
 <% end %>
