@@ -6,44 +6,22 @@ git_source(:github) do |repo_name|
 end
 
 gem 'arel', github: 'rails/arel'
-gem 'rails', github: 'rails/rails'
-
-# Use postgresql as the database for Active Record
-gem 'pg'
-# Use Puma as the app server
-gem 'puma', '~> 3.0'
-# Use SCSS for stylesheets
-gem 'sass-rails', github: 'rails/sass-rails'
-gem "sentry-raven"
-# Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
-# Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-gem 'webpacker', github: 'rails/webpacker'
-
-# See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
-
-# Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
-# Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
+gem 'jbuilder', '~> 2.5'
+gem 'oauth', '~> 0'
+gem 'pg'
+gem 'puma', '~> 3.0'
+gem 'rails', github: 'rails/rails'
+gem 'rails-html-sanitizer'
+gem 'sass-rails', github: 'rails/sass-rails'
+gem 'sentry-raven'
 gem 'turbolinks', '~> 5'
 gem 'twitter', '~> 6'
-gem 'oauth', '~> 0'
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.5'
-# Use Redis adapter to run Action Cable in production
-# gem 'redis', '~> 3.0'
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
 gem 'twitter-text', '~> 1'
-gem 'rails-html-sanitizer'
+gem 'uglifier', '>= 1.3.0'
+gem 'webpacker', github: 'rails/webpacker'
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'factory_girl'
   gem 'faker', github: 'abraham/faker', branch: 'twitter'
@@ -56,8 +34,6 @@ group :development do
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'rails_best_practices'
   gem 'rubocop'
-  # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
-  # gem 'web-console', github: 'rails/web-console'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
