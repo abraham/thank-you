@@ -40,6 +40,22 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_select 'h2 a', 3
   end
 
+  test '#root should show if thanked text' do
+    user = sign_in_as :user
+    deeds = [create(:deed), create(:deed), create(:deed)]
+    thank = user.thanks.new(deed: deeds[1], text: deeds[1].text, url: deed_url(deeds[1]))
+    status = "#{deeds[1].text} #{deed_url(deeds[1])}"
+    stub = stub_statuses_update(Faker::Twitter.status, status, in_reply_to_status_id: nil)
+    thank.tweet
+    thank.save
+    get root_path
+    assert_response :success
+    assert_select "a[href=\"#{new_deed_thank_path(deeds[0])}\"]", "Thank @#{deeds[0].names.first}"
+    assert_select "a[href=\"#{deed_path(deeds[1])}\"]", 'Already thanked'
+    assert_select "a[href=\"#{new_deed_thank_path(deeds[2])}\"]", "Thank @#{deeds[2].names.first}"
+    remove_request_stub stub
+  end
+
   test '#show renders deed' do
     deed = create(:deed)
     get deed_path(deed)
