@@ -3,8 +3,6 @@ Rails.application.routes.draw do
 
   root 'deeds#index'
 
-  get 'alpha/join/:token', to: 'alpha#join', as: :alpha_join
-
   resource :sessions, only: [:new, :create, :destroy] do
     get :finish
   end
