@@ -59,6 +59,24 @@ module TwitterHelper
       .with(body: { in_reply_to_status_id: in_reply_to_status_id, status: status })
       .to_return(status: 200, body: tweet.to_json)
   end
+
+  def stub_unauthorized
+    error = { errors: [{ message: 'Could not authenticate you', code: 135 }] }
+    stub_request(:any, /api.twitter.com/)
+      .to_return(status: [401, 'Unauthorized'], body: error.to_json)
+  end
+
+  def stub_over_140
+    error = { errors: [{ message: 'Status is over 140 characters', code: 135 }] }
+    stub_request(:any, /api.twitter.com/)
+      .to_return(status: [403, 'Forbidden'], body: error.to_json)
+  end
+
+  def stub_rate_limit
+    error = { errors: [{ message: 'Rate limit exceeded', code: 88 }] }
+    stub_request(:any, /api.twitter.com/)
+      .to_return(status: [420, 'Enhance Your Calm'], body: error.to_json)
+  end
 end
 
 class ActionDispatch::IntegrationTest

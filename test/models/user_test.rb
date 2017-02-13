@@ -2,8 +2,8 @@ require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
   def setup
-    @deed = create(:deed)
-    @user = @deed.user
+    @user = create(:user)
+    @deed = create(:deed, user: @user)
     @default_admin_twitter_ids = AppConfig.admin_twitter_ids
   end
 
@@ -93,9 +93,33 @@ class UserTest < ActiveSupport::TestCase
   test '#tweet fails when disabled' do
     AppConfig.posting_to_twitter_enabled = false
     assert_raise RuntimeError, 'Posting to Twitter disabled' do
-      @user.tweet(Faker::Lorem.sentence(3), nil)
+      @user.tweet(Faker::Lorem.sentence, nil)
     end
     AppConfig.posting_to_twitter_enabled = true
+  end
+
+  test '#tweet raises unauthorized exception' do
+    stub = stub_unauthorized
+    assert_raise Twitter::Error::Unauthorized, 'Could not authenticate you' do
+      @user.tweet(Faker::Lorem.sentence, nil)
+    end
+    remove_request_stub stub
+  end
+
+  test '#tweet raises forbidden exception for status over 140 characters' do
+    stub = stub_over_140
+    assert_raise Twitter::Error::Forbidden, 'Status is over 140 characters' do
+      @user.tweet(Faker::Lorem.sentence * 3, nil)
+    end
+    remove_request_stub stub
+  end
+
+  test '#tweet raises rate limit exception' do
+    stub = stub_rate_limit
+    assert_raise Twitter::Error::TooManyRequests, 'Rate limit exceeded' do
+      @user.tweet(Faker::Lorem.sentence * 3, nil)
+    end
+    remove_request_stub stub
   end
 
   test '#etled? knows if Twitter data is present' do
