@@ -23,6 +23,10 @@ $mdc-theme-background: #fff;
 
 @import "@material/theme/mdc-theme";
 
+* {
+  font-family: 'Roboto', sans-serif;
+}
+
 body, html {
   margin: 0;
   @include mdc-theme-prop(background-color, background);
