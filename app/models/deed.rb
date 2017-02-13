@@ -24,7 +24,7 @@ class Deed < ApplicationRecord
   end
 
   def etl!
-    return unless twitter_id
+    return if twitter_id.blank? || data.present?
     twitter_status = user.client.status(twitter_id)
     self.data = twitter_status.to_hash
   rescue Twitter::Error => error

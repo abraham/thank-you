@@ -21,6 +21,26 @@ class ThankTest < ActiveSupport::TestCase
     remove_request_stub stub
   end
 
+  test '#tweet posts to Twitter as a reply' do
+    status = Faker::Twitter.status
+    user = create(:user)
+    deed = create(:deed, :with_tweet, text: status[:text])
+    stub = stub_statuses_update(status, "#{status[:text]} https://example.com", in_reply_to_status_id: deed.twitter_id)
+    thank = user.thanks.new(deed: deed, text: deed.text, url: 'https://example.com')
+    assert_difference 'Thank.count', 1 do
+      assert_difference 'deed.thanks.count', 1 do
+        assert_difference 'user.thanks.count', 1 do
+          assert thank.tweet
+          assert thank.save
+        end
+      end
+    end
+    assert_not thank.new_record?
+    assert_equal thank.twitter_id, status[:id].to_s
+    assert_equal thank.text, status[:text]
+    remove_request_stub stub
+  end
+
   test '#tweet text gets URL appended' do
     status = Faker::Twitter.status
     text = Faker::Lorem.sentence
