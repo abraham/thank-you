@@ -23,7 +23,7 @@ class SessionsController < ApplicationController
     reset_session
     session[:user_id] = user.id
 
-    redirect_to path
+    redirect_to path, flash: { notice: "Signed in as @#{user.screen_name}." }
   end
 
   def destroy

@@ -48,6 +48,18 @@ header .mdc-toolbar__title a {
   @include mdc-theme-prop(color, text-primary-on-primary);
 }
 
+.card-notice {
+  background-color: #4CAF50;
+}
+
+.card-warning {
+  background-color: #FFEB3B;
+}
+
+.card-error {
+  background-color: #F44336;
+}
+
 header .mdc-simple-menu {
   margin-top: 32px;
 }
