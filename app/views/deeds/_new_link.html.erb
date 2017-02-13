@@ -1,5 +1,5 @@
 <% if thanked %>
-  You already thanked <%= deed.display_names %>
+  You already thanked this deed
 <% else %>
   <%= link_to "Thank #{deed.display_names}", new_deed_thank_path(deed) %>
 <% end %>

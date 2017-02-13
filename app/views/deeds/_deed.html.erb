@@ -1,15 +1,16 @@
-<p>
-  <strong><%= raw link_tweet_text(deed.display_text) %></strong>
-</p>
+<div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+  <h1><%= raw link_tweet_text(deed.display_text) %></h1>
+</div>
 
-<p>
+<div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
   <%= render 'links/links', deed: deed, links: deed.links, user: deed.user %>
-<p>
+</div>
 
-<p>
-<p>
+<div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
   <%= render 'new_link', deed: deed, thanked: current_user && current_user.thanked?(deed) %>
-<p>
+</div>
+
+<div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
   <span>Thanked by</span>
   <%= render 'thanks/thanks', thanks: deed.thanks, more: deed.thanks_count - 10 %>
-<p>
+</div>
