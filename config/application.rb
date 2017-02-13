@@ -12,6 +12,12 @@ module ThankYou
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
+    if Rails.env.production?
+      config.action_dispatch.default_headers.merge!({
+        'Content-Security-Policy-Report-Only' => "default-src 'self'; script-src 'self'; img-src https:; font-src https:; report-uri https://abraham.report-uri.io/r/default/csp/reportOnly;"
+      })
+    end
+
     config.generators do |g|
       g.javascript_engine :js
       g.orm :active_record, primary_key_type: :uuid
