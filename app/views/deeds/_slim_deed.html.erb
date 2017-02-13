@@ -1,6 +1,16 @@
-<p>
-  <h2><%= link_to deed.display_text, deed %></h2>
-  <p>Recently thanked by <%= render 'thanks/thanks', thanks: deed.thanks, more: deed.thanks_count - 10 %></p>
-  <p><%= render 'new_link', deed: deed, thanked: @thanked_deed_ids.include?(deed.id) %> <%= link_to 'Read more', deed %></p>
-</p>
-<br>
+<div class="mdc-card">
+  <section class="mdc-card__primary">
+    <h2 class="mdc-card__title mdc-card__title--large"><%= link_to deed.display_text, deed %></h2>
+  </section>
+  <section class="mdc-card__supporting-text">
+    Recently thanked by <%= render 'thanks/thanks', thanks: deed.thanks, more: deed.thanks_count - 10 %>
+  </section>
+  <section class="mdc-card__actions">
+    <% if @thanked_deed_ids.include?(deed.id) %>
+    <%= link_to 'Already thanked', deed, class: 'mdc-button mdc-button--compact mdc-card__action' %>
+    <% else %>
+      <%= link_to "Thank @#{deed.names.first}", new_deed_thank_path(deed), class: 'mdc-button mdc-button--compact mdc-card__action' %>
+    <% end %>
+    <%= link_to 'Read more', deed, class: 'mdc-button mdc-button--compact mdc-card__action' %>
+  </section>
+</div>
