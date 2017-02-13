@@ -1,18 +1,29 @@
 <%= render 'shared/model_flash', item: @thank, name: 'Thank You' %>
 
-<p>
-  <%= image_tag current_user.avatar_url, width: 42, height: 42 %>
-</p>
+<div class="mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+  <%= form_for [@deed, @thank] do |f| %>
+    <section class="mdc-card__primary">
+      <h1 class="mdc-card__title mdc-card__title--large">@<%= current_user.screen_name %></h1>
+      <h2 class="mdc-card__subtitle"><%= current_user.name %></h2>
+    </section>
+    <!-- <section class="mdc-card__primary-text">
+      <%= image_tag current_user.avatar_url, width: 42, height: 42 %>
+    </section> -->
 
-<%= form_for [@deed, @thank] do |f| %>
-  <p>
-    <%= f.text_area :text, value: @thank.text, required: true %>
-    <p><span id='deed_url'><%= deed_url @thank.deed %></span> will be appended to the tweet<p>
-    <p><span id='remaining_thank_text_length'></span> charactors remaining</p>
-  </p>
+    <section class="mdc-card__supporting-text">
+      <div class="mdc-textfield mdc-textfield--multiline">
+        <%= f.text_area :text, required: true, class: 'mdc-textfield__input', rows: 4, cols: 80 %>
+      </div>
+      <p id="text-helptext" class="mdc-textfield-helptext--persistent" aria-hidden="true">
+        <span id='deed_url'><%= deed_url @thank.deed %></span> will be appended to the tweet
+      </p>
 
-  <p>
-    <%= f.submit 'Tweet' %>
-    <%= link_to 'Cancel', @deed %>
-  </p>
-<% end %>
+      <p><span id='remaining_thank_text_length'></span> charactors remaining</p>
+    </section>
+
+    <section class="mdc-card__actions">
+      <%= link_to 'Cancel', @deed, class: 'mdc-button mdc-button--compact mdc-card__action' %>
+      <%= f.submit 'Tweet', class: 'mdc-button mdc-button--compact mdc-card__action mdc-button--primary mdc-button--raised' %>
+    </section>
+  <% end %>
+</div>

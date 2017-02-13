@@ -40,6 +40,10 @@ header a, header span {
   text-decoration: none;
 }
 
+.error-text {
+  color: #F44336;
+}
+
 header .auth {
   @include mdc-theme-prop(color, text-primary-on-primary);
 }
