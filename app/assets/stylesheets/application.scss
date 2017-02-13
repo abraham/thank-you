@@ -32,6 +32,10 @@ body, html {
   @include mdc-theme-prop(background-color, background);
 }
 
+header {
+  z-index: 1;
+}
+
 a {
   @include mdc-theme-prop(color, primary)
 }
