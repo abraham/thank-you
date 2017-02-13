@@ -117,7 +117,7 @@ class UserTest < ActiveSupport::TestCase
   test '#tweet raises rate limit exception' do
     stub = stub_rate_limit
     assert_raise Twitter::Error::TooManyRequests, 'Rate limit exceeded' do
-      @user.tweet(Faker::Lorem.sentence * 3, nil)
+      @user.tweet(Faker::Lorem.sentence, nil)
     end
     remove_request_stub stub
   end

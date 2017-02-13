@@ -98,16 +98,30 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
 
   test '#create shows Twitter errors' do
     sign_in_as :user
-    stub = stub_over_140
+    stub = stub_unauthorized
 
     assert_no_difference 'Thank.count' do
       post deed_thanks_url(@deed), params: { thank: { text: @deed.text } }
     end
     assert_select '#form-error' do
-      assert_select 'li', 'Twitter error: Status is over 140 characters'
-      assert_select 'li', 1
+      assert_select 'li', 'Twitter error: Could not authenticate you'
+      assert_select 'li', "Twitter can't be blank"
+      assert_select 'li', 2
     end
 
     remove_request_stub stub
+  end
+
+  test '#create will not try to tweet invalid thanks' do
+    sign_in_as :user
+
+    assert_no_difference 'Thank.count' do
+      post deed_thanks_url(@deed), params: { thank: { text: @deed.text * 10 } }
+    end
+    assert_select '#form-error' do
+      assert_select 'li', "Twitter can't be blank"
+      assert_select 'li', 'Twitter is not a valid tweet'
+      assert_select 'li', 2
+    end
   end
 end

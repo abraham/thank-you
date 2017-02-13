@@ -1,23 +1,6 @@
 require 'test_helper'
 
 class ThankTest < ActiveSupport::TestCase
-  test 'text length conforms to Twitter spec' do
-    thank = build(:thank)
-    thank.url = 'https://example.com'
-    assert thank.valid?
-    thank.text = 'n' * 200
-    assert_not thank.valid?
-    assert_equal 'Text is not a valid tweet', thank.errors.full_messages.first
-    thank.text = 'https://example.com ' * 6
-    assert_not thank.valid?
-    assert_equal 'Text is not a valid tweet', thank.errors.full_messages.first
-    thank.text = "Thank You @twitter for #{'n' * 93}"
-    assert thank.valid?
-    thank.text = "Thank You @twitter for #{'n' * 94}"
-    assert_not thank.valid?
-    assert_equal 'Text is not a valid tweet', thank.errors.full_messages.first
-  end
-
   test '#tweet posts to Twitter' do
     status = Faker::Twitter.status
     user = create(:user)
@@ -69,5 +52,49 @@ class ThankTest < ActiveSupport::TestCase
     assert_not thank_two.valid?
     assert_equal ['Deed has already been thanked', "Twitter can't be blank"], thank_two.errors.full_messages
     remove_request_stub stub
+  end
+
+  test 'validation' do
+    thank = build(:thank)
+    assert thank.valid?
+    thank.data = nil
+    assert_not thank.valid?
+    assert_equal ["Data can't be blank"], thank.errors.full_messages
+    thank.twitter_id = nil
+    assert_not thank.valid?
+    assert_equal ["Twitter can't be blank", "Url can't be blank"], thank.errors.full_messages
+    thank.text = nil
+    assert_not thank.valid?
+    assert_equal ['Twitter is not a valid tweet', "Text can't be blank", "Twitter can't be blank", "Url can't be blank"], thank.errors.full_messages
+  end
+
+  test '#tweetable? requires values' do
+    thank = Thank.new
+    assert_not thank.send(:tweetable?)
+    invalid_errors = [
+      'Deed must exist',
+      "Deed can't be blank",
+      'User must exist',
+      "User can't be blank",
+      'Twitter is not a valid tweet',
+      "Text can't be blank",
+      "Twitter can't be blank",
+      "Url can't be blank"
+    ]
+    assert_equal invalid_errors, thank.errors.full_messages
+    assert_not thank.valid?
+  end
+
+  test '#tweetable? knows when it is ready to tweet' do
+    thank = Thank.new(user: create(:user), deed: create(:deed), text: Faker::Lorem.sentence, url: 'https://example.com')
+    assert thank.send(:tweetable?)
+    assert_not thank.valid?
+  end
+
+  test '#tweetable? is false if already tweeted' do
+    thank = Thank.new(user: create(:user), deed: create(:deed), text: Faker::Lorem.sentence, twitter_id: 123, data: { foo: :bar })
+    assert_not thank.send(:tweetable?)
+    assert thank.valid?
+    assert_equal [], thank.errors.full_messages
   end
 end
