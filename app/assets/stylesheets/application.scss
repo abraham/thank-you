@@ -37,7 +37,7 @@ header a, header span {
   @include mdc-theme-prop(color, text-primary-on-primary);
 }
 
-.container {
+main {
   max-width: 600px;
   margin: 0 auto;
 }

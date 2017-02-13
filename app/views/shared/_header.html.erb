@@ -1,13 +1,19 @@
 <header class="mdc-toolbar mdc-toolbar--fixed">
   <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-    <span class="mdc-toolbar__title"><%= link_to 'Thank You', root_path %></span>
   </section>
 
   <section class="mdc-toolbar__section">
-    <span>Be an addvocate for positive action</span>
+    <section class="mdc-toolbar__section">
+      <span class="mdc-toolbar__title"><%= link_to 'Thank You', root_path %></span>
+    </section>
   </section>
 
+  <!-- <section class="mdc-toolbar__section">
+    <span>Be an addvocate for positive action</span>
+  </section> -->
+
   <section class="mdc-toolbar__section mdc-toolbar__section--align-end">
+    <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
     <% if current_user %>
       <div id='welcome'>
         <%= "Hi @#{current_user.screen_name}" %>
@@ -25,4 +31,5 @@
       <%= link_to 'Sign in with Twitter', new_sessions_path %>
     <% end %>
   </section>
+</section>
 </header>
