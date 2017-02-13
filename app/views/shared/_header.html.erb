@@ -13,13 +13,15 @@
   </section> -->
 
   <section class="mdc-toolbar__section mdc-toolbar__section--align-end">
-    <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+    <section class="mdc-toolbar__section mdc-toolbar__section">
     <% if current_user %>
-      <%= "Hi @#{current_user.screen_name}" %>
       <i class="material-icons menu">menu</i>
 
       <div class="mdc-simple-menu" tabindex="-1">
         <ul class="mdc-simple-menu__items mdc-list" role="menu" aria-hidden="true">
+          <li class="mdc-list-item" role="menuitem" tabindex="0">
+            <%= link_to "Hi @#{current_user.screen_name}", "https://twitter.com/#{current_user.screen_name}", class: 'mdc-button' %>
+          </li>
           <li class="mdc-list-item" role="menuitem" tabindex="0">
             <% if current_user.admin? %>
               <%= link_to 'Create deed', new_deed_path, class: 'mdc-button' %>
