@@ -12,9 +12,18 @@ module ThankYou
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
+    csp = [
+      "default-src 'self'",
+      "script-src 'self' https://www.google-analytics.com/",
+      "img-src https:",
+      "font-src https:",
+      "style-src 'self' https://fonts.googleapis.com/",
+      "report-uri https://abraham.report-uri.io/r/default/csp/reportOnly"
+    ]
+
     if Rails.env.production?
       config.action_dispatch.default_headers.merge!({
-        'Content-Security-Policy-Report-Only' => "default-src 'self'; script-src 'self'; img-src https:; font-src https:; report-uri https://abraham.report-uri.io/r/default/csp/reportOnly;"
+        'Content-Security-Policy-Report-Only' => csp.join('; ')
       })
     end
 
