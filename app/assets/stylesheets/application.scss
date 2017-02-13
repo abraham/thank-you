@@ -23,6 +23,7 @@ $mdc-theme-background: #fff;
 
 body, html {
   margin: 0;
+  @include mdc-theme-prop(background-color, background);
 }
 
 a {
