@@ -55,7 +55,7 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
 
     thank = @deed.thanks.last
     assert_redirected_to deed_path(@deed)
-    assert_equal "#{tweet[:text]} #{deed_url(@deed)}", thank.text
+    assert_equal tweet[:text], thank.text
     assert_equal 'Thank You was successfully created.', flash[:notice]
     remove_request_stub stub
   end
@@ -90,9 +90,10 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
       post deed_thanks_url(@deed), params: { thank: { foo: 'bar' } }
     end
     assert_select '#form-error' do
+      assert_select 'li', "Text can't be blank"
       assert_select 'li', "Data can't be blank"
       assert_select 'li', "Twitter can't be blank"
-      assert_select 'li', 2
+      assert_select 'li', 3
     end
   end
 end

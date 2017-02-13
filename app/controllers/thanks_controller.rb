@@ -4,18 +4,18 @@ class ThanksController < ApplicationController
   before_action :not_already_thanked
 
   def create
-    text = params[:thank][:text]
-    text = "#{params[:thank][:text]} #{deed_url(@deed)}" unless text && text.include?(deed_url(@deed))
-    @thank = current_user.thanks.new(deed: @deed, text: text)
+    @thank = current_user.thanks.new(deed: @deed, text: params[:thank][:text], url: deed_url(@deed))
 
     @thank.tweet if params[:thank][:text]
 
     if @thank.save
-      flash[:notice] = 'Thank You was successfully created.'
-      redirect_to @deed
+      redirect_to @deed, flash: { notice: 'Thank You was successfully created.' }
     else
       render :new
     end
+  rescue Twitter::Error => error
+    @thank.errors.add(:twitter_id, "error: #{error.message}")
+    render :new
   end
 
   def new
