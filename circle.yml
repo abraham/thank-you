@@ -10,4 +10,4 @@ dependencies:
     - npm run heroku-postbuild
 test:
   override:
-    - rails test
+    - bin/rails test
