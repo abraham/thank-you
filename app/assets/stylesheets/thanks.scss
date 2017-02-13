@@ -2,10 +2,16 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-form#new_thank .mdc-card__actions {
-  float: right;
-}
+form#new_thank{
+  .mdc-card__actions {
+    float: right;
+  }
 
-.mdc-textfield {
-  width: 100%;
+  .mdc-textfield, .field_with_errors{
+    width: 100%;
+  }
+
+  textarea {
+    width: 98%;
+  }
 }
