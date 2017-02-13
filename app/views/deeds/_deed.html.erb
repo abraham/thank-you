@@ -6,11 +6,17 @@
   <%= render 'links/links', deed: deed, links: deed.links, user: deed.user %>
 </div>
 
-<div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-  <%= render 'new_link', deed: deed, thanked: current_user && current_user.thanked?(deed) %>
-</div>
+<% unless current_user && current_user.thanked?(deed) %>
+  <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+    <%= render 'new_link', deed: deed, thanked: current_user && current_user.thanked?(deed) %>
+  </div>
+<% end %>
 
 <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-  <span>Thanked by</span>
+  <% if current_user && current_user.thanked?(deed) %>
+  <span>Thanked by you and <%= pluralize(deed.thanks_count, 'other') %></span>
+  <% else %>
+    <span>Thanked by</span>
+  <% end %>
   <%= render 'thanks/thanks', thanks: deed.thanks, more: deed.thanks_count - 10 %>
 </div>
