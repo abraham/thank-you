@@ -86,7 +86,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
 
   test '#create allows admins to create Deeds' do
     sign_in_as :admin
-    text = Faker::Lorem.sentence(3)
+    text = Faker::Lorem.sentence
     names = [Faker::Internet.user_name]
     assert_difference 'Deed.count', 1 do
       post deeds_path, params: { deed: { text: text, names: names } }
@@ -98,9 +98,26 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'Thank You created successfully.', flash[:notice]
   end
 
+  test '#create allows admins to create Deeds with a Tweet' do
+    sign_in_as :admin
+    status = Faker::Twitter.status
+    text = Faker::Lorem.sentence
+    names = [Faker::Internet.user_name]
+    stub = stub_statuses_show status
+    assert_difference 'Deed.count', 1 do
+      post deeds_path, params: { deed: { text: text, names: names, twitter_id: status[:id] } }
+    end
+    deed = Deed.last
+    assert_redirected_to deed_path(deed)
+    assert_equal status[:id].to_s, deed.twitter_id
+    assert_equal status[:id], deed.data['id']
+    assert_equal 'Thank You created successfully.', flash[:notice]
+    remove_request_stub stub
+  end
+
   test '#create allows admins to create Deeds with multiple names' do
     sign_in_as :admin
-    text = Faker::Lorem.sentence(3)
+    text = Faker::Lorem.sentence
     names = [Faker::Internet.user_name, Faker::Internet.user_name, Faker::Internet.user_name]
     assert_difference 'Deed.count', 1 do
       post deeds_path, params: { deed: { text: text, names: names } }

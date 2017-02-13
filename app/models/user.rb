@@ -50,8 +50,6 @@ class User < ApplicationRecord
     self.default_avatar = twitter_user.default_profile_image?
   end
 
-  private
-
   def client
     Twitter::REST::Client.new do |config|
       config.consumer_key = Rails.application.secrets.twitter_consumer_key

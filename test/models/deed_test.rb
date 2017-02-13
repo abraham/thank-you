@@ -30,4 +30,29 @@ class DeedTest < ActiveSupport::TestCase
     assert_not deed.save
     assert_equal ['Names has too many values'], deed.errors.full_messages
   end
+
+  test '#etl! should get status from Twitter' do
+    status = Faker::Twitter.status
+    stub = stub_statuses_show status
+    deed = build(:deed)
+    deed.twitter_id = status[:id]
+    assert_difference 'Deed.count', 1 do
+      assert deed.save
+    end
+    assert_equal deed.data['id'], status[:id]
+    remove_request_stub stub
+  end
+
+  test '#etl! should throw an error if tweet not found' do
+    status = Faker::Twitter.status
+    stub = stub_status_not_found
+    deed = build(:deed)
+    deed.twitter_id = status[:id]
+    assert_difference 'Deed.count', 0 do
+      assert_not deed.save
+    end
+    assert_not deed.valid?
+    assert_equal ['Twitter error: No status found with that ID.', "Data can't be blank"], deed.errors.full_messages
+    remove_request_stub stub
+  end
 end

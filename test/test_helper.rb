@@ -60,6 +60,11 @@ module TwitterHelper
       .to_return(status: 200, body: tweet.to_json)
   end
 
+  def stub_statuses_show(tweet)
+    stub_request(:get, "https://api.twitter.com/1.1/statuses/show/#{tweet[:id]}.json")
+      .to_return(status: 200, body: tweet.to_json)
+  end
+
   def stub_unauthorized
     error = { errors: [{ message: 'Could not authenticate you', code: 135 }] }
     stub_request(:any, /api.twitter.com/)
@@ -76,6 +81,12 @@ module TwitterHelper
     error = { errors: [{ message: 'Rate limit exceeded', code: 88 }] }
     stub_request(:any, /api.twitter.com/)
       .to_return(status: [420, 'Enhance Your Calm'], body: error.to_json)
+  end
+
+  def stub_status_not_found
+    error = { errors: [{ message: 'No status found with that ID.', code: 133 }] }
+    stub_request(:any, /api.twitter.com/)
+      .to_return(status: [404, 'Not found'], body: error.to_json)
   end
 end
 

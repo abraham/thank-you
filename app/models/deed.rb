@@ -9,6 +9,8 @@ class Deed < ApplicationRecord
   validates :text, presence: true
   validates :user, presence: true
 
+  before_validation :etl!, if: :twitter_id
+
   default_scope { order(created_at: :desc) }
 
   def display_text
@@ -17,6 +19,13 @@ class Deed < ApplicationRecord
 
   def display_names
     names.map { |n| "@#{n}" }.to_sentence
+  end
+
+  def etl!
+    twitter_status = user.client.status(twitter_id)
+    self.data = twitter_status.to_hash
+  rescue Twitter::Error => error
+    errors.add(:twitter_id, "error: #{error.message}")
   end
 
   private
