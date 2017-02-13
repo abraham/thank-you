@@ -9,7 +9,9 @@ class Deed < ApplicationRecord
   validates :text, presence: true
   validates :user, presence: true
 
-  before_validation :etl!, if: :twitter_id
+  before_validation :clean_twitter_id
+  before_validation :clean_names
+  before_validation :etl!
 
   default_scope { order(created_at: :desc) }
 
@@ -22,6 +24,7 @@ class Deed < ApplicationRecord
   end
 
   def etl!
+    return unless twitter_id
     twitter_status = user.client.status(twitter_id)
     self.data = twitter_status.to_hash
   rescue Twitter::Error => error
@@ -32,5 +35,13 @@ class Deed < ApplicationRecord
 
   def names_size
     errors.add(:names, 'has too many values') if names && names.size > 3
+  end
+
+  def clean_twitter_id
+    self.twitter_id = nil if twitter_id.blank?
+  end
+
+  def clean_names
+    self.names = names.reject { |name| name.nil? || name.blank? } if names.present?
   end
 end

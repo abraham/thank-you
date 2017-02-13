@@ -55,4 +55,16 @@ class DeedTest < ActiveSupport::TestCase
     assert_equal ['Twitter error: No status found with that ID.', "Data can't be blank"], deed.errors.full_messages
     remove_request_stub stub
   end
+
+  test '#clean_names should reject empty values' do
+    deed = Deed.new(names: ['', nil])
+    deed.valid?
+    assert_equal [], deed.names
+  end
+
+  test '#clean_twitter_id should reject empty values' do
+    deed = Deed.new(twitter_id: '')
+    deed.valid?
+    assert_nil deed.twitter_id
+  end
 end
