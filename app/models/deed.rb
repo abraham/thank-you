@@ -4,6 +4,7 @@ class Deed < ApplicationRecord
   has_many :links
 
   validate :names_size
+  validates :data, presence: true, if: :twitter_id
   validates :names, presence: true
   validates :text, presence: true
   validates :user, presence: true
