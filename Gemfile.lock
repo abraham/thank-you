@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/abraham/faker.git
-  revision: f8429ecf04c1cf88b180fc38b6a407b3ee609d5b
+  revision: 67380e6f2948dc19ea3f2fcb66b2df6d3c76b504
   branch: twitter
   specs:
     faker (1.7.2)
@@ -14,7 +14,7 @@ GIT
 
 GIT
   remote: https://github.com/rails/rails.git
-  revision: 26a137b946d2e1e54993eebc2b94cd278cd69c21
+  revision: efe121eab01d70c9da5747597d8ac6f526f2da4e
   specs:
     actioncable (5.1.0.alpha)
       actionpack (= 5.1.0.alpha)
@@ -84,12 +84,12 @@ GIT
 
 GIT
   remote: https://github.com/rails/webpacker.git
-  revision: 69cef656e8df052b4fccacf0b18ad580355f2878
+  revision: 023e5dbda8fd8bbe6e6f24788b0b45a3e72080ff
   specs:
     webpacker (0.2)
-      activesupport (>= 3.0.0, < 5.1)
+      activesupport (>= 5.0)
       multi_json (~> 1.2)
-      railties (~> 5)
+      railties (>= 5.0)
 
 GEM
   remote: https://rubygems.org/
@@ -130,7 +130,7 @@ GEM
     globalid (0.3.7)
       activesupport (>= 4.1.0)
     hashdiff (0.3.2)
-    http (2.2.0)
+    http (2.2.1)
       addressable (~> 2.3)
       http-cookie (~> 1.0)
       http-form_data (~> 1.0.1)
@@ -167,7 +167,7 @@ GEM
     nokogiri (1.7.0.1)
       mini_portile2 (~> 2.1.0)
     oauth (0.5.1)
-    parser (2.3.3.1)
+    parser (2.4.0.0)
       ast (~> 2.2)
     pg (0.19.0)
     powerpack (0.1.1)
@@ -284,4 +284,4 @@ RUBY VERSION
    ruby 2.3.1p112
 
 BUNDLED WITH
-   1.14.3
+   1.14.4
