@@ -53,4 +53,21 @@ class ThankTest < ActiveSupport::TestCase
     assert_equal thank.data['text'], "#{text} #{url}"
     remove_request_stub stub
   end
+
+  test '#save can not create duplicates' do
+    status_one = Faker::Twitter.status
+    status_two = Faker::Twitter.status
+    user = create(:user)
+    deed = create(:deed, text: status_one[:text])
+    stub = stub_statuses_update(status_one, "#{status_one[:text]} https://example.com", in_reply_to_status_id: nil)
+    thank = user.thanks.new(deed: deed, text: status_one[:text], url: 'https://example.com')
+    assert_difference 'Thank.count', 1 do
+      assert thank.tweet
+      assert thank.save
+    end
+    thank_two = user.thanks.new(deed: deed, text: status_two[:text], url: 'https://example.com')
+    assert_not thank_two.valid?
+    assert_equal ['Deed has already been thanked', "Data can't be blank", "Twitter can't be blank"], thank_two.errors.full_messages
+    remove_request_stub stub
+  end
 end

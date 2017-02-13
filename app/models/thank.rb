@@ -5,7 +5,7 @@ class Thank < ApplicationRecord
   belongs_to :user, counter_cache: true
 
   validate :text_length
-  validates :deed_id, uniqueness: { scope: :user_id, message: 'you has already been given' }
+  validates :deed_id, uniqueness: { scope: :user_id, message: 'has already been thanked' }
   validates :deed, presence: true
   validates :text, presence: true
   validates :user, presence: true
