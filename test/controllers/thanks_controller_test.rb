@@ -31,7 +31,8 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "form[action=\"#{deed_thanks_path(@deed)}\"]#new_thank" do
       assert_select 'textarea#thank_text'
-      assert_select 'p', "#{deed_url(@deed)} will be appended to the tweet"
+      assert_select 'div#deed_url', deed_url(@deed)
+      assert_select 'div', "#{deed_url(@deed)} will be appended to the tweet"
       assert_select '#deed_url', deed_url(@deed)
       assert_select 'input[type=submit][value="Tweet"]'
       assert_select "a[href=\"#{deed_path(@deed)}\"]", 'Cancel'
