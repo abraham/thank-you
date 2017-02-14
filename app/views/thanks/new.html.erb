@@ -15,7 +15,7 @@
         <%= f.text_area :text, required: true, class: 'mdc-textfield__input', rows: 4, cols: 80 %>
       </div>
       <p id="text-helptext" class="mdc-textfield-helptext--persistent" aria-hidden="true">
-        <span id='deed_url'><%= deed_url @thank.deed %></span> will be appended to the tweet
+        <div id='deed_url'><%= deed_url @thank.deed %></div> will be appended to the tweet
       </p>
 
       <p><span id='remaining_thank_text_length'></span> charactors remaining</p>
