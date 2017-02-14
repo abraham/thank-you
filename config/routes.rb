@@ -3,6 +3,9 @@ Rails.application.routes.draw do
 
   root 'deeds#index'
 
+  get 'about/terms'
+  get 'about/privacy'
+
   resource :sessions, only: [:new, :create, :destroy] do
     get :finish
   end
