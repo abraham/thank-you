@@ -9,9 +9,9 @@
   </section>
   <section class="mdc-card__actions">
     <% if @thanked_deed_ids.include?(deed.id) %>
-    <%= link_to 'Already thanked', deed, class: 'mdc-button mdc-button--compact mdc-card__action' %>
+    <%= link_to 'Already thanked', deed, class: 'mdc-button mdc-button--compact mdc-card__action ellipsis' %>
     <% else %>
-      <%= link_to "Thank @#{deed.names.first}", new_deed_thank_path(deed), class: 'mdc-button mdc-button--compact mdc-card__action' %>
+      <%= link_to "Thank @#{deed.names.first}", new_deed_thank_path(deed), class: 'mdc-button mdc-button--compact mdc-card__action ellipsis' %>
     <% end %>
     <%= link_to 'Read more', deed, class: 'mdc-button mdc-button--compact mdc-card__action' %>
   </section>
