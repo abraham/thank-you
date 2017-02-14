@@ -5,7 +5,11 @@
     </h2>
   </section>
   <section class="mdc-card__supporting-text">
-    Recently thanked by <%= render 'thanks/thanks', thanks: deed.thanks, more: deed.thanks_count - 8 %>
+    <% if deed.thanks_count > 0 %>
+      Recently thanked by <%= render 'thanks/thanks', thanks: deed.thanks, more: deed.thanks_count - 8 %>
+    <% else %>
+      <%= "Be the first to thank #{deed.display_names}" %>
+    <% end %>
   </section>
   <section class="mdc-card__actions">
     <% if @thanked_deed_ids.include?(deed.id) %>
