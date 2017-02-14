@@ -56,7 +56,7 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
     thank = @deed.thanks.last
     assert_redirected_to deed_path(@deed)
     assert_equal tweet[:text], thank.text
-    assert_equal 'Thank You was successfully created.', flash[:notice]
+    assert_equal 'Thank You tweeted.', flash[:notice]
     remove_request_stub stub
   end
 

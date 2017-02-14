@@ -7,7 +7,7 @@ class ThanksController < ApplicationController
     @thank = current_user.thanks.new(deed: @deed, text: params[:thank][:text], url: deed_url(@deed))
 
     if @thank.tweet && @thank.save
-      redirect_to @deed, flash: { notice: 'Thank You was successfully created.' }
+      redirect_to @deed, flash: { notice: "Thank You tweeted." }
     else
       render :new
     end
