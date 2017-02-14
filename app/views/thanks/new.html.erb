@@ -7,7 +7,7 @@
       <h2 class="mdc-card__subtitle">@<%= @thank.deed.data['user']['screen_name'] %></h2>
     </section>
     <section class="mdc-card__supporting-text">
-      <p><%= @thank.deed.data['text'] %><p>
+      <p><%= raw link_tweet_text @thank.deed.data['text'] %><p>
     </section>
   </div>
 
