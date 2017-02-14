@@ -1,19 +1,14 @@
 <header class="mdc-toolbar mdc-toolbar--fixed">
-  <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-  </section>
 
-  <section class="mdc-toolbar__section">
+
+  <section class="mdc-toolbar__section content">
+    <section class="mdc-toolbar__section mdc-toolbar__section--align-start"></section>
+
     <section class="mdc-toolbar__section">
       <span class="mdc-toolbar__title"><%= link_to 'Thank You', root_path %></span>
     </section>
-  </section>
 
-  <!-- <section class="mdc-toolbar__section">
-    <span>Be an addvocate for positive action</span>
-  </section> -->
-
-  <section class="mdc-toolbar__section mdc-toolbar__section--align-end">
-    <section class="mdc-toolbar__section mdc-toolbar__section">
+    <section class="mdc-toolbar__section mdc-toolbar__section mdc-toolbar__section--align-end">
     <% if current_user %>
       <i class="material-icons menu">menu</i>
 
