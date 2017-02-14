@@ -19,6 +19,7 @@ class DeedsController < ApplicationController
 
   def show
     @deed = Deed.includes(:links, thanks: :user).find(params[:id])
+    @thanked = current_user && current_user.thanked?(@deed)
   end
 
   def new
