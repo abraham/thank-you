@@ -1,0 +1,15 @@
+<% if twitter_id %>
+  <div class="mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+    <section class="mdc-card__primary">
+      <h1 class="mdc-card__title mdc-card__title--large"><%= data['user']['name'] %></h1>
+      <h2 class="mdc-card__subtitle">@<%= data['user']['screen_name'] %></h2>
+    </section>
+    <section class="mdc-card__supporting-text">
+      <p><%= raw link_tweet_text data['text'] %><p>
+    </section>
+  </div>
+
+  <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+    <p>In reply...</a>
+  </div>
+<% end %>
