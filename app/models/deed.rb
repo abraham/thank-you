@@ -34,7 +34,7 @@ class Deed < ApplicationRecord
   private
 
   def names_size
-    errors.add(:names, 'has too many values') if names && names.size > 3
+    errors.add(:names, 'has too many values') if names && names.size > 4
   end
 
   def clean_twitter_id

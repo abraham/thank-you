@@ -15,15 +15,21 @@ class DeedTest < ActiveSupport::TestCase
     assert deed.save
   end
 
-  test 'should save with three names' do
+  test 'should save with four names' do
     deed = Deed.new(text: Faker::Hipster.sentence,
-                    names: [Faker::Internet.user_name, Faker::Internet.user_name, Faker::Internet.user_name],
+                    names: [Faker::Internet.user_name, Faker::Internet.user_name, Faker::Internet.user_name, Faker::Internet.user_name],
                     user: create(:user))
     assert deed.save
   end
 
-  test 'should not save with more than three names' do
-    names = [Faker::Internet.user_name, Faker::Internet.user_name, Faker::Internet.user_name, Faker::Internet.user_name]
+  test 'should not save with more than four names' do
+    names = [
+      Faker::Internet.user_name,
+      Faker::Internet.user_name,
+      Faker::Internet.user_name,
+      Faker::Internet.user_name,
+      Faker::Internet.user_name
+    ]
     deed = Deed.new(text: Faker::Hipster.sentence,
                     names: names,
                     user: create(:user))
