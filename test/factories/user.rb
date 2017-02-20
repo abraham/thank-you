@@ -3,7 +3,7 @@ FactoryGirl.define do
     status :active
     data do
       Faker::Twitter.user.merge(email: Faker::Internet.safe_email,
-                                screen_name: Faker::Internet.user_name.sub('.', '_'))
+                                screen_name: Faker::Internet.user_name(nil, ['_']))
     end
     twitter_id { data[:id].to_s }
     screen_name { data[:screen_name] }

@@ -105,7 +105,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
   test '#create allows admins to create Deeds' do
     sign_in_as :admin
     text = Faker::Lorem.sentence
-    names = [Faker::Internet.user_name]
+    names = [Faker::Internet.user_name(nil, ['_'])]
     assert_difference 'Deed.count', 1 do
       post deeds_path, params: { deed: { text: text, names: names, twitter_id: '' } }
     end
@@ -120,7 +120,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as :admin
     status = Faker::Twitter.status
     text = Faker::Lorem.sentence
-    names = [Faker::Internet.user_name]
+    names = [Faker::Internet.user_name(nil, ['_'])]
     stub = stub_statuses_show status
     assert_difference 'Deed.count', 1 do
       post deeds_path, params: { deed: { text: text, names: names, twitter_id: status[:id] } }
@@ -136,7 +136,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
   test '#create allows admins to create Deeds with multiple names' do
     sign_in_as :admin
     text = Faker::Lorem.sentence
-    names = [Faker::Internet.user_name, Faker::Internet.user_name, Faker::Internet.user_name]
+    names = [Faker::Internet.user_name(nil, ['_']), Faker::Internet.user_name(nil, ['_']), Faker::Internet.user_name(nil, ['_'])]
     assert_difference 'Deed.count', 1 do
       post deeds_path, params: { deed: { text: text, names: names } }
     end
@@ -203,7 +203,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
   test '#create shows Twitter errors' do
     sign_in_as :admin
     text = Faker::Lorem.sentence
-    names = [Faker::Internet.user_name]
+    names = [Faker::Internet.user_name(nil, ['_'])]
     stub = stub_status_not_found
     assert_no_difference 'Deed.count' do
       post deeds_path, params: { deed: { text: text, names: names, twitter_id: '123' } }

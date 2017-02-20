@@ -6,11 +6,11 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-thank_names = Array.new(rand(40..50)).map { Faker::Internet.user_name.sub('.', '_') }
+thank_names = Array.new(rand(40..50)).map { Faker::Internet.user_name(nil, ['_']) }
 
 users = Array.new(rand(40..50)).map do |_i|
   twitter_user = Faker::Twitter.user.merge(email: Faker::Internet.safe_email)
-  twitter_user[:screen_name] = twitter_user[:screen_name].sub('.', '_')
+  twitter_user[:screen_name] = twitter_user[:screen_name]
   user = User.create(twitter_id: twitter_user[:id_str],
                      screen_name: twitter_user[:screen_name],
                      name: twitter_user[:name],
