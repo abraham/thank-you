@@ -16,12 +16,7 @@
  */
 
 @import 'material/mdc-toolbar';
-
-$mdc-theme-primary: #2196F3;
-$mdc-theme-accent: #F44336;
-$mdc-theme-background: #fff;
-
-@import "@material/theme/mdc-theme";
+@import 'theme';
 
 * {
   font-family: 'Roboto', sans-serif;
@@ -38,28 +33,12 @@ body {
   flex-direction: column;
 }
 
-header {
-  z-index: 1;
-}
-
 a {
   @include mdc-theme-prop(color, primary)
 }
 
-header a, header span {
-  text-decoration: none;
-}
-
 .error-text {
   color: #F44336;
-}
-
-header .auth {
-  @include mdc-theme-prop(color, text-primary-on-primary);
-}
-
-header .mdc-toolbar__title a {
-  @include mdc-theme-prop(color, text-primary-on-primary);
 }
 
 footer {
@@ -79,11 +58,8 @@ footer {
   background-color: #F44336;
 }
 
-header .mdc-simple-menu {
-  margin-top: 64px;
-}
 
-main, header .content {
+main {
   max-width: 600px;
   margin: 0 auto;
 }

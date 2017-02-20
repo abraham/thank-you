@@ -1,36 +1,35 @@
 <header class="mdc-toolbar mdc-toolbar--fixed">
-
-
   <section class="mdc-toolbar__section content">
     <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
       <span class="mdc-toolbar__title"><%= link_to 'Thank You', root_path %></span>
     </section>
 
     <section class="mdc-toolbar__section mdc-toolbar__section mdc-toolbar__section--align-end">
-    <% if current_user %>
-      <i class="material-icons menu">menu</i>
+      <% if current_user %>
+        <!-- <i class="material-icons menu">menu</i> -->
+        <%= image_tag(current_user.avatar_url, class: 'menu avatar', width: 32, height: 32) %>
 
-      <div class="mdc-simple-menu" tabindex="-1">
-        <ul class="mdc-simple-menu__items mdc-list" role="menu" aria-hidden="true">
-          <li class="mdc-list-item" role="menuitem" tabindex="0">
-            <%= link_to "Hi @#{current_user.screen_name}", "https://twitter.com/#{current_user.screen_name}", class: 'mdc-button', target: '_blank' %>
-          </li>
-          <li class="mdc-list-item" role="menuitem" tabindex="0">
-            <% if current_user.admin? %>
-              <%= link_to 'Create deed', new_deed_path, class: 'mdc-button' %>
-            <% else %>
-              <%= link_to 'Suggest Thank You', 'https://goo.gl/forms/D8N4bQsz3gl7kbKo2', class: 'mdc-button', target: '_blank' %>
-            <% end %>
-          </li>
-          <li class="mdc-list-item" role="menuitem" tabindex="0">
-            <%= render 'sessions/sign-out' %>
-          </li>
-        </ul>
-      </div>
+        <div class="mdc-simple-menu" tabindex="-1">
+          <ul class="mdc-simple-menu__items mdc-list" role="menu" aria-hidden="true">
+            <li class="mdc-list-item" role="menuitem" tabindex="0">
+              <%= link_to "Hi @#{current_user.screen_name}", "https://twitter.com/#{current_user.screen_name}", class: 'mdc-button', target: '_blank' %>
+            </li>
+            <li class="mdc-list-item" role="menuitem" tabindex="0">
+              <% if current_user.admin? %>
+                <%= link_to 'Create deed', new_deed_path, class: 'mdc-button' %>
+              <% else %>
+                <%= link_to 'Suggest Thank You', 'https://goo.gl/forms/D8N4bQsz3gl7kbKo2', class: 'mdc-button', target: '_blank' %>
+              <% end %>
+            </li>
+            <li class="mdc-list-item" role="menuitem" tabindex="0">
+              <%= render 'sessions/sign-out' %>
+            </li>
+          </ul>
+        </div>
 
-    <% elsif !current_page?(controller: :sessions, action: :new) %>
-      <%= link_to 'Sign in', new_sessions_path, class: 'mdc-button auth' %>
-    <% end %>
+      <% elsif !current_page?(controller: :sessions, action: :new) %>
+        <%= link_to 'Sign in', new_sessions_path, class: 'mdc-button auth' %>
+      <% end %>
+    </section>
   </section>
-</section>
 </header>
