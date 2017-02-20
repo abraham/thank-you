@@ -1,13 +1,14 @@
 <div class="tweet tweet-<%= tweet.id %> mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
   <% if tweet.media? %>
     <% media = tweet.media.first %>
+    <% height = media.sizes[:medium].h > 600 ? media.sizes[:medium].h / 2 : media.sizes[:medium].h %>
     <section class="mdc-card__media">
       <style>
         .tweet-<%= tweet.id %> .mdc-card__media {
           background-image: url("<%= media.media_url_https.to_s %>");
           background-size: cover;
           background-repeat: no-repeat;
-          height: <%= media.sizes[:medium].h %>px;
+          height: <%= height %>px;
         }
       </style>
     </section>
