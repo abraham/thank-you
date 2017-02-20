@@ -9,5 +9,11 @@ FactoryGirl.define do
       twitter_id { data[:id] }
       names { [data[:user][:screen_name]] }
     end
+
+    trait :with_photo_tweet do
+      data { Faker::Twitter.status(include_photo: true) }
+      twitter_id { data[:id] }
+      names { [data[:user][:screen_name]] }
+    end
   end
 end
