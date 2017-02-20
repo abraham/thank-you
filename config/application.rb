@@ -17,7 +17,7 @@ module ThankYou
       "script-src 'self' https://www.google-analytics.com/",
       "img-src https:",
       "font-src https:",
-      "style-src 'self' https://fonts.googleapis.com/",
+      "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com/",
       "report-uri https://abraham.report-uri.io/r/default/csp/reportOnly"
     ]
 
