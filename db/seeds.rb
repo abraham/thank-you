@@ -28,9 +28,17 @@ end
 puts "Seeded #{users.size} users"
 
 deeds = Array.new(rand(40..50)).map do |_i|
+  data = nil
+  twitter_id = nil
+  if rand(100) < 75
+    data = Faker::Twitter.status(include_photo: rand(100) < 25)
+    twitter_id = data[:id]
+  end
   deed = Deed.create(text: Faker::Hipster.sentence,
                      names: thank_names.sample(rand(1..3)),
-                     user: users.sample)
+                     user: users.sample,
+                     data: data,
+                     twitter_id: twitter_id)
   puts "Error seeding deed: #{deed.errors.full_messages.to_sentence}" if deed.new_record?
 
   deed
