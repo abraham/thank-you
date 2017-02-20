@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/abraham/faker.git
-  revision: 67380e6f2948dc19ea3f2fcb66b2df6d3c76b504
+  revision: 5785cd76ea0226deeefa407d29437647f4a9edb0
   branch: twitter
   specs:
-    faker (1.7.2)
+    faker (1.7.3)
       i18n (~> 0.5)
 
 GIT
