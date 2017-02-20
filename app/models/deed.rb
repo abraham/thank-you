@@ -32,7 +32,7 @@ class Deed < ApplicationRecord
   end
 
   def tweet
-    Twitter::Tweet.new(data.deep_symbolize_keys)
+    @tweet ||= Twitter::Tweet.new(data.deep_symbolize_keys)
   end
 
   def tweet?
