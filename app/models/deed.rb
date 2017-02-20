@@ -31,6 +31,14 @@ class Deed < ApplicationRecord
     errors.add(:twitter_id, "error: #{error.message}")
   end
 
+  def tweet
+    Twitter::Tweet.new(data.deep_symbolize_keys)
+  end
+
+  def tweet?
+    twitter_id.present? && data.present?
+  end
+
   private
 
   def names_size

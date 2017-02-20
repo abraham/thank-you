@@ -1,4 +1,11 @@
-<%= render 'shared/tweet', twitter_id: deed.twitter_id, data: deed.data %>
+<% if deed.tweet? %>
+  <%= render 'shared/tweet', tweet: deed.tweet %>
+
+  <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+    <p>In reply...</a>
+  </div>
+<% end %>
+
 
 <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
   <h1><%= raw link_tweet_text(deed.display_text) %></h1>

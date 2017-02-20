@@ -1,15 +1,34 @@
-<% if twitter_id %>
-  <div class="mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-    <section class="mdc-card__primary">
-      <h1 class="mdc-card__title mdc-card__title--large"><%= data['user']['name'] %></h1>
-      <h2 class="mdc-card__subtitle">@<%= data['user']['screen_name'] %></h2>
+<div class="tweet tweet-<%= tweet.id %> mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+  <% if tweet.media? %>
+    <% media = tweet.media.first %>
+    <section class="mdc-card__media">
+      <style>
+        .tweet-<%= tweet.id %> .mdc-card__media {
+          background-image: url("<%= media.media_url_https.to_s %>");
+          background-size: cover;
+          background-repeat: no-repeat;
+          height: <%= media.sizes[:medium].h %>px;
+        }
+      </style>
     </section>
-    <section class="mdc-card__supporting-text">
-      <p><%= raw link_tweet_text data['text'] %><p>
-    </section>
+  <% end %>
+
+  <div class="mdc-card__horizontal-block">
+    <div>
+      <%= link_to image_tag(tweet.user.profile_image_uri_https(:bigger), class: 'avatar mdc-card__media-item mdc-card__media-item'), tweet.user.uri.to_s, target: '_blank' %>
+      <section class="mdc-card__primary">
+        <div class="mdc-card__title"><strong><%= link_to tweet.user.name, tweet.user.uri.to_s, target: '_blank', class: 'title' %></strong></div>
+        <div class="mdc-card__subtitle"><%= link_to "@#{tweet.user.screen_name}", tweet.user.uri.to_s, target: '_blank', class: 'mute' %></div>
+      </section>
+    </div>
+    <%= link_to image_tag(image_path('twitter-72x72.png'), class: 'logo mdc-card__media-item mdc-card__media-item'), tweet.uri.to_s, target: '_blank' %>
   </div>
 
-  <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-    <p>In reply...</a>
-  </div>
-<% end %>
+  <section class="mdc-card__supporting-text">
+    <p><%= raw link_tweet_text tweet.full_text %><p>
+  </section>
+
+  <section class="mdc-card__supporting-text">
+    <%= link_to tweet.created_at.strftime('%l:%M %p - %e %b %Y'), tweet.uri.to_s, target: '_blank', class: 'mute' %>
+  </section>
+</div>

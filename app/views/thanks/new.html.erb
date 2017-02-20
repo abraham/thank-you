@@ -1,6 +1,12 @@
 <%= render 'shared/model_flash', item: @thank, name: 'Thank You' %>
 
-<%= render 'shared/tweet', twitter_id: @thank.deed.twitter_id, data: @thank.deed.data %>
+<% if @thank.deed.tweet? %>
+  <%= render 'shared/tweet', tweet: @thank.deed.tweet %>
+
+  <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+    <p>In reply...</a>
+  </div>
+<% end %>
 
 <div class="mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
   <%= form_for [@deed, @thank] do |f| %>
