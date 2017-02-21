@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   get 'about/terms'
   get 'about/privacy'
 
+  get 'manifest', to: 'manifest#index'
+
   resource :sessions, only: [:new, :create, :destroy] do
     get :finish
   end
