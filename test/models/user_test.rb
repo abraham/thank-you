@@ -179,4 +179,13 @@ class UserTest < ActiveSupport::TestCase
     user.default_avatar = true
     assert user.default_avatar?
   end
+
+  test '#client' do
+    user = create(:user)
+    assert_instance_of Twitter::REST::Client, user.client
+    assert_equal 'fake_key', user.client.consumer_key
+    assert_equal 'fake_secret', user.client.consumer_secret
+    assert_equal user.access_token, user.client.access_token
+    assert_equal user.access_token_secret, user.client.access_token_secret
+  end
 end
