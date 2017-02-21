@@ -2,6 +2,9 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+@import "@material/animation/mdc-animation";
+@import "@material/animation/functions";
+
 form#new_deed {
   .mdc-card__actions {
     float: right;
@@ -9,5 +12,40 @@ form#new_deed {
 
   .hidden {
     display: none;
+    height: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  @keyframes slide-in {
+    from {
+      height: 0px;
+      opacity: 0;
+    }
+    to {
+      height: 100px;
+      opacity: 1;
+    }
+  }
+
+  @keyframes slide-out {
+    from {
+      height: 100px;
+      opacity: 1;
+    }
+    to {
+      height: 0;
+      opacity: 0;
+    }
+  }
+
+  .name-field--animating {
+    animation: slide-in 175ms $mdc-animation-fast-out-slow-in-timing-function;
+    animation-fill-mode: forwards;
+  }
+
+  .add-name--animating {
+    animation: slide-out 175ms $mdc-animation-fast-out-slow-in-timing-function;
+    animation-fill-mode: forwards;
   }
 }

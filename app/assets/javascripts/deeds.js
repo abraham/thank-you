@@ -26,8 +26,9 @@ document.addEventListener('turbolinks:load', function() {
   function showName(event) {
     event.preventDefault();
     if (deedForm.querySelectorAll('.name.hidden').length <= 1) {
-      deedForm.querySelector('.add-name').parentNode.classList.add('hidden');
+      deedForm.querySelector('.add-name').parentNode.classList.add('add-name--animating');
     }
+    deedForm.querySelector('.name.hidden').classList.add('name-field--animating');
     deedForm.querySelector('.name.hidden').classList.remove('hidden');
     return false;
   }
