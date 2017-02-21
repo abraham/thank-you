@@ -10,10 +10,15 @@
 
 <div class="mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
   <%= form_for [@deed, @thank] do |f| %>
-    <section class="mdc-card__primary">
-      <h1 class="mdc-card__title mdc-card__title--large"><%= current_user.name %></h1>
-      <h2 class="mdc-card__subtitle">@<%= current_user.screen_name %></h2>
-    </section>
+    <div class="mdc-card__horizontal-block">
+      <div>
+        <%= image_tag(current_user.avatar_url, class: 'avatar mdc-card__media-item mdc-card__media-item') %>
+        <section class="mdc-card__primary">
+          <div class="mdc-card__title"><strong class="title"><%= current_user.name %></strong></div>
+          <div class="mdc-card__subtitle mute">@<%= current_user.screen_name %></div>
+        </section>
+      </div>
+    </div>
 
     <section class="mdc-card__supporting-text">
       <div class="mdc-textfield mdc-textfield--multiline">

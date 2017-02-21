@@ -26,10 +26,17 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
   end
 
   test '#new should render a form' do
-    sign_in_as :user
+    user = sign_in_as :user
     get new_deed_thank_url(@deed)
     assert_response :success
     assert_select "form[action=\"#{deed_thanks_path(@deed)}\"]#new_thank" do
+      assert_select 'div.mdc-card__horizontal-block' do
+        assert_select "img[src=\"#{user.avatar_url}\"].avatar", 1
+        assert_select 'section.mdc-card__primary' do
+          assert_select 'div.mdc-card__title', user.name
+          assert_select 'div.mdc-card__subtitle', "@#{user.screen_name}"
+        end
+      end
       assert_select 'textarea#thank_text'
       assert_select 'div#deed_url', deed_url(@deed)
       assert_select 'div', "#{deed_url(@deed)} will be appended to the tweet"

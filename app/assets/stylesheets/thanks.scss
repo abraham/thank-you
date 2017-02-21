@@ -20,6 +20,25 @@ form#new_thank{
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+
+  .avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 4px;
+  }
+
+  .mdc-card__primary, .avatar {
+    float: left;
+  }
+
+  .mute {
+    color: #9E9E9E;
+  }
+
+  .title {
+    color: #424242;
+    font-size: 18px;
+  }
 }
 
 img.profile {
