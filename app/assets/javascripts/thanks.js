@@ -3,12 +3,15 @@
 //= require twitter-text/twitter-text
 
 document.addEventListener('turbolinks:load', function() {
-  var thankForm = document.querySelector('#new_thank');
+  var thankForm = document.querySelector('form#new_thank');
   if (!thankForm) {
     return;
   }
 
-  mdc.textfield.MDCTextfield.attachTo(document.querySelector('.mdc-textfield'));
+  document.querySelectorAll('form#new_thank .mdc-textfield').forEach(function(textfield) {
+    mdc.textfield.MDCTextfield.attachTo(textfield);
+  });
+
   var thankText = thankForm.querySelector('#thank_text');
   var remaningTextLength = thankForm.querySelector('#remaining_thank_text_length');
   var deedUrl = thankForm.querySelector('#deed_url');

@@ -98,7 +98,9 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
       assert_select 'input[type=text]#deed_names_', 4
       assert_select 'textarea#deed_text'
       assert_select 'input[type=text]#deed_twitter_id'
-      assert_select 'input[type=submit][value="Create deed"]'
+      assert_select 'input[type=submit][value="Publish"]'
+      assert_select 'input', 7
+      assert_select 'label', 6
     end
   end
 
@@ -192,7 +194,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
       assert_select 'input[value=two]#deed_names_', 1
       assert_select 'input[value=three]#deed_names_', 1
       assert_select 'textarea#deed_text'
-      assert_select 'input[type=submit][value="Create deed"]'
+      assert_select 'input[type=submit][value="Publish"]'
     end
     assert_select '.card-error' do
       assert_select 'li', "Text can't be blank"
@@ -212,7 +214,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
       assert_select 'input[type=text]#deed_names_', 4
       assert_select 'textarea#deed_text'
       assert_select 'input[value="123"]#deed_twitter_id'
-      assert_select 'input[type=submit][value="Create deed"]'
+      assert_select 'input[type=submit][value="Publish"]'
     end
     assert_select '.card-error' do
       assert_select 'li', 'Twitter error: No status found with that ID.'
