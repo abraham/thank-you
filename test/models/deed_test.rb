@@ -78,9 +78,21 @@ class DeedTest < ActiveSupport::TestCase
   end
 
   test '#clean_names should reject empty values' do
-    deed = Deed.new(names: ['', nil])
+    deed = Deed.new(names: ['', nil, 'bobcat'])
     deed.valid?
-    assert_equal [], deed.names
+    assert_equal ['bobcat'], deed.names
+  end
+
+  test '#clean_names should strip whitespace' do
+    deed = Deed.new(names: ['  ', '  dog  '])
+    deed.valid?
+    assert_equal ['dog'], deed.names
+  end
+
+  test '#clean_names supports needed characters' do
+    deed = Deed.new(names: ['sna_ke', '@rabbit'])
+    deed.valid?
+    assert_equal ['sna_ke', 'rabbit'], deed.names
   end
 
   test '#clean_twitter_id should reject empty values' do

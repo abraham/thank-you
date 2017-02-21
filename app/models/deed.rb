@@ -50,6 +50,8 @@ class Deed < ApplicationRecord
   end
 
   def clean_names
-    self.names = names.reject { |name| name.nil? || name.blank? } if names.present?
+    return unless names.present?
+    self.names = names.reject { |name| name.nil? || name.blank? }
+    self.names = names.map { |name| name.gsub(/[^a-z0-9_]/i, '') }
   end
 end
