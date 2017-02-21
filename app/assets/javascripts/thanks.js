@@ -13,7 +13,7 @@ document.addEventListener('turbolinks:load', function() {
   });
 
   var thankText = thankForm.querySelector('#thank_text');
-  var remaningTextLength = thankForm.querySelector('#remaining_thank_text_length');
+  var remainingTextLengthDisplay = thankForm.querySelector('#remaining_thank_text_length');
   var deedUrl = thankForm.querySelector('#deed_url');
   var submitButton = thankForm.querySelector('input[type=submit]');
 
@@ -32,10 +32,10 @@ document.addEventListener('turbolinks:load', function() {
     var text = thankTweetText();
     if (validTweet(text)) {
       submitButton.disabled = false;
-      remaningTextLength.parentNode.classList.remove('error-text');
+      remainingTextLengthDisplay.parentNode.classList.remove('error-text');
     } else {
       submitButton.disabled = true;
-      remaningTextLength.parentNode.classList.add('error-text');
+      remainingTextLengthDisplay.parentNode.classList.add('error-text');
     }
     renderRemainingTextLength(remainingTextLength());
   }
@@ -45,6 +45,6 @@ document.addEventListener('turbolinks:load', function() {
   }
 
   function renderRemainingTextLength(length) {
-    remaningTextLength.innerText = length;
+    remainingTextLengthDisplay.innerText = length;
   }
 });

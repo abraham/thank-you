@@ -39,6 +39,11 @@ form#new_deed {
     }
   }
 
+
+  .error-text {
+    color: #F44336;
+  }
+
   .name-field--animating {
     animation: slide-in 175ms $mdc-animation-fast-out-slow-in-timing-function;
     animation-fill-mode: forwards;

@@ -14,14 +14,17 @@ document.addEventListener('turbolinks:load', function() {
 
   var addNameButton = deedForm.querySelector('.add-name');
 
-  // var thankText = deedForm.querySelector('#thank_text');
-  // var remaningTextLength = deedForm.querySelector('#remaining_thank_text_length');
-  // var deedUrl = deedForm.querySelector('#deed_url');
-  // var submitButton = deedForm.querySelector('input[type=submit]');
+  var deedText = deedForm.querySelector('#deed_text');
+  var namesText = deedForm.querySelectorAll('input#deed_names_');
+  var remainingTextLengthDisplay = deedForm.querySelector('#remaining_deed_text_length');
+  var submitButton = deedForm.querySelector('input[type=submit]');
 
-    addNameButton.addEventListener('click', showName);
-  // thankText.addEventListener('input', validateText);
-  // validateText();
+  namesText.forEach(function(nameText) {
+    nameText.addEventListener('input', validateText);
+  });
+  addNameButton.addEventListener('click', showName);
+  deedText.addEventListener('input', validateText);
+  validateText();
 
   function showName(event) {
     event.preventDefault();
@@ -37,27 +40,65 @@ document.addEventListener('turbolinks:load', function() {
     return twttr.txt.isInvalidTweet(text) === false;
   }
 
-  function thankTweetText() {
-    return thankText.value + ' ' + deedUrl.innerText;
+  function deedTweetText() {
+    return 'Thank You ' + toSentence(names()) + ' for ' + deedText.value + ' https://example.com/';
   }
 
   function validateText() {
-    var text = thankTweetText();
+    var text = deedTweetText();
     if (validTweet(text)) {
       submitButton.disabled = false;
-      remaningTextLength.parentNode.classList.remove('error-text');
+      remainingTextLengthDisplay.parentNode.classList.remove('error-text');
     } else {
       submitButton.disabled = true;
-      remaningTextLength.parentNode.classList.add('error-text');
+      remainingTextLengthDisplay.parentNode.classList.add('error-text');
     }
     renderRemainingTextLength(remainingTextLength());
   }
 
   function remainingTextLength() {
-    return 140 - twttr.txt.getTweetLength(thankTweetText());
+    console.log(deedTweetText());
+    return 140 - twttr.txt.getTweetLength(deedTweetText());
   }
 
   function renderRemainingTextLength(length) {
-    remaningTextLength.innerText = length;
+    remainingTextLengthDisplay.innerText = length;
+  }
+
+  function names() {
+    var names = [];
+    namesText.forEach(function(elem) {
+      var name = elem.value.trim();
+      console.log('name', name);
+      if (name) {
+        names.push('@' + name)
+      }
+    });
+
+    return names;
+  }
+
+  function toSentence(array) {
+    var wordsConnector = ", ";
+    var twoWordsConnector = " and ";
+    var lastWordConnector = ", and ";
+    var sentence;
+
+    switch(array.length) {
+      case 0:
+        sentence = "";
+        break;
+      case 1:
+        sentence = array[0];
+        break;
+      case 2:
+        sentence = array[0] + twoWordsConnector + array[1];
+        break;
+      default:
+        sentence = array.slice(0, -1).join(wordsConnector) + lastWordConnector + array[array.length - 1];
+        break;
+    }
+
+    return sentence;
   }
 });
