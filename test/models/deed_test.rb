@@ -73,4 +73,21 @@ class DeedTest < ActiveSupport::TestCase
     deed.valid?
     assert_nil deed.twitter_id
   end
+
+  test '#display_text' do
+    deed = create(:deed)
+    assert_equal "Thank You @#{deed.names.first} for #{deed.text}", deed.display_text
+    deed.names << Faker::Internet.user_name(nil, ['_'])
+    deed.names << Faker::Internet.user_name(nil, ['_'])
+    text = "Thank You @#{deed.names.first}, @#{deed.names.second}, and @#{deed.names.third} for #{deed.text}"
+    assert_equal text, deed.display_text
+  end
+
+  test '#display_names' do
+    deed = create(:deed)
+    assert_equal "@#{deed.names.first}", deed.display_names
+    deed.names << Faker::Internet.user_name(nil, ['_'])
+    deed.names << Faker::Internet.user_name(nil, ['_'])
+    assert_equal "@#{deed.names.first}, @#{deed.names.second}, and @#{deed.names.third}", deed.display_names
+  end
 end
