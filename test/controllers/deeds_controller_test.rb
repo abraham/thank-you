@@ -95,7 +95,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     get new_deed_path
     assert_response :success
     assert_select "form[action=\"#{deeds_path}\"]#new_deed" do
-      assert_select 'input[type=text]#deed_names_', 3
+      assert_select 'input[type=text]#deed_names_', 4
       assert_select 'textarea#deed_text'
       assert_select 'input[type=text]#deed_twitter_id'
       assert_select 'input[type=submit][value="Create deed"]'
@@ -187,7 +187,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
       post deeds_path, params: { deed: { names: names } }
     end
     assert_select "form[action=\"#{deeds_path}\"]#new_deed" do
-      assert_select 'input[type=text]#deed_names_', 3
+      assert_select 'input[type=text]#deed_names_', 4
       assert_select 'input[value=one]#deed_names_', 1
       assert_select 'input[value=two]#deed_names_', 1
       assert_select 'input[value=three]#deed_names_', 1
@@ -209,7 +209,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
       post deeds_path, params: { deed: { text: text, names: names, twitter_id: '123' } }
     end
     assert_select "form[action=\"#{deeds_path}\"]#new_deed" do
-      assert_select 'input[type=text]#deed_names_', 3
+      assert_select 'input[type=text]#deed_names_', 4
       assert_select 'textarea#deed_text'
       assert_select 'input[value="123"]#deed_twitter_id'
       assert_select 'input[type=submit][value="Create deed"]'
