@@ -26,7 +26,10 @@ class HeaderTest < ActionDispatch::IntegrationTest
     user = sign_in_as :user
     get root_url
     assert_select 'header' do
-      assert_select "a[href=\"https://twitter.com/#{user.screen_name}\"]", "Hi @#{user.screen_name}"
+      assert_select "img[src=\"#{user.avatar_url}\"].menu", 1
+      assert_select 'div.mdc-simple-menu' do
+        assert_select "a[href=\"https://twitter.com/#{user.screen_name}\"]", "Hi @#{user.screen_name}"
+      end
     end
   end
 
@@ -35,8 +38,10 @@ class HeaderTest < ActionDispatch::IntegrationTest
     get root_url
     assert_select 'header' do
       assert_select "a[href=\"#{new_sessions_path}\"]", 0
-      assert_select "form[action=\"#{sessions_path}\"]" do
-        assert_select 'input[type=submit][value="Sign out"]'
+      assert_select 'div.mdc-simple-menu' do
+        assert_select "form[action=\"#{sessions_path}\"]" do
+          assert_select 'input[type=submit][value="Sign out"]'
+        end
       end
     end
   end
@@ -46,7 +51,9 @@ class HeaderTest < ActionDispatch::IntegrationTest
     get root_url
     assert_select 'header' do
       assert_select "a[href=\"#{new_deed_path}\"]", 0
-      assert_select 'a[href="https://goo.gl/forms/D8N4bQsz3gl7kbKo2"]', 'Suggest Thank You'
+      assert_select 'div.mdc-simple-menu' do
+        assert_select 'a[href="https://goo.gl/forms/D8N4bQsz3gl7kbKo2"]', 'Suggest Thank You'
+      end
     end
   end
 
@@ -54,8 +61,10 @@ class HeaderTest < ActionDispatch::IntegrationTest
     sign_in_as :admin
     get root_url
     assert_select 'header' do
-      assert_select "a[href=\"#{new_deed_path}\"]", 'Create deed'
       assert_select 'a[href="https://goo.gl/forms/D8N4bQsz3gl7kbKo2"]', 0
+      assert_select 'div.mdc-simple-menu' do
+        assert_select "a[href=\"#{new_deed_path}\"]", 'Create deed'
+      end
     end
   end
 end
