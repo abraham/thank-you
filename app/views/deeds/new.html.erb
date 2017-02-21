@@ -8,7 +8,7 @@
   <%= form_for @deed, html: { autocomplete: 'off' } do |f| %>
     <section class="mdc-card__supporting-text">
       <div class="mdc-textfield mdc-textfield--fullwidth">
-        <%= text_field_tag 'deed[names][]', (@deed.names || []).first, class: 'mdc-textfield__input', xplaceholder: 'name', required: true, autofocus: true %>
+        <%= text_field_tag 'deed[names][]', (@deed.names || []).first, class: 'mdc-textfield__input', xplaceholder: 'name', required: true %>
         <%= f.label :names, 'Name', class: "mdc-textfield__label #{'mdc-textfield__label--float-above' if @deed.names && @deed.names.size > 0}" %>
       </div>
       <p id="deed_names_-helptext" class="mdc-textfield-helptext" aria-hidden="true">
