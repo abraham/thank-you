@@ -96,6 +96,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "form[action=\"#{deeds_path}\"]#new_deed" do
       assert_select 'input[type=text]#deed_names_', 4
+      assert_select 'button.add-name', 'Add name'
       assert_select 'textarea#deed_text'
       assert_select 'input[type=text]#deed_twitter_id'
       assert_select 'input[type=submit][value="Publish"]'

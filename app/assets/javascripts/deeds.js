@@ -12,13 +12,25 @@ document.addEventListener('turbolinks:load', function() {
     mdc.textfield.MDCTextfield.attachTo(textfield);
   });
 
+  var addNameButton = deedForm.querySelector('.add-name');
+
   // var thankText = deedForm.querySelector('#thank_text');
   // var remaningTextLength = deedForm.querySelector('#remaining_thank_text_length');
   // var deedUrl = deedForm.querySelector('#deed_url');
   // var submitButton = deedForm.querySelector('input[type=submit]');
-  //
+
+    addNameButton.addEventListener('click', showName);
   // thankText.addEventListener('input', validateText);
   // validateText();
+
+  function showName(event) {
+    event.preventDefault();
+    if (deedForm.querySelectorAll('.name.hidden').length <= 1) {
+      deedForm.querySelector('.add-name').parentNode.classList.add('hidden');
+    }
+    deedForm.querySelector('.name.hidden').classList.remove('hidden');
+    return false;
+  }
 
   function validTweet(text) {
     return twttr.txt.isInvalidTweet(text) === false;

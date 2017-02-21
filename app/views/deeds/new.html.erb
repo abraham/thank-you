@@ -16,7 +16,7 @@
       </p>
     </section>
 
-    <section class="mdc-card__supporting-text">
+    <section class="mdc-card__supporting-text name hidden">
       <div class="mdc-textfield mdc-textfield--fullwidth">
         <%= text_field_tag 'deed[names][]', (@deed.names || []).second, class: 'mdc-textfield__input', xplaceholder: 'name' %>
         <%= f.label :names, 'Name', class: "mdc-textfield__label #{'mdc-textfield__label--float-above' if @deed.names && @deed.names.size > 1}" %>
@@ -26,7 +26,7 @@
       </p>
     </section>
 
-    <section class="mdc-card__supporting-text">
+    <section class="mdc-card__supporting-text name hidden">
       <div class="mdc-textfield mdc-textfield--fullwidth">
         <%= text_field_tag 'deed[names][]', (@deed.names || []).third, class: 'mdc-textfield__input', xplaceholder: 'name' %>
         <%= f.label :names, 'Name', class: "mdc-textfield__label #{'mdc-textfield__label--float-above' if @deed.names && @deed.names.size > 2}" %>
@@ -36,7 +36,7 @@
       </p>
     </section>
 
-    <section class="mdc-card__supporting-text">
+    <section class="mdc-card__supporting-text name hidden">
       <div class="mdc-textfield mdc-textfield--fullwidth">
         <%= text_field_tag 'deed[names][]', (@deed.names || []).fourth, class: 'mdc-textfield__input', xplaceholder: 'name' %>
         <%= f.label :names, 'Name', class: "mdc-textfield__label #{'mdc-textfield__label--float-above' if @deed.names && @deed.names.size > 3}" %>
@@ -44,6 +44,10 @@
       <p id="deed_names_-helptext" class="mdc-textfield-helptext" aria-hidden="true">
         Twitter @name of person being thanked
       </p>
+    </section>
+
+    <section class="mdc-card__supporting-text">
+      <button class="mdc-button add-name">Add name</button>
     </section>
 
     <section class="mdc-card__supporting-text">
