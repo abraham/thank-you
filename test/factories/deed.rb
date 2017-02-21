@@ -1,5 +1,6 @@
 FactoryGirl.define do
   factory :deed do
+    status :published
     text { Faker::Hipster.sentence }
     names { [Faker::Internet.user_name(nil, ['_'])] }
     user

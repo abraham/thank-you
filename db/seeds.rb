@@ -38,7 +38,8 @@ deeds = Array.new(rand(40..50)).map do |_i|
                      names: thank_names.sample(rand(1..3)),
                      user: users.sample,
                      data: data,
-                     twitter_id: twitter_id)
+                     twitter_id: twitter_id,
+                     status: :published)
   puts "Error seeding deed: #{deed.errors.full_messages.to_sentence}" if deed.new_record?
 
   deed

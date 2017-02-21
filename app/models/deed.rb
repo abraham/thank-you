@@ -1,4 +1,6 @@
 class Deed < ApplicationRecord
+  enum status: { draft: 0, published: 1, archived: 2, disabled: 3 }
+
   belongs_to :user, counter_cache: true
   has_many :thanks
   has_many :links
