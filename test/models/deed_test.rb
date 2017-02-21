@@ -105,4 +105,27 @@ class DeedTest < ActiveSupport::TestCase
     deed.names << Faker::Internet.user_name(nil, ['_'])
     assert_equal "@#{deed.names.first}, @#{deed.names.second}, and @#{deed.names.third}", deed.display_names
   end
+
+  test '#tweet returns Twitter::Tweet instance of tweet' do
+    deed = create(:deed, :with_tweet)
+    assert_instance_of Twitter::Tweet, deed.tweet
+    assert_equal deed.data['id'], deed.tweet.id
+    assert_equal deed.data['text'], deed.tweet.text
+  end
+
+  test '#tweet returns nil when there is no tweet' do
+    deed = create(:deed)
+    assert_nil deed.tweet
+  end
+
+  test '#tweet? returns if there is a tweet' do
+    deed = create(:deed)
+    assert_not deed.tweet?
+    assert_not deed.twitter_id
+    assert_not deed.data
+    deed = create(:deed, :with_tweet)
+    assert deed.tweet?
+    assert deed.twitter_id
+    assert deed.data
+  end
 end
