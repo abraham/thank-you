@@ -1,10 +1,17 @@
 require 'test_helper'
 
 class HeaderTest < ActionDispatch::IntegrationTest
+  test 'title is present' do
+    get root_url
+    assert_select 'header' do
+      assert_select 'div.mdc-toolbar__title', 'Thank You'
+    end
+  end
+
   test 'sign in link rendered' do
     get root_url
     assert_select 'header' do
-      assert_select "a[href=\"#{new_sessions_path}\"]", 'Sign in with Twitter'
+      assert_select "a[href=\"#{new_sessions_path}\"]", 'Sign in'
     end
   end
 
@@ -19,7 +26,7 @@ class HeaderTest < ActionDispatch::IntegrationTest
     user = sign_in_as :user
     get root_url
     assert_select 'header' do
-      assert_select 'div#welcome', "Hi @#{user.screen_name}"
+      assert_select "a[href=\"https://twitter.com/#{user.screen_name}\"]", "Hi @#{user.screen_name}"
     end
   end
 

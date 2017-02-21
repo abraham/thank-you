@@ -1,12 +1,11 @@
 <header class="mdc-toolbar mdc-toolbar--fixed">
   <section class="mdc-toolbar__section content">
     <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-      <span class="mdc-toolbar__title"><%= link_to 'Thank You', root_path %></span>
+      <div class="mdc-toolbar__title"><%= link_to 'Thank You', root_path %></div>
     </section>
 
     <section class="mdc-toolbar__section mdc-toolbar__section mdc-toolbar__section--align-end">
       <% if current_user %>
-        <!-- <i class="material-icons menu">menu</i> -->
         <%= image_tag(current_user.avatar_url, class: 'menu avatar', width: 32, height: 32) %>
 
         <div class="mdc-simple-menu" tabindex="-1">
