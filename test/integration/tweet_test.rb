@@ -10,7 +10,7 @@ class TweetTest < ActionDispatch::IntegrationTest
     assert_nil deed.data
   end
 
-  test '#show should include tweet card' do
+  test 'Deed#show should include tweet card' do
     deed = create(:deed, :with_tweet)
     get deed_url(deed)
     assert_response :success
@@ -50,6 +50,31 @@ class TweetTest < ActionDispatch::IntegrationTest
       assert_select 'style', /background-size: cover;/
       assert_select 'style', /background-repeat: no-repeat;/
       assert_select 'style', /height: 300px;/
+    end
+  end
+
+  test 'Thank#new should include tweet card' do
+    sign_in_as :user
+    deed = create(:deed, :with_tweet)
+    get new_deed_thank_url(deed)
+    assert_response :success
+    assert_select '.tweet', 1
+    assert_select ".tweet-#{deed.twitter_id}" do
+      assert_select '.mdc-card__media', 0
+      assert_select 'style', 0
+      assert_select 'div.mdc-card__horizontal-block' do
+        assert_select "a[href=\"#{deed.tweet.user.uri}\"]" do
+          assert_select "img[src=\"#{deed.tweet.user.profile_image_uri_https(:bigger)}\"].avatar", 1
+        end
+        assert_select 'section.mdc-card__primary' do
+          assert_select "div.mdc-card__title a[href=\"#{deed.tweet.user.uri}\"]", deed.tweet.user.name
+          assert_select "div.mdc-card__subtitle a[href=\"#{deed.tweet.user.uri}\"]", "@#{deed.tweet.user.screen_name}"
+        end
+      end
+      assert_select 'section.mdc-card__supporting-text', deed.tweet.full_text
+      assert_select 'section.mdc-card__supporting-text' do
+        assert_select "a[href=\"#{deed.tweet.uri}\"]", deed.tweet.created_at.strftime('%l:%M %p - %e %b %Y')
+      end
     end
   end
 end
