@@ -16,8 +16,14 @@ class DeedTest < ActiveSupport::TestCase
   end
 
   test 'should save with four names' do
+    names = [
+      Faker::Internet.user_name(nil, ['_']),
+      Faker::Internet.user_name(nil, ['_']),
+      Faker::Internet.user_name(nil, ['_']),
+      Faker::Internet.user_name(nil, ['_'])
+    ]
     deed = Deed.new(text: Faker::Hipster.sentence,
-                    names: [Faker::Internet.user_name(nil, ['_']), Faker::Internet.user_name(nil, ['_']), Faker::Internet.user_name(nil, ['_']), Faker::Internet.user_name(nil, ['_'])],
+                    names: names,
                     user: create(:user))
     assert deed.save
   end
