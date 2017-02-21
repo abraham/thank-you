@@ -5,6 +5,7 @@ class DeedTest < ActiveSupport::TestCase
     expected_errors = ['User must exist', "User can't be blank", "Names can't be blank", "Text can't be blank"]
     deed = Deed.new
     assert_not deed.save
+    assert deed.draft?
     assert_equal expected_errors, deed.errors.full_messages
   end
 
@@ -13,6 +14,7 @@ class DeedTest < ActiveSupport::TestCase
                     names: [Faker::Internet.user_name(nil, ['_'])],
                     user: create(:user))
     assert deed.save
+    assert deed.published!
   end
 
   test 'should save with four names' do

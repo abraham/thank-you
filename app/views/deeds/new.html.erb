@@ -5,7 +5,7 @@
     <h1 class="mdc-card__title mdc-card__title--large">Thank You</h1>
   </section>
 
-  <%= form_for @deed do |f| %>
+  <%= form_for @deed, html: { autocomplete: 'off' } do |f| %>
     <section class="mdc-card__supporting-text">
       <div class="mdc-textfield mdc-textfield--fullwidth">
         <%= text_field_tag 'deed[names][]', (@deed.names || []).first, class: 'mdc-textfield__input', xplaceholder: 'name', required: true, autofocus: true %>
