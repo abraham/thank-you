@@ -85,7 +85,13 @@ class ThankTest < ActiveSupport::TestCase
     assert_equal ["Twitter can't be blank", "Url can't be blank"], thank.errors.full_messages
     thank.text = nil
     assert_not thank.valid?
-    assert_equal ['Twitter is not a valid tweet', "Text can't be blank", "Twitter can't be blank", "Url can't be blank"], thank.errors.full_messages
+    invalid_errors = [
+      'Twitter is not a valid tweet',
+      "Text can't be blank",
+      "Twitter can't be blank",
+      "Url can't be blank"
+    ]
+    assert_equal invalid_errors, thank.errors.full_messages
   end
 
   test '#tweetable? requires values' do
@@ -106,13 +112,20 @@ class ThankTest < ActiveSupport::TestCase
   end
 
   test '#tweetable? knows when it is ready to tweet' do
-    thank = Thank.new(user: create(:user), deed: create(:deed), text: Faker::Lorem.sentence, url: 'https://example.com')
+    thank = Thank.new(user: create(:user),
+                      deed: create(:deed),
+                      text: Faker::Lorem.sentence,
+                      url: 'https://example.com')
     assert thank.send(:tweetable?)
     assert_not thank.valid?
   end
 
   test '#tweetable? is false if already tweeted' do
-    thank = Thank.new(user: create(:user), deed: create(:deed), text: Faker::Lorem.sentence, twitter_id: 123, data: { foo: :bar })
+    thank = Thank.new(user: create(:user),
+                      deed: create(:deed),
+                      text: Faker::Lorem.sentence,
+                      twitter_id: 123,
+                      data: { foo: :bar })
     assert_not thank.send(:tweetable?)
     assert thank.valid?
     assert_equal [], thank.errors.full_messages
