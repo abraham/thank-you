@@ -5,6 +5,10 @@ FactoryGirl.define do
     names { [Faker::Internet.user_name(nil, ['_'])] }
     user
 
+    trait :draft do
+      status :draft
+    end
+
     trait :with_tweet do
       data { Faker::Twitter.status }
       twitter_id { data[:id] }

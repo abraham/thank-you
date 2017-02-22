@@ -30,17 +30,20 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path
   end
 
-  test '#root should get deeds' do
-    deeds = [create(:deed), create(:deed), create(:deed)]
+  test '#index should get deeds' do
+    deeds = [create(:deed), create(:deed, :draft), create(:deed)]
     get root_path
     assert_response :success
-    deeds.each do |deed|
-      assert_select "h2 a[href=\"#{deed_path(deed)}\"]", deed.display_text
+    assert_select '.content' do
+      assert_select '.mdc-card', 2
+      assert_select 'h2 a', 2
+      assert_select "h2 a[href=\"#{deed_path(deeds.first)}\"]", deeds.first.display_text
+      assert_select "h2 a[href=\"#{deed_path(deeds.second)}\"]", 0
+      assert_select "h2 a[href=\"#{deed_path(deeds.third)}\"]", deeds.third.display_text
     end
-    assert_select 'h2 a', 3
   end
 
-  test '#root should show if thanked text' do
+  test '#index should show if thanked text' do
     user = sign_in_as :user
     deeds = [create(:deed), create(:deed), create(:deed)]
     thank = user.thanks.new(deed: deeds[1], text: deeds[1].text, url: deed_url(deeds[1]))
@@ -62,6 +65,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select 'main' do
       assert_select 'h1', deed.display_text
+      assert_select 'h1', 1
       assert_select 'p', 'Citations:'
     end
   end
