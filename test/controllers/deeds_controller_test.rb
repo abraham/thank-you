@@ -123,10 +123,27 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as :admin
     status = Faker::Twitter.status
     text = Faker::Lorem.sentence
-    names = [Faker::Internet.user_name(nil, ['_'])]
     stub = stub_statuses_show status
     assert_difference 'Deed.count', 1 do
-      post deeds_path, params: { deed: { text: text, names: names, twitter_id: status[:id] } }
+      post deeds_path, params: { deed: { text: text, names: [status[:user][:screen_name]], twitter_id: status[:id] } }
+      # byebug
+    end
+    deed = Deed.last
+    assert_redirected_to deed_path(deed)
+    assert_equal status[:id].to_s, deed.twitter_id
+    assert_equal status[:id], deed.data['id']
+    assert_equal 'Thank You created successfully.', flash[:notice]
+    remove_request_stub stub
+  end
+
+  test '#create allows admins to create Deeds with a Tweet URL instead of an ID' do
+    sign_in_as :admin
+    status = Faker::Twitter.status
+    text = Faker::Lorem.sentence
+    stub = stub_statuses_show status
+    assert_difference 'Deed.count', 1 do
+      url = "https://twitter.com/#{status[:user][:screen_name]}/status/#{status[:id]}"
+      post deeds_path, params: { deed: { text: text, names: [status[:user][:screen_name]], twitter_id: url } }
     end
     deed = Deed.last
     assert_redirected_to deed_path(deed)
@@ -139,7 +156,11 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
   test '#create allows admins to create Deeds with multiple names' do
     sign_in_as :admin
     text = Faker::Lorem.sentence
-    names = [Faker::Internet.user_name(nil, ['_']), Faker::Internet.user_name(nil, ['_']), Faker::Internet.user_name(nil, ['_'])]
+    names = [
+      Faker::Internet.user_name(nil, ['_']),
+      Faker::Internet.user_name(nil, ['_']),
+      Faker::Internet.user_name(nil, ['_'])
+    ]
     assert_difference 'Deed.count', 1 do
       post deeds_path, params: { deed: { text: text, names: names } }
     end

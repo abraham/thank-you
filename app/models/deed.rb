@@ -29,6 +29,7 @@ class Deed < ApplicationRecord
     return if twitter_id.blank? || data.present?
     twitter_status = user.client.status(twitter_id)
     self.data = twitter_status.to_hash
+    self.twitter_id = twitter_status.id
   rescue Twitter::Error => error
     errors.add(:twitter_id, "error: #{error.message}")
   end
