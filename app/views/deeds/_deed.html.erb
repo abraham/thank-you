@@ -15,6 +15,12 @@
   <%= render 'links/links', deed: deed, links: deed.links %>
 </div>
 
+<div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+  <p>
+    Added by <%= link_to "@#{deed.user.screen_name}", "https://twitter.com/#{deed.user.screen_name}", target: '_blank' %>
+  </p>
+</div>
+
 <% unless @thanked %>
   <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
     <%= render 'new_link', deed: deed, thanked: @thanked %>

@@ -67,6 +67,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
       assert_select 'h1', deed.display_text
       assert_select 'h1', 1
       assert_select 'p', 'Citations:'
+      assert_select 'p', "Added by @#{deed.user.screen_name}"
     end
   end
 
