@@ -5,7 +5,7 @@ class DeedsController < ApplicationController
   def create
     @deed = current_user.deeds.create(deeds_params)
 
-    if @deed.valid?
+    if @deed.valid? && @deed.published!
       redirect_to @deed, flash: { notice: 'Thank You created successfully.' }
     else
       render :new
@@ -13,7 +13,7 @@ class DeedsController < ApplicationController
   end
 
   def index
-    @deeds = Deed.includes(thanks: :user).limit(25)
+    @deeds = Deed.published.includes(thanks: :user).limit(25)
     @thanked_deed_ids = Thank.where(deed: @deeds).where(user: current_user).pluck(:deed_id)
   end
 
