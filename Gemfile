@@ -5,14 +5,13 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'arel', github: 'rails/arel'
 gem 'coffee-rails', '~> 4.2'
 gem 'jbuilder', '~> 2.5'
 gem 'oauth', '~> 0'
 gem 'pg'
 gem 'puma', '~> 3.0'
 gem 'rails-html-sanitizer'
-gem 'rails', github: 'rails/rails'
+gem 'rails', '5.1.0.beta1'
 gem 'sassc-rails' # Use this instead of ruby-sass because of bug processing MDC
 gem 'sentry-raven'
 gem 'turbolinks', '~> 5'
