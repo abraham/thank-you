@@ -136,6 +136,8 @@ GEM
     public_suffix (2.0.5)
     puma (3.7.0)
     rack (2.0.1)
+    rack-host-redirect (1.2.1)
+      rack
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (5.1.0.beta1)
@@ -257,6 +259,7 @@ DEPENDENCIES
   oauth (~> 0)
   pg
   puma (~> 3.0)
+  rack-host-redirect
   rails (= 5.1.0.beta1)
   rails-html-sanitizer
   rails_best_practices

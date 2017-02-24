@@ -10,6 +10,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'oauth', '~> 0'
 gem 'pg'
 gem 'puma', '~> 3.0'
+gem 'rack-host-redirect'
 gem 'rails-html-sanitizer'
 gem 'rails', '5.1.0.beta1'
 gem 'sassc-rails' # Use this instead of ruby-sass because of bug processing MDC
