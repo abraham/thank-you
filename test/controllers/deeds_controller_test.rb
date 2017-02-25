@@ -137,6 +137,12 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_sessions_url
   end
 
+  test '#publish requires authentication' do
+    deed = create(:deed)
+    post deed_publish_path(deed)
+    assert_redirected_to new_sessions_url
+  end
+
   test '#new redirects users with error' do
     sign_in_as :user
     get new_deed_path
@@ -265,6 +271,19 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_equal deed.twitter_id, deed.tweet.id.to_s
     assert_equal 'Deed updated successfully.', flash[:notice]
     remove_request_stub stub
+  end
+
+  test '#publish makes draft deeds go live' do
+    sign_in_as :admin
+    deed = create(:deed, :draft)
+    assert deed.draft?
+    assert_no_difference 'Deed.count' do
+      post deed_publish_path(deed)
+    end
+    assert_redirected_to deed_path(deed)
+    deed.reload
+    assert deed.published?
+    assert_equal 'Deed published.', flash[:notice]
   end
 
   test '#create allows admins to create Deeds' do

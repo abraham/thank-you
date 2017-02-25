@@ -42,7 +42,7 @@ class DeedsController < ApplicationController
   end
 
   def publish
-    if @deed.publish!
+    if @deed.published!
       redirect_to @deed, flash: { notice: 'Deed published.' }
     else
       render :edit
@@ -52,7 +52,7 @@ class DeedsController < ApplicationController
   private
 
   def find_deed
-    @deed = Deed.includes(:links, thanks: :user).find(params[:id])
+    @deed = Deed.includes(:links, thanks: :user).find(params[:id] || params[:deed_id])
   end
 
   def user_can_modify_deed?
