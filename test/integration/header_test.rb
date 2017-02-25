@@ -77,4 +77,14 @@ class HeaderTest < ActionDispatch::IntegrationTest
       end
     end
   end
+
+  test 'user does not have draft deeds link' do
+    sign_in_as :user
+    get root_url
+    assert_select 'header' do
+      assert_select 'div.mdc-simple-menu' do
+        assert_select "a[href=\"#{draft_deeds_path}\"]", 0
+      end
+    end
+  end
 end
