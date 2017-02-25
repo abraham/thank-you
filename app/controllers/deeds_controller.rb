@@ -34,7 +34,7 @@ class DeedsController < ApplicationController
   end
 
   def update
-    if @deed.update!(deeds_params)
+    if @deed.update(deeds_params) && @deed.valid? && @deed.save
       redirect_to @deed, flash: { notice: 'Deed updated successfully.' }
     else
       render :edit

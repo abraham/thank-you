@@ -95,8 +95,8 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select 'main' do
       assert_select 'h1', deed.display_text
-      assert_select 'h3', 'Deed in preview mode'
-      assert_select "form.button_to[action=\"#{deed_publish_path(deed)}\"]" do
+      assert_select 'h3', 'Deed preview'
+      assert_select "form.deed_publish[action=\"#{deed_publish_path(deed)}\"]" do
         assert_select 'input[type=submit][value=Publish]', 1
         assert_select 'input', 1
       end
