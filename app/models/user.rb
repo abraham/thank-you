@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   enum status: { active: 0, disabled: 1, expired: 2 }
+  enum role: { user: 0, editor: 1, moderator: 2, admin: 3 }
 
   has_many :deeds
   has_many :links
@@ -11,7 +12,9 @@ class User < ApplicationRecord
   validates :data, presence: true
   validates :email, presence: true
   validates :name, presence: true
+  validates :role, presence: true
   validates :screen_name, presence: true
+  validates :status, presence: true
   validates :twitter_id, presence: true
 
   def thanked?(deed)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170221060815) do
+ActiveRecord::Schema.define(version: 20170225235024) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,6 +69,7 @@ ActiveRecord::Schema.define(version: 20170221060815) do
     t.string "email", null: false
     t.integer "status", default: 0, null: false
     t.boolean "default_avatar", default: true, null: false
+    t.integer "role", default: 0, null: false
   end
 
   add_foreign_key "deeds", "users"
