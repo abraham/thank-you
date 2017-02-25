@@ -19,6 +19,7 @@ class DeedsController < ApplicationController
 
   def show
     @deed = Deed.includes(:links, thanks: :user).find(params[:id])
+    render_not_found unless @deed.published? || user_can_view?
     @thanked = current_user && current_user.thanked?(@deed)
   end
 
@@ -27,6 +28,10 @@ class DeedsController < ApplicationController
   end
 
   private
+
+  def user_can_view?
+    current_user && (current_user.admin? || current_user == @deed.user)
+  end
 
   def deeds_params
     params.require(:deed).permit(:twitter_id, :text, names: [])

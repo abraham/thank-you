@@ -1,8 +1,9 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
-  before_action :set_raven_context
+  rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
 
+  before_action :set_raven_context
   before_action :require_active_user
 
   helper_method :current_user
@@ -35,5 +36,13 @@ class ApplicationController < ActionController::Base
     return if current_user && current_user.admin?
 
     redirect_to root_path, flash: { warning: 'You do not have permission to do that' }
+  end
+
+  def render_not_found
+    render :not_found, status: 404
+  end
+
+  def render_forbidden
+    render :not_found, status: 403
   end
 end

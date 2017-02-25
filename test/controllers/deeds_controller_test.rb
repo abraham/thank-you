@@ -30,7 +30,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path
   end
 
-  test '#index should get deeds' do
+  test '#index should get published deeds' do
     deeds = [create(:deed), create(:deed, :draft), create(:deed)]
     get root_path
     assert_response :success
@@ -69,6 +69,47 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
       assert_select 'p', 'Citations:'
       assert_select 'p', "Added by @#{deed.user.screen_name}"
     end
+  end
+
+  test '#show does not render draft deeds' do
+    deed = create(:deed, :draft)
+    get deed_path(deed)
+    assert_response :not_found
+    assert_select 'p', '404 Not found'
+  end
+
+  test '#show admin can see draft deeds' do
+    sign_in_as :admin
+    deed = create(:deed, :draft)
+    get deed_path(deed)
+    assert_response :success
+    assert_select 'main' do
+      assert_select 'h1', deed.display_text
+    end
+  end
+
+  test '#show user can see their own draft deeds' do
+    user = sign_in_as :user
+    deed = create(:deed, :draft, user: user)
+    get deed_path(deed)
+    assert_response :success
+    assert_select 'main' do
+      assert_select 'h1', deed.display_text
+    end
+  end
+
+  test '#show user can not see someone elses draft deeds' do
+    sign_in_as :user
+    deed = create(:deed, :draft)
+    get deed_path(deed)
+    assert_response :not_found
+    assert_select 'p', '404 Not found'
+  end
+
+  test '#show renders not found for bad ID' do
+    get deed_path(id: 'foo')
+    assert_response :not_found
+    assert_select 'p', '404 Not found'
   end
 
   test '#new requires authentication' do
