@@ -22,6 +22,10 @@ module SessionsHelper
     finish_sign_in(TwitterHelper::TWITTER_TOKEN, user.data)
     user
   end
+
+  def sign_out
+    delete sessions_url
+  end
 end
 
 module TwitterHelper
