@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 20170225235024) do
     t.integer "thanks_count", default: 0, null: false
     t.json "data"
     t.integer "status", default: 0, null: false
-    t.index ["user_id"], name: "index_deeds_on_user_id", using: :btree
+    t.index ["user_id"], name: "index_deeds_on_user_id"
   end
 
   create_table "links", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -36,8 +36,8 @@ ActiveRecord::Schema.define(version: 20170225235024) do
     t.uuid "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["deed_id"], name: "index_links_on_deed_id", using: :btree
-    t.index ["user_id"], name: "index_links_on_user_id", using: :btree
+    t.index ["deed_id"], name: "index_links_on_deed_id"
+    t.index ["user_id"], name: "index_links_on_user_id"
   end
 
   create_table "thanks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -48,10 +48,10 @@ ActiveRecord::Schema.define(version: 20170225235024) do
     t.json "data", null: false
     t.uuid "user_id", null: false
     t.string "twitter_id", null: false
-    t.index ["deed_id", "user_id"], name: "index_thanks_on_deed_id_and_user_id", unique: true, using: :btree
-    t.index ["deed_id"], name: "index_thanks_on_deed_id", using: :btree
-    t.index ["twitter_id"], name: "index_thanks_on_twitter_id", unique: true, using: :btree
-    t.index ["user_id"], name: "index_thanks_on_user_id", using: :btree
+    t.index ["deed_id", "user_id"], name: "index_thanks_on_deed_id_and_user_id", unique: true
+    t.index ["deed_id"], name: "index_thanks_on_deed_id"
+    t.index ["twitter_id"], name: "index_thanks_on_twitter_id", unique: true
+    t.index ["user_id"], name: "index_thanks_on_user_id"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
