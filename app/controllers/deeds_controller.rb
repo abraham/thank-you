@@ -5,8 +5,8 @@ class DeedsController < ApplicationController
   def create
     @deed = current_user.deeds.create(deeds_params)
 
-    if @deed.valid? && @deed.published!
-      redirect_to @deed, flash: { notice: 'Thank You created successfully.' }
+    if @deed.valid?
+      redirect_to @deed, flash: { notice: 'Deed created successfully.' }
     else
       render :new
     end

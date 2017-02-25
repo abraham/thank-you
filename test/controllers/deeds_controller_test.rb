@@ -104,7 +104,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
       assert_select 'button.add-name', 'Add name'
       assert_select 'textarea#deed_text'
       assert_select 'input[type=text]#deed_twitter_id'
-      assert_select 'input[type=submit][value="Publish"]'
+      assert_select 'input[type=submit][value="Preview"]'
       assert_select 'input', 7
       assert_select 'label', 6
     end
@@ -119,9 +119,10 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     end
     deed = Deed.last
     assert_redirected_to deed_path(deed)
+    assert deed.draft?
     assert_equal text, deed.text
     assert_equal names, deed.names
-    assert_equal 'Thank You created successfully.', flash[:notice]
+    assert_equal 'Deed created successfully.', flash[:notice]
   end
 
   test '#create allows admins to create Deeds with a Tweet' do
@@ -131,13 +132,13 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     stub = stub_statuses_show status
     assert_difference 'Deed.count', 1 do
       post deeds_path, params: { deed: { text: text, names: [status[:user][:screen_name]], twitter_id: status[:id] } }
-      # byebug
     end
     deed = Deed.last
     assert_redirected_to deed_path(deed)
+    assert deed.draft?
     assert_equal status[:id].to_s, deed.twitter_id
     assert_equal status[:id], deed.data['id']
-    assert_equal 'Thank You created successfully.', flash[:notice]
+    assert_equal 'Deed created successfully.', flash[:notice]
     remove_request_stub stub
   end
 
@@ -154,7 +155,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to deed_path(deed)
     assert_equal status[:id].to_s, deed.twitter_id
     assert_equal status[:id], deed.data['id']
-    assert_equal 'Thank You created successfully.', flash[:notice]
+    assert_equal 'Deed created successfully.', flash[:notice]
     remove_request_stub stub
   end
 
@@ -173,7 +174,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to deed_path(deed)
     assert_equal text, deed.text
     assert_equal names, deed.names
-    assert_equal 'Thank You created successfully.', flash[:notice]
+    assert_equal 'Deed created successfully.', flash[:notice]
   end
 
   test '#create shows model errors' do
@@ -221,7 +222,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
       assert_select 'input[value=two]#deed_names_', 1
       assert_select 'input[value=three]#deed_names_', 1
       assert_select 'textarea#deed_text'
-      assert_select 'input[type=submit][value="Publish"]'
+      assert_select 'input[type=submit][value="Preview"]'
     end
     assert_select '.card-error' do
       assert_select 'li', "Text can't be blank"
@@ -241,7 +242,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
       assert_select 'input[type=text]#deed_names_', 4
       assert_select 'textarea#deed_text'
       assert_select 'input[value="123"]#deed_twitter_id'
-      assert_select 'input[type=submit][value="Publish"]'
+      assert_select 'input[type=submit][value="Preview"]'
     end
     assert_select '.card-error' do
       assert_select 'li', 'Twitter error: No status found with that ID.'
