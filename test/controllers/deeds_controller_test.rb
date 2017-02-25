@@ -43,6 +43,19 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test '#draft should get draft deeds' do
+    deeds = [create(:deed, :draft), create(:deed), create(:deed, :draft)]
+    sign_in_as :admin
+    get draft_deeds_path
+    assert_response :success
+    assert_select '.content' do
+      assert_select 'h2 a', 2
+      assert_select "h2 a[href=\"#{deed_path(deeds.first)}\"]", deeds.first.display_text
+      assert_select "h2 a[href=\"#{deed_path(deeds.second)}\"]", 0
+      assert_select "h2 a[href=\"#{deed_path(deeds.third)}\"]", deeds.third.display_text
+    end
+  end
+
   test '#index should show if thanked text' do
     user = sign_in_as :user
     deeds = [create(:deed), create(:deed), create(:deed)]
