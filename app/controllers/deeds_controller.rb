@@ -19,6 +19,11 @@ class DeedsController < ApplicationController
     @thanked_deed_ids = Thank.where(deed: @deeds).where(user: current_user).pluck(:deed_id)
   end
 
+  def draft
+    @deeds = Deed.draft.includes(thanks: :user).limit(25)
+    @thanked_deed_ids = Thank.where(deed: @deeds).where(user: current_user).pluck(:deed_id)
+  end
+
   def show
     render_not_found unless @deed.published? || user_can_modify_deed?
     @thanked = current_user && current_user.thanked?(@deed)
