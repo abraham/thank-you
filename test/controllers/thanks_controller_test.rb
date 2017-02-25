@@ -68,6 +68,22 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
     remove_request_stub stub
   end
 
+  test '#new should only allow thanking published Deeds' do
+    sign_in_as :user
+    assert @deed.draft!
+    get new_deed_thank_url(@deed)
+    assert_redirected_to deed_path(@deed)
+    assert_equal 'Deed must be published first', flash[:error]
+  end
+
+  test '#create should only allow thanking published Deeds' do
+    sign_in_as :user
+    assert @deed.draft!
+    post deed_thanks_url(@deed), params: { thank: { text: "#{@deed.text} second" } }
+    assert_redirected_to deed_path(@deed)
+    assert_equal 'Deed must be published first', flash[:error]
+  end
+
   test '#new should only allow creating one thank' do
     user = sign_in_as :user
     create(:thank, text: "#{@deed.text} first", user: user, deed: @deed)
