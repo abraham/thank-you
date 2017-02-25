@@ -5,7 +5,7 @@
 @import "@material/animation/mdc-animation";
 @import "@material/animation/functions";
 
-form#new_deed {
+form.new_deed, form.edit_deed {
   .mdc-card__actions {
     float: right;
   }

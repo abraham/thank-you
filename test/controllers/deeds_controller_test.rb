@@ -88,6 +88,21 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test '#show draft deeds have publish button' do
+    user = sign_in_as :user
+    deed = create(:deed, :draft, user: user)
+    get deed_path(deed)
+    assert_response :success
+    assert_select 'main' do
+      assert_select 'h1', deed.display_text
+      assert_select 'h3', 'Deed in preview mode'
+      assert_select "form.button_to[action=\"#{deed_publish_path(deed)}\"]" do
+        assert_select 'input[type=submit][value=Publish]', 1
+        assert_select 'input', 1
+      end
+    end
+  end
+
   test '#show user can see their own draft deeds' do
     user = sign_in_as :user
     deed = create(:deed, :draft, user: user)
@@ -149,6 +164,107 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
       assert_select 'input', 7
       assert_select 'label', 6
     end
+  end
+
+  test '#edit should not allow editing published deeds' do
+    deed = create(:deed)
+    sign_in_as :admin
+    get edit_deed_url(deed)
+    assert_redirected_to deed_path(deed)
+    assert_equal "You can't edit published deeds", flash[:notice]
+  end
+
+  test '#edit should not allow users to edit other peoples deeds' do
+    deed = create(:deed, :draft)
+    sign_in_as :user
+    get edit_deed_url(deed)
+    assert_redirected_to deed_path(deed)
+    assert_equal 'You do not have permission to do that', flash[:warning]
+  end
+
+  test '#edit should return form' do
+    deed = create(:deed, :draft)
+    sign_in_as :admin
+    get edit_deed_url(deed)
+    assert_response :success
+    assert_select "form[action=\"#{deed_path(deed)}\"]#edit_deed_#{deed.id}" do
+      assert_select 'input[type=hidden][value=patch]'
+      assert_select 'input[type=text]#deed_names_', 4
+      assert_select 'button.add-name', 'Add name'
+      assert_select 'textarea#deed_text'
+      assert_select 'input[type=text]#deed_twitter_id'
+      assert_select 'input[type=submit][value="Preview"]'
+      assert_select 'input', 8
+      assert_select 'label', 6
+    end
+  end
+
+  test '#update allows admins to update Deeds' do
+    sign_in_as :admin
+    deed = create(:deed, :draft)
+    text = deed.text + ' updated'
+    names = deed.names << 'updated'
+    assert_no_difference 'Deed.count' do
+      patch deed_path(deed), params: { deed: { text: text, names: names } }
+    end
+    assert_redirected_to deed_path(deed)
+    deed.reload
+    assert deed.draft?
+    assert_equal text, deed.text
+    assert_equal names, deed.names
+    assert_equal 'Deed updated successfully.', flash[:notice]
+  end
+
+  test '#update allows users to update thier own Deeds' do
+    user = sign_in_as :user
+    deed = create(:deed, :draft, user: user)
+    text = deed.text + ' updated'
+    names = deed.names << 'updated'
+    assert_no_difference 'Deed.count' do
+      patch deed_path(deed), params: { deed: { text: text, names: names } }
+    end
+    assert_redirected_to deed_path(deed)
+    deed.reload
+    assert deed.draft?
+    assert_equal text, deed.text
+    assert_equal names, deed.names
+    assert_equal 'Deed updated successfully.', flash[:notice]
+  end
+
+  test '#update does not allow users to update others Deeds' do
+    sign_in_as :user
+    deed = create(:deed, :draft)
+    text = deed.text
+    names = deed.names
+    assert_no_difference 'Deed.count' do
+      patch deed_path(deed), params: { deed: { text: text + ' updated', names: names.dup.push('updated') } }
+    end
+    assert_redirected_to deed_path(deed)
+    deed.reload
+    assert deed.draft?
+    assert_equal text, deed.text
+    assert_equal names, deed.names
+    assert_equal 'You do not have permission to do that', flash[:warning]
+  end
+
+  test '#update allows changing tweet on draft Deed' do
+    sign_in_as :admin
+    deed = create(:deed, :draft, :with_tweet)
+    status = Faker::Twitter.status
+    stub = stub_statuses_show status
+    twitter_id = deed.twitter_id
+    assert twitter_id
+    assert deed.data
+    assert_no_difference 'Deed.count' do
+      patch deed_path(deed), params: { deed: { twitter_id: status[:id] } }
+    end
+    assert_redirected_to deed_path(deed)
+    deed.reload
+    assert_equal deed.twitter_id, status[:id].to_s
+    assert_not_equal deed.twitter_id, twitter_id
+    assert_equal deed.twitter_id, deed.tweet.id.to_s
+    assert_equal 'Deed updated successfully.', flash[:notice]
+    remove_request_stub stub
   end
 
   test '#create allows admins to create Deeds' do

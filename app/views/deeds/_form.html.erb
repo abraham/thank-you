@@ -1,0 +1,82 @@
+<div class="mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+  <section class="mdc-card__primary">
+    <h1 class="mdc-card__title mdc-card__title--large">Thank You</h1>
+  </section>
+
+  <%= form_for @deed, html: { autocomplete: 'off' } do |f| %>
+
+    <section class="mdc-card__supporting-text">
+      <div class="mdc-textfield mdc-textfield--fullwidth">
+        <%= text_field_tag 'deed[names][]', (deed.names || []).first, class: 'mdc-textfield__input', xplaceholder: 'name', required: true %>
+        <%= f.label :names, 'Name', class: "mdc-textfield__label #{'mdc-textfield__label--float-above' if deed.names && deed.names.size > 0}" %>
+      </div>
+      <p id="deed_names_-helptext" class="mdc-textfield-helptext" aria-hidden="true">
+        Twitter @name of person being thanked
+      </p>
+    </section>
+
+    <section class="mdc-card__supporting-text name hidden">
+      <div class="mdc-textfield mdc-textfield--fullwidth">
+        <%= text_field_tag 'deed[names][]', (deed.names || []).second, class: 'mdc-textfield__input', xplaceholder: 'name' %>
+        <%= f.label :names, 'Name', class: "mdc-textfield__label #{'mdc-textfield__label--float-above' if deed.names && deed.names.size > 1}" %>
+      </div>
+      <p id="deed_names_-helptext" class="mdc-textfield-helptext" aria-hidden="true">
+        Twitter @name of person being thanked
+      </p>
+    </section>
+
+    <section class="mdc-card__supporting-text name hidden">
+      <div class="mdc-textfield mdc-textfield--fullwidth">
+        <%= text_field_tag 'deed[names][]', (deed.names || []).third, class: 'mdc-textfield__input', xplaceholder: 'name' %>
+        <%= f.label :names, 'Name', class: "mdc-textfield__label #{'mdc-textfield__label--float-above' if deed.names && deed.names.size > 2}" %>
+      </div>
+      <p id="deed_names_-helptext" class="mdc-textfield-helptext" aria-hidden="true">
+        Twitter @name of person being thanked
+      </p>
+    </section>
+
+    <section class="mdc-card__supporting-text name hidden">
+      <div class="mdc-textfield mdc-textfield--fullwidth">
+        <%= text_field_tag 'deed[names][]', (deed.names || []).fourth, class: 'mdc-textfield__input', xplaceholder: 'name' %>
+        <%= f.label :names, 'Name', class: "mdc-textfield__label #{'mdc-textfield__label--float-above' if deed.names && deed.names.size > 3}" %>
+      </div>
+      <p id="deed_names_-helptext" class="mdc-textfield-helptext" aria-hidden="true">
+        Twitter @name of person being thanked
+      </p>
+    </section>
+
+    <section class="mdc-card__supporting-text">
+      <button class="mdc-button add-name">Add name</button>
+    </section>
+
+    <section class="mdc-card__supporting-text">
+      <div class="mdc-textfield mdc-textfield--multiline mdc-textfield--fullwidth">
+        <%= f.text_area :text, xplaceholder: 'doing that awesome thing', required: true, class: 'mdc-textfield__input', 'aria-controls' => 'deed_text-helptext', rows: 4, cols: 80 %>
+        <%= f.label :text, 'For', class: "mdc-textfield__label #{'mdc-textfield__label--float-above' if deed.text}" %>
+      </div>
+      <p id="deed_text-helptext" class="mdc-textfield-helptext" aria-hidden="true">
+        Short description of what you are thanking the person for doing
+      </p>
+    </section>
+
+
+    <section class="mdc-card__supporting-text">
+      <div class="mdc-textfield">
+        <%= f.text_field :twitter_id, xplaceholder: 'Tweet ID', class: 'mdc-textfield__input', 'aria-controls' => 'deed_twitter_id-helptext' %>
+        <%= f.label :twitter_id, 'Tweet ID', class: "mdc-textfield__label #{'mdc-textfield__label--float-above' if deed.twitter_id}" %>
+      </div>
+      <p id="deed_twitter_id-helptext" class="mdc-textfield-helptext" aria-hidden="true">
+        Tweet that all Thank You tweets will reply to
+      </p>
+    </section>
+
+    <section class="mdc-card__supporting-text">
+      <p><span id='remaining_deed_text_length'>?</span> charactors remaining</p>
+    </section>
+
+    <section class="mdc-card__actions">
+      <%= link_to 'Cancel', root_path, class: 'mdc-button mdc-button--compact mdc-card__action' %>
+      <%= f.submit 'Preview', class: 'mdc-button mdc-button--compact mdc-card__action mdc-button--accent mdc-button--raised' %>
+    </section>
+  <% end %>
+</div>

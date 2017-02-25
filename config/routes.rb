@@ -12,8 +12,9 @@ Rails.application.routes.draw do
     get :finish
   end
 
-  resources :deeds, only: [:new, :create, :show, :index] do
+  resources :deeds, only: [:new, :create, :show, :edit, :index, :update] do
     root to: redirect('/')
+    post :publish
     resources :thanks, only: [:new, :create]
     resources :links, only: [:new, :create]
   end

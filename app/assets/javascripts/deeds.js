@@ -2,7 +2,7 @@
 // All this logic will automatically be available in application.js.
 
 document.addEventListener('turbolinks:load', function() {
-  var deedForm = document.querySelector('form#new_deed');
+  var deedForm = document.querySelector('form.new_deed') || document.querySelector('form.edit_deed');
 
   if (!deedForm) {
     return;
@@ -57,7 +57,6 @@ document.addEventListener('turbolinks:load', function() {
   }
 
   function remainingTextLength() {
-    console.log(deedTweetText());
     return 140 - twttr.txt.getTweetLength(deedTweetText());
   }
 
@@ -69,7 +68,6 @@ document.addEventListener('turbolinks:load', function() {
     var names = [];
     namesText.forEach(function(elem) {
       var name = elem.value.trim();
-      console.log('name', name);
       if (name) {
         names.push('@' + name)
       }

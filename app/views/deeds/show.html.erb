@@ -2,4 +2,16 @@
   <%= @deed.display_text %>
 <% end %>
 
+<% if @deed.draft? %>
+  <div class='mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12 card-warning'>
+    <section class="mdc-card__primary">
+      <h3 class="mdc-card__title mdc-card__title--large">Deed in preview mode</h3>
+    </section>
+    <section class="mdc-card__actions">
+      <%= link_to 'Edit', edit_deed_path(@deed), class: 'mdc-button mdc-button--compact mdc-card__action' %>
+      <%= button_to 'Publish', deed_publish_path(@deed), class: 'mdc-button mdc-button--compact mdc-card__action mdc-button--accent mdc-button--raised' %>
+    </section>
+  </div>
+<% end %>
+
 <%= render @deed %>

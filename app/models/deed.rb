@@ -11,7 +11,7 @@ class Deed < ApplicationRecord
   validates :text, presence: true
   validates :user, presence: true
 
-  before_validation :clean_twitter_id
+  before_validation :clean_twitter_data
   before_validation :clean_names
   before_validation :etl!
 
@@ -26,7 +26,7 @@ class Deed < ApplicationRecord
   end
 
   def etl!
-    return if twitter_id.blank? || data.present?
+    return unless etl?
     twitter_status = user.client.status(twitter_id)
     self.data = twitter_status.to_hash
     self.twitter_id = twitter_status.id
@@ -44,12 +44,17 @@ class Deed < ApplicationRecord
 
   private
 
+  def etl?
+    twitter_id.present? && (data.blank? || twitter_id != data['id'].to_s)
+  end
+
   def names_size
     errors.add(:names, 'has too many values') if names && names.size > 4
   end
 
-  def clean_twitter_id
+  def clean_twitter_data
     self.twitter_id = nil if twitter_id.blank?
+    self.data = nil if twitter_id.blank?
   end
 
   def clean_names
