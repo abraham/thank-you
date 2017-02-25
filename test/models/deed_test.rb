@@ -97,10 +97,17 @@ class DeedTest < ActiveSupport::TestCase
     assert_equal ['sna_ke', 'rabbit'], deed.names
   end
 
-  test '#clean_twitter_id should reject empty values' do
+  test '#clean_twitter_data should reject empty values' do
     deed = Deed.new(twitter_id: '')
     deed.valid?
     assert_nil deed.twitter_id
+  end
+
+  test '#clean_twitter_data should remove data' do
+    deed = Deed.new(twitter_id: '', data: { foo: :bar })
+    deed.valid?
+    assert_nil deed.twitter_id
+    assert_nil deed.data
   end
 
   test '#display_text' do
