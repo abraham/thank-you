@@ -30,7 +30,7 @@ class User < ApplicationRecord
     User.find_or_initialize_by(twitter_id: user_id).tap do |user|
       user.access_token = access_token
       user.access_token_secret = access_token_secret
-      user.etl!
+      user.etl
       user.save
     end
   end
@@ -39,7 +39,7 @@ class User < ApplicationRecord
     data.present?
   end
 
-  def etl!
+  def etl
     twitter_user = client.user(include_email: true)
     self.data = twitter_user.to_hash
     self.name = twitter_user.name

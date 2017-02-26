@@ -6,13 +6,13 @@ class UserTest < ActiveSupport::TestCase
     @deed = create(:deed, user: @user)
   end
 
-  test '#etl! sets user' do
+  test '#etl sets user' do
     twitter_user = Faker::Twitter.user.merge(email: Faker::Internet.safe_email)
     stub_verify_credentials(twitter_user)
     user = User.new(twitter_id: twitter_user[:id],
                     access_token: TwitterHelper::TWITTER_TOKEN,
                     access_token_secret: TwitterHelper::TWITTER_SECRET)
-    user.etl!
+    user.etl
     assert user.etled?
     assert user.save
     assert_equal twitter_user[:id].to_s, user.twitter_id
@@ -22,13 +22,13 @@ class UserTest < ActiveSupport::TestCase
     assert_equal twitter_user[:profile_image_url_https], user.avatar_url
   end
 
-  test '#etl! sets user.data' do
+  test '#etl sets user.data' do
     twitter_user = Faker::Twitter.user.merge(email: Faker::Internet.safe_email)
     stub_verify_credentials(twitter_user)
     user = User.new(twitter_id: twitter_user[:id],
                     access_token: TwitterHelper::TWITTER_TOKEN,
                     access_token_secret: TwitterHelper::TWITTER_SECRET)
-    user.etl!
+    user.etl
     assert user.etled?
     assert user.save
     assert_equal twitter_user[:id], user.data['id']
@@ -38,14 +38,14 @@ class UserTest < ActiveSupport::TestCase
     assert_equal twitter_user[:profile_image_url_https], user.data['profile_image_url_https']
   end
 
-  test '#etl! updates existing user' do
+  test '#etl updates existing user' do
     twitter_user = Faker::Twitter.user.merge(email: Faker::Internet.safe_email)
     stub_verify_credentials(twitter_user)
     user = create(:user,
                   twitter_id: twitter_user[:id],
                   access_token: TwitterHelper::TWITTER_TOKEN,
                   access_token_secret: TwitterHelper::TWITTER_SECRET)
-    user.etl!
+    user.etl
     assert user.etled?
     assert user.save
     assert_equal twitter_user[:id].to_s, user.twitter_id

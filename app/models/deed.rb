@@ -13,7 +13,7 @@ class Deed < ApplicationRecord
 
   before_validation :clean_twitter_data
   before_validation :clean_names
-  before_validation :etl!
+  before_validation :etl
 
   default_scope { order(created_at: :desc) }
 
@@ -25,7 +25,7 @@ class Deed < ApplicationRecord
     names.map { |n| "@#{n}" }.to_sentence
   end
 
-  def etl!
+  def etl
     return unless etl?
     twitter_status = user.client.status(twitter_id)
     self.data = twitter_status.to_hash
