@@ -32,12 +32,12 @@ class User < ApplicationRecord
 
   def etl
     twitter_user = client.user(include_email: true)
+    self.avatar_url = twitter_user.profile_image_uri_https
     self.data = twitter_user.to_hash
+    self.default_avatar = twitter_user.default_profile_image?
+    self.email = twitter_user.email
     self.name = twitter_user.name
     self.screen_name = twitter_user.screen_name
-    self.avatar_url = twitter_user.profile_image_uri_https
-    self.email = twitter_user.email
-    self.default_avatar = twitter_user.default_profile_image?
   end
 
   def etled?
