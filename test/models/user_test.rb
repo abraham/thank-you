@@ -47,46 +47,40 @@ class UserTest < ActiveSupport::TestCase
                     access_token: TwitterHelper::TWITTER_TOKEN,
                     access_token_secret: TwitterHelper::TWITTER_SECRET)
     assert user.etl
-    assert user.data.present?
+    assert user.save
     assert_equal twitter_user[:email], user.email
     assert_equal twitter_user[:id].to_s, user.twitter_id
     assert_equal twitter_user[:name], user.name
     assert_equal twitter_user[:profile_image_url_https], user.avatar_url
     assert_equal twitter_user[:screen_name], user.screen_name
     assert_equal twitter_user[:default_profile_image], user.default_avatar?
-  end
-
-  test '#etl sets user.data' do
-    twitter_user = Faker::Twitter.user(include_email: true)
-    stub_verify_credentials(twitter_user)
-    user = User.new(twitter_id: twitter_user[:id],
-                    access_token: TwitterHelper::TWITTER_TOKEN,
-                    access_token_secret: TwitterHelper::TWITTER_SECRET)
-    user.etl
-    assert user.etled?
-    assert user.save
-    assert_equal twitter_user[:id], user.data['id']
+    assert user.data.present?
     assert_equal twitter_user[:email], user.data['email']
+    assert_equal twitter_user[:id], user.data['id']
     assert_equal twitter_user[:name], user.data['name']
-    assert_equal twitter_user[:screen_name], user.data['screen_name']
     assert_equal twitter_user[:profile_image_url_https], user.data['profile_image_url_https']
+    assert_equal twitter_user[:screen_name], user.data['screen_name']
+    assert_equal twitter_user[:default_profile_image], user.default_avatar?
   end
 
   test '#etl updates existing user' do
     twitter_user = Faker::Twitter.user(include_email: true)
     stub_verify_credentials(twitter_user)
-    user = create(:user,
-                  twitter_id: twitter_user[:id],
-                  access_token: TwitterHelper::TWITTER_TOKEN,
-                  access_token_secret: TwitterHelper::TWITTER_SECRET)
-    user.etl
-    assert user.etled?
+    user = create(:user, twitter_id: twitter_user[:id],
+                         access_token: TwitterHelper::TWITTER_TOKEN,
+                         access_token_secret: TwitterHelper::TWITTER_SECRET)
+    assert_not_equal twitter_user[:email], user.email
+    assert_not_equal twitter_user[:name], user.name
+    assert_not_equal twitter_user[:profile_image_url_https], user.avatar_url
+    assert_not_equal twitter_user[:screen_name], user.screen_name
+    assert user.etl
     assert user.save
-    assert_equal twitter_user[:id].to_s, user.twitter_id
     assert_equal twitter_user[:email], user.email
+    assert_equal twitter_user[:id].to_s, user.twitter_id
     assert_equal twitter_user[:name], user.name
-    assert_equal twitter_user[:screen_name], user.screen_name
     assert_equal twitter_user[:profile_image_url_https], user.avatar_url
+    assert_equal twitter_user[:screen_name], user.screen_name
+    assert_equal twitter_user[:default_profile_image], user.default_avatar?
   end
 
   test '#etled? knows if Twitter data is present' do
