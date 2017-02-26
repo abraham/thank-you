@@ -143,23 +143,19 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test '#from_access_token fetches user details from Twitter' do
-    access_token = TwitterHelper::TWITTER_TOKEN
-    access_token_secret = TwitterHelper::TWITTER_SECRET
-    twitter_user = Faker::Twitter.user.merge(email: Faker::Internet.safe_email)
+    twitter_user = Faker::Twitter.user(include_email: true)
     stub_verify_credentials(twitter_user)
     assert_not User.find_by(twitter_id: twitter_user[:id_str])
     assert_difference 'User.count', 1 do
-      User.from_access_token(twitter_user[:id], access_token, access_token_secret)
+      User.from_access_token(twitter_user[:id], TwitterHelper::TWITTER_TOKEN, TwitterHelper::TWITTER_SECRET)
     end
     assert User.find_by(twitter_id: twitter_user[:id_str])
   end
 
   test '#from_access_token fetches user details from Twitter for exising user' do
-    access_token = TwitterHelper::TWITTER_TOKEN
-    access_token_secret = TwitterHelper::TWITTER_SECRET
     stub_verify_credentials(@user.data)
     assert_no_difference 'User.count' do
-      User.from_access_token(@user.data['id'], access_token, access_token_secret)
+      User.from_access_token(@user.data['id'], TwitterHelper::TWITTER_TOKEN, TwitterHelper::TWITTER_SECRET)
     end
     assert_equal User.last.twitter_id, @user.data['id_str']
   end
@@ -167,19 +163,19 @@ class UserTest < ActiveSupport::TestCase
   test '#active?' do
     user = create(:user)
     assert user.active?
-    assert_not user.disabled?
+    assert_equal user.status, 'active'
   end
 
   test '#disabled?' do
-    user = create(:user, status: :disabled)
-    assert_not user.active?
+    user = create(:user, :disabled)
     assert user.disabled?
+    assert_equal user.status, 'disabled'
   end
 
   test '#expired?' do
-    user = create(:user, status: :expired)
-    assert_not user.active?
+    user = create(:user, :expired)
     assert user.expired?
+    assert_equal user.status, 'expired'
   end
 
   test '#default_avatar?' do
