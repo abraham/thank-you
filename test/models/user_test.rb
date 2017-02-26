@@ -85,23 +85,27 @@ class UserTest < ActiveSupport::TestCase
 
   test '#etled? knows if Twitter data is present' do
     user = build(:user)
-    assert user.send(:etled?)
+    assert user.etled?
     user.data = nil
-    assert_not user.send(:etled?)
+    assert_not user.etled?
     user.data = {}
-    assert_not user.send(:etled?)
+    assert_not user.etled?
   end
 
-  test '#thanked? with no thanks' do
+  test '#thanked? if a user has thanked a deed' do
     assert_not @user.thanked?(@deed)
-  end
-
-  test '#thanked? with thanks' do
     create(:thank, user: @user, deed: @deed)
     assert @user.thanked?(@deed)
   end
 
-  test '#tweet makes request to Twitter' do
+  test '#tweet posts text to Twitter' do
+    status = Faker::Twitter.status
+    stub_statuses_update(status, status[:text], in_reply_to_status_id: nil)
+    tweet = @user.tweet(status[:text], nil)
+    assert_equal status, tweet.to_hash
+  end
+
+  test '#tweet posts text to Twitter as a reply' do
     status = Faker::Twitter.status
     in_reply_to_status_id = Faker::Number.number(10)
     stub_statuses_update(status, status[:text], in_reply_to_status_id: in_reply_to_status_id)
