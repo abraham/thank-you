@@ -6,6 +6,22 @@ class UserTest < ActiveSupport::TestCase
     @deed = create(:deed, user: @user)
   end
 
+  test '#edit? as admin' do
+    user = create(:user, :admin)
+    deed = create(:deed)
+    assert user.edit?(deed)
+    deed = create(:deed, user: user)
+    assert user.edit?(deed)
+  end
+
+  test '#edit? as user' do
+    user = create(:user)
+    deed = create(:deed)
+    assert_not user.edit?(deed)
+    deed = create(:deed, user: user)
+    assert user.edit?(deed)
+  end
+
   test '#etl sets user' do
     twitter_user = Faker::Twitter.user.merge(email: Faker::Internet.safe_email)
     stub_verify_credentials(twitter_user)

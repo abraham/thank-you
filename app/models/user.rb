@@ -17,6 +17,10 @@ class User < ApplicationRecord
   validates :status, presence: true
   validates :twitter_id, presence: true
 
+  def edit?(content)
+    admin? || self == content.user
+  end
+
   def thanked?(deed)
     thanks.exists?(deed_id: deed.id)
   end
