@@ -1,23 +1,32 @@
 require 'test_helper'
 
 class ThankTest < ActiveSupport::TestCase
-  test '#tweet posts to Twitter' do
-    status = Faker::Twitter.status
-    user = create(:user)
-    deed = create(:deed, text: status[:text])
-    stub_statuses_update(status, "#{status[:text]} https://example.com", in_reply_to_status_id: nil)
-    thank = user.thanks.new(deed: deed, text: deed.text, url: 'https://example.com')
+  setup do
+    @user = create(:user)
+  end
+
+  test '#save associated with deed and user' do
+    deed = create(:deed)
+    thank = build(:thank, user: @user, deed: deed)
     assert_difference 'Thank.count', 1 do
       assert_difference 'deed.thanks.count', 1 do
-        assert_difference 'user.thanks.count', 1 do
-          assert thank.tweet
+        assert_difference '@user.thanks.count', 1 do
           assert thank.save
         end
       end
     end
-    assert_not thank.new_record?
+  end
+
+  test '#tweet posts to Twitter and saves' do
+    status = Faker::Twitter.status
+    deed = create(:deed, text: status[:text])
+    status[:text] = "#{deed.text} https://example.com"
+    stub_statuses_update(status, status[:text], in_reply_to_status_id: nil)
+    thank = @user.thanks.new(deed: deed, text: deed.text, url: 'https://example.com')
+    assert thank.tweet
     assert_equal thank.twitter_id, status[:id].to_s
-    assert_equal thank.text, status[:text]
+    assert thank.data.present?
+    assert_equal thank.data['text'], status[:text]
   end
 
   test '#tweet posts to Twitter as a reply' do
