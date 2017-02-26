@@ -17,8 +17,31 @@ class User < ApplicationRecord
   validates :status, presence: true
   validates :twitter_id, presence: true
 
+  def client
+    @client ||= Twitter::REST::Client.new do |config|
+      config.consumer_key = Rails.application.secrets.twitter_consumer_key
+      config.consumer_secret = Rails.application.secrets.twitter_consumer_secret
+      config.access_token = access_token
+      config.access_token_secret = access_token_secret
+    end
+  end
+
   def edit?(content)
     admin? || self == content.user
+  end
+
+  def etl
+    twitter_user = client.user(include_email: true)
+    self.data = twitter_user.to_hash
+    self.name = twitter_user.name
+    self.screen_name = twitter_user.screen_name
+    self.avatar_url = twitter_user.profile_image_uri_https
+    self.email = twitter_user.email
+    self.default_avatar = twitter_user.default_profile_image?
+  end
+
+  def etled?
+    data.present?
   end
 
   def thanked?(deed)
@@ -36,29 +59,6 @@ class User < ApplicationRecord
       user.access_token_secret = access_token_secret
       user.etl
       user.save
-    end
-  end
-
-  def etled?
-    data.present?
-  end
-
-  def etl
-    twitter_user = client.user(include_email: true)
-    self.data = twitter_user.to_hash
-    self.name = twitter_user.name
-    self.screen_name = twitter_user.screen_name
-    self.avatar_url = twitter_user.profile_image_uri_https
-    self.email = twitter_user.email
-    self.default_avatar = twitter_user.default_profile_image?
-  end
-
-  def client
-    @client ||= Twitter::REST::Client.new do |config|
-      config.consumer_key = Rails.application.secrets.twitter_consumer_key
-      config.consumer_secret = Rails.application.secrets.twitter_consumer_secret
-      config.access_token = access_token
-      config.access_token_secret = access_token_secret
     end
   end
 end

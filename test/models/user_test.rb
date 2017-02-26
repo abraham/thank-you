@@ -6,6 +6,25 @@ class UserTest < ActiveSupport::TestCase
     @deed = create(:deed, user: @user)
   end
 
+  test '#admin? works for admins' do
+    user = create(:user, :admin)
+    assert user.admin?
+    assert_equal user.role, 'admin'
+  end
+
+  test '#admin? does not work for users' do
+    assert_not @user.admin?
+    assert_equal @user.role, 'user'
+  end
+
+  test '#client is Twitter API with user credentials' do
+    assert_instance_of Twitter::REST::Client, @user.client
+    assert_equal 'fake_key', @user.client.consumer_key
+    assert_equal 'fake_secret', @user.client.consumer_secret
+    assert_equal @user.access_token, @user.client.access_token
+    assert_equal @user.access_token_secret, @user.client.access_token_secret
+  end
+
   test '#edit? as admin' do
     user = create(:user, :admin)
     deed = create(:deed)
@@ -15,11 +34,10 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test '#edit? as user' do
-    user = create(:user)
     deed = create(:deed)
-    assert_not user.edit?(deed)
-    deed = create(:deed, user: user)
-    assert user.edit?(deed)
+    assert_not @user.edit?(deed)
+    deed = create(:deed, user: @user)
+    assert @user.edit?(deed)
   end
 
   test '#etl sets user' do
@@ -71,15 +89,13 @@ class UserTest < ActiveSupport::TestCase
     assert_equal twitter_user[:profile_image_url_https], user.avatar_url
   end
 
-  test '#admin? works for admins' do
-    user = create(:user, :admin)
-    assert user.admin?
-    assert_equal user.role, 'admin'
-  end
-
-  test '#admin? does not work for users' do
-    assert_not @user.admin?
-    assert_equal @user.role, 'user'
+  test '#etled? knows if Twitter data is present' do
+    user = build(:user)
+    assert user.send(:etled?)
+    user.data = nil
+    assert_not user.send(:etled?)
+    user.data = {}
+    assert_not user.send(:etled?)
   end
 
   test '#thanked? with no thanks' do
@@ -128,15 +144,6 @@ class UserTest < ActiveSupport::TestCase
     end
   end
 
-  test '#etled? knows if Twitter data is present' do
-    user = build(:user)
-    assert user.send(:etled?)
-    user.data = nil
-    assert_not user.send(:etled?)
-    user.data = {}
-    assert_not user.send(:etled?)
-  end
-
   test '#from_access_token fetches user details from Twitter' do
     access_token = TwitterHelper::TWITTER_TOKEN
     access_token_secret = TwitterHelper::TWITTER_SECRET
@@ -182,14 +189,5 @@ class UserTest < ActiveSupport::TestCase
     assert_not user.default_avatar?
     user.default_avatar = true
     assert user.default_avatar?
-  end
-
-  test '#client' do
-    user = create(:user)
-    assert_instance_of Twitter::REST::Client, user.client
-    assert_equal 'fake_key', user.client.consumer_key
-    assert_equal 'fake_secret', user.client.consumer_secret
-    assert_equal user.access_token, user.client.access_token
-    assert_equal user.access_token_secret, user.client.access_token_secret
   end
 end
