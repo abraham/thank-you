@@ -26,10 +26,6 @@ class User < ApplicationRecord
     client.update(text, in_reply_to_status_id: in_reply_to_status_id)
   end
 
-  def admin?
-    AppConfig.admin_twitter_ids.include?(twitter_id)
-  end
-
   def self.from_access_token(user_id, access_token, access_token_secret)
     User.find_or_initialize_by(twitter_id: user_id).tap do |user|
       user.access_token = access_token

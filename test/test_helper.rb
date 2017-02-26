@@ -15,9 +15,9 @@ module SessionsHelper
     get finish_sessions_url params: { oauth_token: token, oauth_verifier: 'verifier' }
   end
 
-  def sign_in_as(user_type)
-    user = create(:user)
-    AppConfig.admin_twitter_ids = [user.twitter_id] if user_type == :admin
+  def sign_in_as(role, status = :active)
+    return sign_out if role == :anonymous
+    user = create(:user, role, status)
     start_sign_in(TwitterHelper::TWITTER_TOKEN, TwitterHelper::TWITTER_SECRET)
     finish_sign_in(TwitterHelper::TWITTER_TOKEN, user.data)
     user
@@ -94,14 +94,32 @@ module TwitterHelper
   end
 end
 
+module StubHelper
+  def stub_setup
+    @stubs = []
+  end
+
+  def stub_teardown
+    @stubs.each { |stub| remove_request_stub stub }
+  end
+end
+
 class ActionDispatch::IntegrationTest
   include SessionsHelper
+  include StubHelper
   include TwitterHelper
+
+  setup { stub_setup }
+  teardown { stub_teardown }
 end
 
 class ActiveSupport::TestCase
   include FactoryGirl::Syntax::Methods
+  include StubHelper
   include TwitterHelper
 
   FactoryGirl.find_definitions
+
+  setup { stub_setup }
+  teardown { stub_teardown }
 end

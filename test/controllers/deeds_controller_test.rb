@@ -1,14 +1,6 @@
 require 'test_helper'
 
 class DeedsControllerTest < ActionDispatch::IntegrationTest
-  def setup
-    @default_admin_twitter_ids = AppConfig.admin_twitter_ids
-  end
-
-  def teardown
-    AppConfig.admin_twitter_ids = @default_admin_twitter_ids
-  end
-
   test 'GET /' do
     assert_routing({ path: '/', method: :get }, controller: 'deeds', action: 'index')
   end

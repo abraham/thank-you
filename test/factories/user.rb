@@ -12,6 +12,8 @@ FactoryGirl.define do
     access_token_secret { Faker::Internet.password(40, 50) }
     default_avatar { data[:default_profile_image] }
 
+    trait :user do; end
+
     trait :editor do
       role :editor
     end
@@ -23,6 +25,8 @@ FactoryGirl.define do
     trait :admin do
       role :admin
     end
+
+    trait :active do; end
 
     trait :disabled do
       status :disabled

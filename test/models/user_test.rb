@@ -4,11 +4,6 @@ class UserTest < ActiveSupport::TestCase
   def setup
     @user = create(:user)
     @deed = create(:deed, user: @user)
-    @default_admin_twitter_ids = AppConfig.admin_twitter_ids
-  end
-
-  def teardown
-    AppConfig.admin_twitter_ids = @default_admin_twitter_ids
   end
 
   test '#etl! sets user' do
@@ -64,12 +59,14 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test '#admin? works for admins' do
-    AppConfig.admin_twitter_ids = [@user.twitter_id]
-    assert @user.admin?
+    user = create(:user, :admin)
+    assert user.admin?
+    assert_equal user.role, 'admin'
   end
 
   test '#admin? does not work for users' do
     assert_not @user.admin?
+    assert_equal @user.role, 'user'
   end
 
   test '#thanked? with no thanks' do
