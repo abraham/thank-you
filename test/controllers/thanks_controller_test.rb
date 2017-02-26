@@ -55,7 +55,7 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
   test '#create should succeed' do
     sign_in_as :user
     tweet = Faker::Twitter.status
-    stub = stub_statuses_update tweet, "#{tweet[:text]} #{deed_url(@deed)}"
+    stub_statuses_update tweet, "#{tweet[:text]} #{deed_url(@deed)}"
 
     assert_difference '@deed.thanks.count', 1 do
       post deed_thanks_url(@deed), params: { thank: { text: tweet[:text] } }
@@ -65,7 +65,6 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to deed_path(@deed)
     assert_equal tweet[:text], thank.text
     assert_equal 'Your Thank You has been tweeted.', flash[:notice]
-    remove_request_stub stub
   end
 
   test '#new should only allow thanking published Deeds' do
@@ -96,7 +95,7 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
     user = sign_in_as :user
     tweet = Faker::Twitter.status
     create(:thank, text: "#{@deed.text} first", user: user, deed: @deed)
-    stub = stub_statuses_update tweet, "#{tweet[:text]} #{deed_url(@deed)}"
+    stub_statuses_update tweet, "#{tweet[:text]} #{deed_url(@deed)}"
 
     assert_no_difference 'Thank.count' do
       post deed_thanks_url(@deed), params: { thank: { text: "#{@deed.text} second" } }
@@ -104,7 +103,6 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to deed_path(@deed)
     assert_equal "You already thanked #{@deed.display_names}", flash[:error]
-    remove_request_stub stub
   end
 
   test '#create shows model errors' do
@@ -122,7 +120,7 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
 
   test '#create shows Twitter errors' do
     sign_in_as :user
-    stub = stub_unauthorized
+    stub_unauthorized
 
     assert_no_difference 'Thank.count' do
       post deed_thanks_url(@deed), params: { thank: { text: @deed.text } }
@@ -132,8 +130,6 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
       assert_select 'li', "Twitter can't be blank"
       assert_select 'li', 2
     end
-
-    remove_request_stub stub
   end
 
   test '#create will not try to tweet invalid thanks' do

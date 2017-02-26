@@ -8,7 +8,7 @@ class UserTest < ActiveSupport::TestCase
 
   test '#etl! sets user' do
     twitter_user = Faker::Twitter.user.merge(email: Faker::Internet.safe_email)
-    stub = stub_verify_credentials(twitter_user)
+    stub_verify_credentials(twitter_user)
     user = User.new(twitter_id: twitter_user[:id],
                     access_token: TwitterHelper::TWITTER_TOKEN,
                     access_token_secret: TwitterHelper::TWITTER_SECRET)
@@ -20,12 +20,11 @@ class UserTest < ActiveSupport::TestCase
     assert_equal twitter_user[:name], user.name
     assert_equal twitter_user[:screen_name], user.screen_name
     assert_equal twitter_user[:profile_image_url_https], user.avatar_url
-    remove_request_stub stub
   end
 
   test '#etl! sets user.data' do
     twitter_user = Faker::Twitter.user.merge(email: Faker::Internet.safe_email)
-    stub = stub_verify_credentials(twitter_user)
+    stub_verify_credentials(twitter_user)
     user = User.new(twitter_id: twitter_user[:id],
                     access_token: TwitterHelper::TWITTER_TOKEN,
                     access_token_secret: TwitterHelper::TWITTER_SECRET)
@@ -37,12 +36,11 @@ class UserTest < ActiveSupport::TestCase
     assert_equal twitter_user[:name], user.data['name']
     assert_equal twitter_user[:screen_name], user.data['screen_name']
     assert_equal twitter_user[:profile_image_url_https], user.data['profile_image_url_https']
-    remove_request_stub stub
   end
 
   test '#etl! updates existing user' do
     twitter_user = Faker::Twitter.user.merge(email: Faker::Internet.safe_email)
-    stub = stub_verify_credentials(twitter_user)
+    stub_verify_credentials(twitter_user)
     user = create(:user,
                   twitter_id: twitter_user[:id],
                   access_token: TwitterHelper::TWITTER_TOKEN,
@@ -55,7 +53,6 @@ class UserTest < ActiveSupport::TestCase
     assert_equal twitter_user[:name], user.name
     assert_equal twitter_user[:screen_name], user.screen_name
     assert_equal twitter_user[:profile_image_url_https], user.avatar_url
-    remove_request_stub stub
   end
 
   test '#admin? works for admins' do
@@ -81,10 +78,9 @@ class UserTest < ActiveSupport::TestCase
   test '#tweet makes request to Twitter' do
     status = Faker::Twitter.status
     in_reply_to_status_id = Faker::Number.number(10)
-    stub = stub_statuses_update(status, status[:text], in_reply_to_status_id: in_reply_to_status_id)
+    stub_statuses_update(status, status[:text], in_reply_to_status_id: in_reply_to_status_id)
     tweet = @user.tweet(status[:text], in_reply_to_status_id)
     assert_equal status, tweet.to_hash
-    remove_request_stub stub
   end
 
   test '#tweet fails when disabled' do
@@ -96,27 +92,24 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test '#tweet raises unauthorized exception' do
-    stub = stub_unauthorized
+    stub_unauthorized
     assert_raise Twitter::Error::Unauthorized, 'Could not authenticate you' do
       @user.tweet(Faker::Lorem.sentence, nil)
     end
-    remove_request_stub stub
   end
 
   test '#tweet raises forbidden exception for status over 140 characters' do
-    stub = stub_over_140
+    stub_over_140
     assert_raise Twitter::Error::Forbidden, 'Status is over 140 characters' do
       @user.tweet(Faker::Lorem.sentence * 3, nil)
     end
-    remove_request_stub stub
   end
 
   test '#tweet raises rate limit exception' do
-    stub = stub_rate_limit
+    stub_rate_limit
     assert_raise Twitter::Error::TooManyRequests, 'Rate limit exceeded' do
       @user.tweet(Faker::Lorem.sentence, nil)
     end
-    remove_request_stub stub
   end
 
   test '#etled? knows if Twitter data is present' do
@@ -132,24 +125,22 @@ class UserTest < ActiveSupport::TestCase
     access_token = TwitterHelper::TWITTER_TOKEN
     access_token_secret = TwitterHelper::TWITTER_SECRET
     twitter_user = Faker::Twitter.user.merge(email: Faker::Internet.safe_email)
-    stub = stub_verify_credentials(twitter_user)
+    stub_verify_credentials(twitter_user)
     assert_not User.find_by(twitter_id: twitter_user[:id_str])
     assert_difference 'User.count', 1 do
       User.from_access_token(twitter_user[:id], access_token, access_token_secret)
     end
     assert User.find_by(twitter_id: twitter_user[:id_str])
-    remove_request_stub stub
   end
 
   test '#from_access_token fetches user details from Twitter for exising user' do
     access_token = TwitterHelper::TWITTER_TOKEN
     access_token_secret = TwitterHelper::TWITTER_SECRET
-    stub = stub_verify_credentials(@user.data)
+    stub_verify_credentials(@user.data)
     assert_no_difference 'User.count' do
       User.from_access_token(@user.data['id'], access_token, access_token_secret)
     end
     assert_equal User.last.twitter_id, @user.data['id_str']
-    remove_request_stub stub
   end
 
   test '#active?' do

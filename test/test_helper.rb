@@ -94,32 +94,14 @@ module TwitterHelper
   end
 end
 
-module StubHelper
-  def stub_setup
-    @stubs = []
-  end
-
-  def stub_teardown
-    @stubs.each { |stub| remove_request_stub stub }
-  end
-end
-
 class ActionDispatch::IntegrationTest
   include SessionsHelper
-  include StubHelper
   include TwitterHelper
-
-  setup { stub_setup }
-  teardown { stub_teardown }
 end
 
 class ActiveSupport::TestCase
   include FactoryGirl::Syntax::Methods
-  include StubHelper
   include TwitterHelper
 
   FactoryGirl.find_definitions
-
-  setup { stub_setup }
-  teardown { stub_teardown }
 end

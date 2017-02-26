@@ -5,7 +5,7 @@ class ThankTest < ActiveSupport::TestCase
     status = Faker::Twitter.status
     user = create(:user)
     deed = create(:deed, text: status[:text])
-    stub = stub_statuses_update(status, "#{status[:text]} https://example.com", in_reply_to_status_id: nil)
+    stub_statuses_update(status, "#{status[:text]} https://example.com", in_reply_to_status_id: nil)
     thank = user.thanks.new(deed: deed, text: deed.text, url: 'https://example.com')
     assert_difference 'Thank.count', 1 do
       assert_difference 'deed.thanks.count', 1 do
@@ -18,14 +18,13 @@ class ThankTest < ActiveSupport::TestCase
     assert_not thank.new_record?
     assert_equal thank.twitter_id, status[:id].to_s
     assert_equal thank.text, status[:text]
-    remove_request_stub stub
   end
 
   test '#tweet posts to Twitter as a reply' do
     status = Faker::Twitter.status
     user = create(:user)
     deed = create(:deed, :with_tweet, text: status[:text])
-    stub = stub_statuses_update(status, "#{status[:text]} https://example.com", in_reply_to_status_id: deed.twitter_id)
+    stub_statuses_update(status, "#{status[:text]} https://example.com", in_reply_to_status_id: deed.twitter_id)
     thank = user.thanks.new(deed: deed, text: deed.text, url: 'https://example.com')
     assert_difference 'Thank.count', 1 do
       assert_difference 'deed.thanks.count', 1 do
@@ -38,7 +37,6 @@ class ThankTest < ActiveSupport::TestCase
     assert_not thank.new_record?
     assert_equal thank.twitter_id, status[:id].to_s
     assert_equal thank.text, status[:text]
-    remove_request_stub stub
   end
 
   test '#tweet text gets URL appended' do
@@ -48,13 +46,12 @@ class ThankTest < ActiveSupport::TestCase
     user = create(:user)
     deed = create(:deed, text: text)
     status[:text] = "#{text} #{url}"
-    stub = stub_statuses_update(status, status[:text], in_reply_to_status_id: nil)
+    stub_statuses_update(status, status[:text], in_reply_to_status_id: nil)
     thank = user.thanks.new(deed: deed, text: text, url: url)
     assert thank.tweet
     assert thank.save
     assert_equal thank.text, text
     assert_equal thank.data['text'], "#{text} #{url}"
-    remove_request_stub stub
   end
 
   test '#save can not create duplicates' do
@@ -62,7 +59,7 @@ class ThankTest < ActiveSupport::TestCase
     status_two = Faker::Twitter.status
     user = create(:user)
     deed = create(:deed, text: status_one[:text])
-    stub = stub_statuses_update(status_one, "#{status_one[:text]} https://example.com", in_reply_to_status_id: nil)
+    stub_statuses_update(status_one, "#{status_one[:text]} https://example.com", in_reply_to_status_id: nil)
     thank = user.thanks.new(deed: deed, text: status_one[:text], url: 'https://example.com')
     assert_difference 'Thank.count', 1 do
       assert thank.tweet
@@ -71,7 +68,6 @@ class ThankTest < ActiveSupport::TestCase
     thank_two = user.thanks.new(deed: deed, text: status_two[:text], url: 'https://example.com')
     assert_not thank_two.valid?
     assert_equal ['Deed has already been thanked', "Twitter can't be blank"], thank_two.errors.full_messages
-    remove_request_stub stub
   end
 
   test 'validation' do

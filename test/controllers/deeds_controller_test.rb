@@ -53,7 +53,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     deeds = [create(:deed), create(:deed), create(:deed)]
     thank = user.thanks.new(deed: deeds[1], text: deeds[1].text, url: deed_url(deeds[1]))
     status = "#{deeds[1].text} #{deed_url(deeds[1])}"
-    stub = stub_statuses_update(Faker::Twitter.status, status, in_reply_to_status_id: nil)
+    stub_statuses_update(Faker::Twitter.status, status, in_reply_to_status_id: nil)
     thank.tweet
     thank.save
     get root_path
@@ -61,7 +61,6 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_select "a[href=\"#{new_deed_thank_path(deeds[0])}\"]", "Thank @#{deeds[0].names.first}"
     assert_select "a[href=\"#{deed_path(deeds[1])}\"]", 'Already thanked'
     assert_select "a[href=\"#{new_deed_thank_path(deeds[2])}\"]", "Thank @#{deeds[2].names.first}"
-    remove_request_stub stub
   end
 
   test '#show renders deed' do
@@ -262,7 +261,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as :admin
     deed = create(:deed, :draft, :with_tweet)
     status = Faker::Twitter.status
-    stub = stub_statuses_show status
+    stub_statuses_show status
     twitter_id = deed.twitter_id
     assert twitter_id
     assert deed.data
@@ -275,7 +274,6 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_not_equal deed.twitter_id, twitter_id
     assert_equal deed.twitter_id, deed.tweet.id.to_s
     assert_equal 'Deed updated successfully.', flash[:notice]
-    remove_request_stub stub
   end
 
   test '#publish makes draft deeds go live' do
@@ -310,7 +308,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as :admin
     status = Faker::Twitter.status
     text = Faker::Lorem.sentence
-    stub = stub_statuses_show status
+    stub_statuses_show status
     assert_difference 'Deed.count', 1 do
       post deeds_path, params: { deed: { text: text, names: [status[:user][:screen_name]], twitter_id: status[:id] } }
     end
@@ -320,14 +318,13 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_equal status[:id].to_s, deed.twitter_id
     assert_equal status[:id], deed.data['id']
     assert_equal 'Deed created successfully.', flash[:notice]
-    remove_request_stub stub
   end
 
   test '#create allows admins to create Deeds with a Tweet URL instead of an ID' do
     sign_in_as :admin
     status = Faker::Twitter.status
     text = Faker::Lorem.sentence
-    stub = stub_statuses_show status
+    stub_statuses_show status
     assert_difference 'Deed.count', 1 do
       url = "https://twitter.com/#{status[:user][:screen_name]}/status/#{status[:id]}"
       post deeds_path, params: { deed: { text: text, names: [status[:user][:screen_name]], twitter_id: url } }
@@ -337,7 +334,6 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_equal status[:id].to_s, deed.twitter_id
     assert_equal status[:id], deed.data['id']
     assert_equal 'Deed created successfully.', flash[:notice]
-    remove_request_stub stub
   end
 
   test '#create allows admins to create Deeds with multiple names' do
@@ -415,7 +411,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as :admin
     text = Faker::Lorem.sentence
     names = [Faker::Internet.user_name(nil, ['_'])]
-    stub = stub_status_not_found
+    stub_status_not_found
     assert_no_difference 'Deed.count' do
       post deeds_path, params: { deed: { text: text, names: names, twitter_id: '123' } }
     end
@@ -430,6 +426,5 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
       assert_select 'li', "Data can't be blank"
       assert_select 'li', 2
     end
-    remove_request_stub stub
   end
 end
