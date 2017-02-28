@@ -430,6 +430,14 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test '#show has Twitter citation' do
+    deed = create(:deed, :with_tweet)
+    get deed_path(deed)
+    assert_select '.links' do
+      assert_select "a[href=\"#{deed.tweet.url}\"]", 'Twitter'
+    end
+  end
+
   test '#show escapes evil deed text' do
     deed = create(:deed, text: '<a href="javascript:alert(666)">evil</a> <script>alert(666)</script>')
     get deed_path(deed)
