@@ -207,6 +207,17 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test '#etl creates a deed from ID' do
+    user = sign_in_as :admin
+    status = Faker::Twitter.status
+    stub_statuses_show status
+    assert_difference 'user.deeds.count', 1 do
+      post etl_deeds_path params: { deed: { twitter_id: status[:id] } }
+    end
+    deed = Deed.last
+    assert_redirected_to edit_deed_url(deed)
+    assert_equal status[:id].to_s, deed.twitter_id
+    assert_equal [status[:user][:screen_name]], deed.names
+    assert_equal status[:text], deed.text
   end
 
   test '#etl creates a deed from URL' do
