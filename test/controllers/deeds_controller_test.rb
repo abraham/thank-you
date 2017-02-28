@@ -35,6 +35,15 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test '#drafts requires admin' do
+    [:user, :editor, :moderator].each do |role|
+      sign_in_as role
+      get drafts_deeds_path
+      assert_redirected_to root_url
+      assert_equal 'You do not have permission to do that', flash[:warning]
+    end
+  end
+
   test '#drafts should get draft deeds' do
     deeds = [create(:deed, :draft), create(:deed), create(:deed, :draft)]
     sign_in_as :admin
