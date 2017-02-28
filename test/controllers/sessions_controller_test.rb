@@ -72,10 +72,9 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     token = TwitterHelper::TWITTER_TOKEN
     secret = TwitterHelper::TWITTER_SECRET
     twitter_user = Faker::Twitter.user.merge(email: Faker::Internet.safe_email)
-    stub_request_token(token, secret)
     stub_access_token(twitter_user[:id], twitter_user[:screen_name])
     stub_verify_credentials(twitter_user)
-    post sessions_url
+    start_sign_in token, secret
     session_id = session.id
 
     assert_difference 'User.count', 1 do
@@ -99,10 +98,9 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     twitter_user = Faker::Twitter.user.merge(email: Faker::Internet.safe_email)
     twitter_user[:id] = old_user.data['id']
     twitter_user[:id_str] = old_user.data['id_str']
-    stub_request_token(token, secret)
     stub_access_token(twitter_user[:id], twitter_user[:screen_name])
     stub_verify_credentials(twitter_user)
-    post sessions_url
+    start_sign_in token, secret
     session_id = session.id
 
     assert_no_difference 'User.count' do
@@ -127,10 +125,9 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     token = TwitterHelper::TWITTER_TOKEN
     secret = TwitterHelper::TWITTER_SECRET
     user = create(:user, status: :disabled)
-    stub_request_token(token, secret)
     stub_access_token(user[:twitter_id], user[:screen_name])
     stub_verify_credentials(user.data)
-    post sessions_url
+    start_sign_in token, secret
     get finish_sessions_url params: { oauth_token: token, oauth_verifier: 'verifier' }
     user = User.find(session[:user_id])
     assert user.disabled?
@@ -148,14 +145,13 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     token = TwitterHelper::TWITTER_TOKEN
     secret = TwitterHelper::TWITTER_SECRET
     twitter_user = Faker::Twitter.user.merge(email: Faker::Internet.safe_email)
-    stub_request_token(token, secret)
     stub_access_token(twitter_user[:id], twitter_user[:screen_name])
     stub_verify_credentials(twitter_user)
     deed = create(:deed)
     get new_deed_thank_url(deed)
     assert_redirected_to new_sessions_url
     assert_equal new_deed_thank_path(deed), session['next_path']
-    post sessions_url
+    start_sign_in token, secret
     get finish_sessions_url params: { oauth_token: token, oauth_verifier: 'verifier' }
     assert_redirected_to new_deed_thank_url(deed)
     assert_nil session['next_path']
