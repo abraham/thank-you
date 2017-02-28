@@ -19,11 +19,18 @@ class LinksControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'You must be signed in to do that', flash[:warning]
   end
 
-  test '#new requires admin' do
+  test '#new requires edit?' do
     sign_in_as :user
     get new_deed_link_url(@deed)
     assert_redirected_to deed_url(@deed)
     assert_equal 'You do not have permission to do that', flash[:warning]
+  end
+
+  test '#new allows editing own content' do
+    user = sign_in_as :user
+    deed = create(:deed, user: user)
+    get new_deed_link_url(deed)
+    assert_response :success
   end
 
   test '#new should return form' do
@@ -37,20 +44,39 @@ class LinksControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test '#create requires user' do
+  test '#create requires auth' do
     post deed_links_url(@deed)
     assert_redirected_to new_sessions_url
     assert_equal 'You must be signed in to do that', flash[:warning]
   end
 
-  test '#create requires admin' do
+  test '#create requires edit?' do
     sign_in_as :user
     post deed_links_url(@deed)
     assert_redirected_to deed_url(@deed)
     assert_equal 'You do not have permission to do that', flash[:warning]
   end
 
-  test '#create adds a link to the Deed' do
+  test '#create allows user to add link to their own deed' do
+    user = sign_in_as :user
+    text = Faker::Lorem.word
+    url = Faker::Internet.url
+    deed = create(:deed, user: user)
+
+    assert_difference 'user.links.count', 1 do
+      assert_difference 'deed.links.count', 1 do
+        post deed_links_url(deed), params: { link: { text: text, url: url } }
+      end
+    end
+
+    link = deed.links.last
+    assert_redirected_to deed_path(deed)
+    assert_equal 'Link was successfully created.', flash[:notice]
+    assert_equal text, link.text
+    assert_equal url, link.url
+  end
+
+  test '#create allows admin to add link to any deed' do
     sign_in_as :admin
     text = Faker::Lorem.word
     url = Faker::Internet.url
@@ -59,11 +85,8 @@ class LinksControllerTest < ActionDispatch::IntegrationTest
       post deed_links_url(@deed), params: { link: { text: text, url: url } }
     end
 
-    link = @deed.links.last
     assert_redirected_to deed_path(@deed)
     assert_equal 'Link was successfully created.', flash[:notice]
-    assert_equal text, link.text
-    assert_equal url, link.url
   end
 
   test '#create shows model errors' do
