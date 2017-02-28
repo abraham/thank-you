@@ -4,41 +4,42 @@
   </section>
 
   <%= form_for @deed, html: { autocomplete: 'off' } do |f| %>
+    <% names = deed.names || [] %>
 
     <section class="mdc-card__supporting-text">
       <div class="mdc-textfield mdc-textfield--fullwidth">
-        <%= text_field_tag 'deed[names][]', (deed.names || []).first, class: 'mdc-textfield__input', xplaceholder: 'name', required: true %>
-        <%= f.label :names, 'Name', class: "mdc-textfield__label #{'mdc-textfield__label--float-above' if deed.names && deed.names.size > 0}" %>
+        <%= text_field_tag 'deed[names][]', names.first, class: 'mdc-textfield__input', required: true %>
+        <%= f.label :names, 'Name', class: "mdc-textfield__label #{'mdc-textfield__label--float-above' if names.size > 0}" %>
       </div>
       <p id="deed_names_-helptext" class="mdc-textfield-helptext" aria-hidden="true">
         Twitter @name of person being thanked
       </p>
     </section>
 
-    <section class="mdc-card__supporting-text name hidden">
+    <section class="mdc-card__supporting-text name <%= 'hidden' unless names.size > 1 %>">
       <div class="mdc-textfield mdc-textfield--fullwidth">
-        <%= text_field_tag 'deed[names][]', (deed.names || []).second, class: 'mdc-textfield__input', xplaceholder: 'name' %>
-        <%= f.label :names, 'Name', class: "mdc-textfield__label #{'mdc-textfield__label--float-above' if deed.names && deed.names.size > 1}" %>
+        <%= text_field_tag 'deed[names][]', names.second, class: 'mdc-textfield__input' %>
+        <%= f.label :names, 'Name', class: "mdc-textfield__label #{'mdc-textfield__label--float-above' if names.size > 1}" %>
       </div>
       <p id="deed_names_-helptext" class="mdc-textfield-helptext" aria-hidden="true">
         Twitter @name of person being thanked
       </p>
     </section>
 
-    <section class="mdc-card__supporting-text name hidden">
+    <section class="mdc-card__supporting-text name <%= 'hidden' unless names.size > 2 %>">
       <div class="mdc-textfield mdc-textfield--fullwidth">
-        <%= text_field_tag 'deed[names][]', (deed.names || []).third, class: 'mdc-textfield__input', xplaceholder: 'name' %>
-        <%= f.label :names, 'Name', class: "mdc-textfield__label #{'mdc-textfield__label--float-above' if deed.names && deed.names.size > 2}" %>
+        <%= text_field_tag 'deed[names][]', names.third, class: 'mdc-textfield__input' %>
+        <%= f.label :names, 'Name', class: "mdc-textfield__label #{'mdc-textfield__label--float-above' if names.size > 2}" %>
       </div>
       <p id="deed_names_-helptext" class="mdc-textfield-helptext" aria-hidden="true">
         Twitter @name of person being thanked
       </p>
     </section>
 
-    <section class="mdc-card__supporting-text name hidden">
+    <section class="mdc-card__supporting-text name <%= 'hidden' unless names.size > 3 %>">
       <div class="mdc-textfield mdc-textfield--fullwidth">
-        <%= text_field_tag 'deed[names][]', (deed.names || []).fourth, class: 'mdc-textfield__input', xplaceholder: 'name' %>
-        <%= f.label :names, 'Name', class: "mdc-textfield__label #{'mdc-textfield__label--float-above' if deed.names && deed.names.size > 3}" %>
+        <%= text_field_tag 'deed[names][]', names.fourth, class: 'mdc-textfield__input' %>
+        <%= f.label :names, 'Name', class: "mdc-textfield__label #{'mdc-textfield__label--float-above' if names.size > 3}" %>
       </div>
       <p id="deed_names_-helptext" class="mdc-textfield-helptext" aria-hidden="true">
         Twitter @name of person being thanked

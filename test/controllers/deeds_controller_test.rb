@@ -212,6 +212,13 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'You do not have permission to do that', flash[:warning]
   end
 
+  test '#edit should allow editing own deeds' do
+    user = sign_in_as :user
+    deed = create(:deed, :draft, user: user)
+    get edit_deed_url(deed)
+    assert_response :success
+  end
+
   test '#edit should return form' do
     deed = create(:deed, :draft)
     sign_in_as :admin
@@ -226,6 +233,21 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
       assert_select 'input[type=submit][value="Preview"]'
       assert_select 'input', 8
       assert_select 'label', 6
+    end
+  end
+
+  test '#edit should hide names without values' do
+    deed = create(:deed, :draft, names: ['one', 'two', 'three'])
+    sign_in_as :admin
+    get edit_deed_url(deed)
+    assert_response :success
+    assert_select "form[action=\"#{deed_path(deed)}\"]#edit_deed_#{deed.id}" do
+      assert_select 'input[type=text]#deed_names_', 4
+      assert_select 'input[type=text][value=one]#deed_names_', 1
+      assert_select 'input[type=text][value=two]#deed_names_', 1
+      assert_select 'input[type=text][value=three]#deed_names_', 1
+      assert_select 'section.name.hidden', 1
+      assert_select 'label[for=deed_names].mdc-textfield__label--float-above', 3
     end
   end
 
