@@ -35,10 +35,10 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test '#draft should get draft deeds' do
+  test '#drafts should get draft deeds' do
     deeds = [create(:deed, :draft), create(:deed), create(:deed, :draft)]
     sign_in_as :admin
-    get draft_deeds_path
+    get drafts_deeds_path
     assert_response :success
     assert_select '.content' do
       assert_select 'h2 a', 2

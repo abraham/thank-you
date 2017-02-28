@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   resources :deeds, only: [:new, :create, :show, :edit, :index, :update] do
     root to: redirect('/')
     post :publish
-    get :draft, on: :collection
+    get :drafts, on: :collection
     resources :thanks, only: [:new, :create]
     resources :links, only: [:new, :create]
   end

@@ -73,7 +73,7 @@ class HeaderTest < ActionDispatch::IntegrationTest
     get root_url
     assert_select 'header' do
       assert_select 'div.mdc-simple-menu' do
-        assert_select "a[href=\"#{draft_deeds_path}\"]", 'Draft deeds'
+        assert_select "a[href=\"#{drafts_deeds_path}\"]", 'Draft deeds'
       end
     end
   end
@@ -83,7 +83,7 @@ class HeaderTest < ActionDispatch::IntegrationTest
     get root_url
     assert_select 'header' do
       assert_select 'div.mdc-simple-menu' do
-        assert_select "a[href=\"#{draft_deeds_path}\"]", 0
+        assert_select "a[href=\"#{drafts_deeds_path}\"]", 0
       end
     end
   end
