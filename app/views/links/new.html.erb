@@ -1,18 +1,33 @@
 <%= render 'shared/model_flash', item: @link, name: 'Link' %>
+<div class="mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+  <section class="mdc-card__primary">
+    <h1 class="mdc-card__title mdc-card__title--large">Add link</h1>
+  </section>
 
-<%= form_for [@deed, @link] do |f| %>
-  <p>
-    <%= f.label :text %>
-    <%= f.text_field :text, placeholder: 'Example', required: true %>
-  </p>
+  <%= form_for [@deed, @link] do |f| %>
+    <section class="mdc-card__supporting-text">
+      <div class="mdc-textfield">
+        <%= f.text_field :text, class: 'mdc-textfield__input', 'aria-controls' => 'link_text-helptext', required: true %>
+        <%= f.label :text, 'Title', class: "mdc-textfield__label #{'mdc-textfield__label--float-above' if @link.text}" %>
+      </div>
+      <p id="link_text-helptext" class="mdc-textfield-helptext" aria-hidden="true">
+        Title text of the citation.
+      </p>
+    </section>
 
-  <p>
-    <%= f.label :url, 'URL' %>
-    <%= f.text_field :url, placeholder: 'https://example.com', required: true, type: :url %>
-  </p>
+    <section class="mdc-card__supporting-text">
+      <div class="mdc-textfield">
+        <%= f.text_field :url, class: 'mdc-textfield__input', 'aria-controls' => 'link_text-helptext', required: true, type: :url %>
+        <%= f.label :url, 'URL', class: "mdc-textfield__label #{'mdc-textfield__label--float-above' if @link.text}" %>
+      </div>
+      <p id="link_text-helptext" class="mdc-textfield-helptext" aria-hidden="true">
+        URL of the citation.
+      </p>
+    </section>
 
-  <p>
-    <%= f.submit 'Add link' %>
-    <%= link_to 'Cancel', @deed %>
-  </p>
-<% end %>
+    <section class="mdc-card__actions right">
+      <%= link_to 'Cancel', @deed, class: 'mdc-button mdc-button--compact mdc-card__action' %>
+      <%= f.submit 'Add link', class: 'mdc-button mdc-button--compact mdc-card__action mdc-button--accent mdc-button--raised' %>
+    </section>
+  <% end %>
+</div>

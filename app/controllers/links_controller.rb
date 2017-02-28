@@ -4,7 +4,7 @@ class LinksController < ApplicationController
   before_action :require_edit_access
 
   def create
-    @link = current_user.links.new(links_params)
+    @link = current_user.links.build(links_params)
     @link.deed = @deed
 
     if @link.save
