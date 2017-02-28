@@ -19,4 +19,8 @@ Rails.application.routes.draw do
   resource :sessions, only: [:new, :create, :destroy] do
     get :finish
   end
+
+  resources :users, only: [:drafts] do
+    get :drafts
+  end
 end
