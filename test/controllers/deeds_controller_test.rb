@@ -169,6 +169,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
       assert_select 'button.add-name', 'Add name'
       assert_select 'textarea#deed_text'
       assert_select 'input[type=text]#deed_twitter_id'
+      assert_select "a[href=\"#{root_path}\"]", 'Cancel'
       assert_select 'input[type=submit][value="Preview"]'
       assert_select 'input', 7
       assert_select 'label', 6
@@ -230,6 +231,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
       assert_select 'button.add-name', 'Add name'
       assert_select 'textarea#deed_text'
       assert_select 'input[type=text]#deed_twitter_id'
+      assert_select "a[href=\"#{deed_path(deed)}\"]", 'Cancel'
       assert_select 'input[type=submit][value="Preview"]'
       assert_select 'input', 8
       assert_select 'label', 6

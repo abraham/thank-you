@@ -76,7 +76,7 @@
     </section>
 
     <section class="mdc-card__actions">
-      <%= link_to 'Cancel', root_path, class: 'mdc-button mdc-button--compact mdc-card__action' %>
+      <%= link_to 'Cancel', @deed.new_record? ? root_path : deed_path(@deed), class: 'mdc-button mdc-button--compact mdc-card__action' %>
       <%= f.submit 'Preview', class: 'mdc-button mdc-button--compact mdc-card__action mdc-button--accent mdc-button--raised' %>
     </section>
   <% end %>
