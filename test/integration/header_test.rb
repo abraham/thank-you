@@ -52,7 +52,7 @@ class HeaderTest < ActionDispatch::IntegrationTest
     assert_select 'header' do
       assert_select 'div.mdc-simple-menu' do
         assert_select 'a[href="https://goo.gl/forms/D8N4bQsz3gl7kbKo2"]', 'Suggest Thank You'
-        assert_select "a[href=\"#{new_deed_path}\"]", 0
+        assert_select "a[href=\"#{start_deeds_path}\"]", 0
         assert_select "a[href=\"#{drafts_deeds_path}\"]", 0
         assert_select "a[href=\"#{user_drafts_path(user)}\"]", 0
       end
@@ -68,7 +68,7 @@ class HeaderTest < ActionDispatch::IntegrationTest
         assert_select 'div.mdc-simple-menu' do
           assert_select 'a[href="https://goo.gl/forms/D8N4bQsz3gl7kbKo2"]', 0
           assert_select "a[href=\"#{drafts_deeds_path}\"]", 0
-          assert_select "a[href=\"#{new_deed_path}\"]", 'Add deed'
+          assert_select "a[href=\"#{start_deeds_path}\"]", 'Add deed'
           assert_select "a[href=\"#{user_drafts_path(user)}\"]", 'My drafts'
         end
       end
@@ -80,7 +80,7 @@ class HeaderTest < ActionDispatch::IntegrationTest
     get root_url
     assert_select 'header' do
       assert_select 'div.mdc-simple-menu' do
-        assert_select "a[href=\"#{new_deed_path}\"]", 'Add deed'
+        assert_select "a[href=\"#{start_deeds_path}\"]", 'Add deed'
         assert_select "a[href=\"#{user_drafts_path(user)}\"]", 'My drafts'
         assert_select "a[href=\"#{drafts_deeds_path}\"]", 'All drafts'
       end
