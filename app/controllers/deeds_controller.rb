@@ -1,8 +1,9 @@
 class DeedsController < ApplicationController
   before_action :find_deed, only: [:show, :edit, :update, :publish]
   before_action :require_signin, except: [:index, :show]
-  before_action :require_admin, except: [:index, :show, :edit, :update]
-  before_action :require_edit_access, except: [:create, :show, :index, :new]
+  before_action :require_admin, only: [:drafts]
+  before_action :require_edit_access, only: [:edit, :update, :publish]
+  before_action :require_editor, only: [:new, :create]
 
   def create
     @deed = current_user.deeds.create(deeds_params)
