@@ -10,8 +10,10 @@ Rails.application.routes.draw do
 
   resources :deeds, only: [:new, :create, :show, :edit, :index, :update] do
     root to: redirect('/')
-    post :publish
     get :drafts, on: :collection
+    get :start, on: :collection
+    post :etl, on: :collection
+    post :publish
     resources :thanks, only: [:new, :create]
     resources :links, only: [:new, :create]
   end

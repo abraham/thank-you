@@ -1,0 +1,20 @@
+<%= render 'shared/model_flash', item: @deed, name: 'Deed' %>
+
+<div class="mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+  <%= form_for :deed, url: etl_deeds_path, html: { class: 'start_deed' } do |f| %>
+    <section class="mdc-card__supporting-text">
+      <div class="mdc-textfield mdc-textfield--fullwidth">
+        <%= f.text_field :twitter_id, class: 'mdc-textfield__input', 'aria-controls' => 'deed_twitter_id-helptext' %>
+        <%= f.label :twitter_id, 'Tweet URL', class: "mdc-textfield__label #{'mdc-textfield__label--float-above' if @deed.twitter_id.present?}" %>
+      </div>
+      <p id="deed_twitter_id-helptext" class="mdc-textfield-helptext" aria-hidden="true">
+        Tweet URL Thank Yous should be linked to.
+      </p>
+    </section>
+
+    <section class="mdc-card__actions">
+      <%= link_to 'Advanced',  new_deed_path, class: 'mdc-button mdc-button--compact mdc-card__action' %>
+      <%= f.submit 'Preview', class: 'mdc-button mdc-button--compact mdc-card__action mdc-button--accent mdc-button--raised' %>
+    </section>
+  <% end %>
+</div>

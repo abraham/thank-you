@@ -2,7 +2,9 @@
 // All this logic will automatically be available in application.js.
 
 document.addEventListener('turbolinks:load', function() {
-  var deedForm = document.querySelector('form.new_deed') || document.querySelector('form.edit_deed');
+  var deedForm = document.querySelector('form.new_deed') ||
+      document.querySelector('form.edit_deed') ||
+      document.querySelector('form.start_deed');
 
   if (!deedForm) {
     return;
@@ -13,18 +15,21 @@ document.addEventListener('turbolinks:load', function() {
   });
 
   var addNameButton = deedForm.querySelector('.add-name');
-
   var deedText = deedForm.querySelector('#deed_text');
   var namesText = deedForm.querySelectorAll('input#deed_names_');
   var remainingTextLengthDisplay = deedForm.querySelector('#remaining_deed_text_length');
   var submitButton = deedForm.querySelector('input[type=submit]');
 
-  namesText.forEach(function(nameText) {
-    nameText.addEventListener('input', validateText);
-  });
-  addNameButton.addEventListener('click', showName);
-  deedText.addEventListener('input', validateText);
-  validateText();
+  if (addNameButton && namesText) {
+    addNameButton.addEventListener('click', showName);
+    namesText.forEach(function(nameText) {
+      nameText.addEventListener('input', validateText);
+    });
+  }
+  if (deedText) {
+    deedText.addEventListener('input', validateText);
+    validateText();
+  }
 
   function showName(event) {
     event.preventDefault();

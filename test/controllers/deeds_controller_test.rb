@@ -149,6 +149,93 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_select 'p', '404 Not found'
   end
 
+  test '#start requires authentication' do
+    get start_deeds_path
+    assert_redirected_to new_sessions_url
+  end
+
+  test '#start redirects users with error' do
+    sign_in_as :user
+    get start_deeds_path
+    assert_redirected_to root_path
+    assert_equal 'You do not have permission to do that', flash[:warning]
+  end
+
+  test '#start renders for editors and up' do
+    [:editor, :moderator, :admin].each do |role|
+      user = sign_in_as role
+      get start_deeds_path
+      assert_response :success
+      assert role.to_s, user.role
+    end
+  end
+
+  test '#start should return form' do
+    sign_in_as :admin
+    get start_deeds_path
+    assert_select "form[action=\"#{etl_deeds_path}\"]" do
+      assert_select 'input[type=text]#deed_twitter_id', 1
+      assert_select "a[href=\"#{new_deed_path}\"]", 'Advanced'
+      assert_select 'input[type=submit][value="Preview"]'
+      assert_select 'input', 3
+      assert_select 'label', 1
+    end
+  end
+
+  test '#etl requires authentication' do
+    post etl_deeds_path
+    assert_redirected_to new_sessions_url
+  end
+
+  test '#etl redirects users with error' do
+    sign_in_as :user
+    post etl_deeds_path
+    assert_redirected_to root_path
+    assert_equal 'You do not have permission to do that', flash[:warning]
+  end
+
+  test '#etl renders for editors and up' do
+    [:editor, :moderator, :admin].each do |role|
+      user = sign_in_as role
+      status = Faker::Twitter.status
+      stub_statuses_show status
+      post etl_deeds_path params: { deed: { twitter_id: status[:id] } }
+      deed = Deed.find_by_twitter_id(status[:id])
+      assert_redirected_to edit_deed_url(deed)
+      assert role.to_s, user.role
+    end
+  end
+
+  test '#etl creates a deed from ID' do
+  end
+
+  test '#etl creates a deed from URL' do
+    user = sign_in_as :admin
+    status = Faker::Twitter.status
+    stub_statuses_show status
+    twitter_id = "https://twitter.com/#{status[:user][:screen_name]}/status/#{status[:id]}"
+    assert_difference 'user.deeds.count', 1 do
+      post etl_deeds_path params: { deed: { twitter_id: twitter_id } }
+    end
+    deed = Deed.last
+    assert_redirected_to edit_deed_url(deed)
+    assert_equal status[:id].to_s, deed.twitter_id
+    assert_equal [status[:user][:screen_name]], deed.names
+    assert_equal status[:text], deed.text
+  end
+
+  test '#etl shows tweet not found error' do
+    sign_in_as :admin
+    stub_status_not_found
+    assert_no_difference 'Deed.count' do
+      post etl_deeds_path params: { deed: { twitter_id: 'https://twitter.com/jack/status/404' } }
+    end
+    assert_select '.card-error' do
+      assert_select 'li', 'Twitter error: No status found with that ID.'
+      assert_select 'li', 1
+    end
+  end
+
   test '#new requires authentication' do
     get new_deed_path
     assert_redirected_to new_sessions_url

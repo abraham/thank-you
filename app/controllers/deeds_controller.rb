@@ -3,7 +3,7 @@ class DeedsController < ApplicationController
   before_action :require_signin, except: [:index, :show]
   before_action :require_admin, only: [:drafts]
   before_action :require_edit_access, only: [:edit, :update, :publish]
-  before_action :require_editor, only: [:new, :create]
+  before_action :require_editor, only: [:start, :etl, :new, :create]
 
   def create
     @deed = current_user.deeds.create(deeds_params)
@@ -33,6 +33,26 @@ class DeedsController < ApplicationController
   def edit
     redirect_to @deed, flash: { notice: "You can't edit published deeds" } unless @deed.draft?
     @thanked = current_user && current_user.thanked?(@deed)
+  end
+
+  def start
+    @deed = Deed.new
+  end
+
+  def etl
+    @deed = current_user.deeds.build(deeds_params)
+    @deed.etl
+
+    if @deed.tweet?
+      @deed.text = @deed.tweet.text
+      @deed.names = [@deed.tweet.user.screen_name]
+    end
+
+    if @deed.tweet? && @deed.save
+      redirect_to edit_deed_path(@deed), flash: { notice: 'Deed created successfully.' }
+    else
+      render :start
+    end
   end
 
   def new

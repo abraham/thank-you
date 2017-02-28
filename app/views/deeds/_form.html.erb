@@ -52,7 +52,7 @@
 
     <section class="mdc-card__supporting-text">
       <div class="mdc-textfield mdc-textfield--multiline mdc-textfield--fullwidth">
-        <%= f.text_area :text, xplaceholder: 'doing that awesome thing', required: true, class: 'mdc-textfield__input', 'aria-controls' => 'deed_text-helptext', rows: 4, cols: 80 %>
+        <%= f.text_area :text, required: true, class: 'mdc-textfield__input', 'aria-controls' => 'deed_text-helptext', rows: 4, cols: 80 %>
         <%= f.label :text, 'For', class: "mdc-textfield__label #{'mdc-textfield__label--float-above' if deed.text}" %>
       </div>
       <p id="deed_text-helptext" class="mdc-textfield-helptext" aria-hidden="true">
@@ -63,7 +63,7 @@
 
     <section class="mdc-card__supporting-text">
       <div class="mdc-textfield">
-        <%= f.text_field :twitter_id, xplaceholder: 'Tweet ID', class: 'mdc-textfield__input', 'aria-controls' => 'deed_twitter_id-helptext' %>
+        <%= f.text_field :twitter_id, class: 'mdc-textfield__input', 'aria-controls' => 'deed_twitter_id-helptext' %>
         <%= f.label :twitter_id, 'Tweet ID', class: "mdc-textfield__label #{'mdc-textfield__label--float-above' if deed.twitter_id}" %>
       </div>
       <p id="deed_twitter_id-helptext" class="mdc-textfield-helptext" aria-hidden="true">

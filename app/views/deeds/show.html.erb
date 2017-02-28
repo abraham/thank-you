@@ -10,7 +10,7 @@
     <section class="mdc-card__supporting-text">
       <p>Make any needed changes before publishing. Deeds can not be updated once published.</p>
     </section>
-    <section class="mdc-card__actions">
+    <section class="mdc-card__actions right">
       <%= link_to 'Edit', edit_deed_path(@deed), class: 'mdc-button mdc-button--compact mdc-card__action' %>
       <%= button_to 'Publish', deed_publish_path(@deed), form: { class: 'deed_publish' }, class: 'mdc-button mdc-button--compact mdc-card__action mdc-button--accent mdc-button--raised' %>
     </section>
