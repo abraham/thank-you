@@ -16,7 +16,8 @@ module SessionsHelper
   end
 
   def sign_in_as(role, status = :active)
-    return sign_out if role == :anonymous
+    sign_out
+    return if role == :anonymous
     user = create(:user, role, status)
     start_sign_in(TwitterHelper::TWITTER_TOKEN, TwitterHelper::TWITTER_SECRET)
     finish_sign_in(TwitterHelper::TWITTER_TOKEN, user.data)

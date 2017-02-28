@@ -15,7 +15,7 @@
             </li>
             <% if current_user.editor? || current_user.moderator? || current_user.admin? %>
               <li class="mdc-list-item" role="menuitem" tabindex="0">
-                <%= link_to 'Create deed', new_deed_path, class: 'mdc-button' %>
+                <%= link_to 'Add deed', new_deed_path, class: 'mdc-button' %>
               </li>
               <li class="mdc-list-item" role="menuitem" tabindex="0">
                 <%= link_to 'My drafts', user_drafts_path(current_user), class: 'mdc-button' %>

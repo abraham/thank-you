@@ -145,20 +145,21 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test '#finish returns to previous location' do
+    token = TwitterHelper::TWITTER_TOKEN
+    secret = TwitterHelper::TWITTER_SECRET
+    twitter_user = Faker::Twitter.user.merge(email: Faker::Internet.safe_email)
+    stub_request_token(token, secret)
+    stub_access_token(twitter_user[:id], twitter_user[:screen_name])
+    stub_verify_credentials(twitter_user)
     deed = create(:deed)
     get new_deed_thank_url(deed)
     assert_redirected_to new_sessions_url
-
     assert_equal new_deed_thank_path(deed), session['next_path']
-
-    get new_sessions_url
-    assert_response :success
-
-    user = sign_in_as :user
-
-    assert_nil session['next_path']
-    assert_equal session['user_id'], user.id
+    post sessions_url
+    get finish_sessions_url params: { oauth_token: token, oauth_verifier: 'verifier' }
     assert_redirected_to new_deed_thank_url(deed)
+    assert_nil session['next_path']
+    assert session['user_id']
   end
 
   test '#destroy should sign out the user' do

@@ -47,25 +47,29 @@ class HeaderTest < ActionDispatch::IntegrationTest
   end
 
   test 'user has suggest deed link' do
-    sign_in_as :user
+    user = sign_in_as :user
     get root_url
     assert_select 'header' do
-      assert_select "a[href=\"#{new_deed_path}\"]", 0
       assert_select 'div.mdc-simple-menu' do
         assert_select 'a[href="https://goo.gl/forms/D8N4bQsz3gl7kbKo2"]', 'Suggest Thank You'
+        assert_select "a[href=\"#{new_deed_path}\"]", 0
+        assert_select "a[href=\"#{drafts_deeds_path}\"]", 0
+        assert_select "a[href=\"#{user_drafts_path(user)}\"]", 0
       end
     end
   end
 
-  test 'editor and up has create deed link' do
-    [:editor, :moderator, :admin].each do |role|
+  test 'editor and up has deed links' do
+    [:editor, :moderator].each do |role|
       user = sign_in_as role
       get root_url
       assert role.to_s, user.role
       assert_select 'header' do
-        assert_select 'a[href="https://goo.gl/forms/D8N4bQsz3gl7kbKo2"]', 0
         assert_select 'div.mdc-simple-menu' do
-          assert_select "a[href=\"#{new_deed_path}\"]", 'Create deed'
+          assert_select 'a[href="https://goo.gl/forms/D8N4bQsz3gl7kbKo2"]', 0
+          assert_select "a[href=\"#{drafts_deeds_path}\"]", 0
+          assert_select "a[href=\"#{new_deed_path}\"]", 'Add deed'
+          assert_select "a[href=\"#{user_drafts_path(user)}\"]", 'My drafts'
         end
       end
     end
@@ -76,30 +80,9 @@ class HeaderTest < ActionDispatch::IntegrationTest
     get root_url
     assert_select 'header' do
       assert_select 'div.mdc-simple-menu' do
+        assert_select "a[href=\"#{new_deed_path}\"]", 'Add deed'
+        assert_select "a[href=\"#{user_drafts_path(user)}\"]", 'My drafts'
         assert_select "a[href=\"#{drafts_deeds_path}\"]", 'All drafts'
-        assert_select "a[href=\"#{user_drafts_path(user)}\"]", 'My drafts'
-      end
-    end
-  end
-
-  test 'editor has draft deeds link' do
-    user = sign_in_as :editor
-    get root_url
-    assert_select 'header' do
-      assert_select 'div.mdc-simple-menu' do
-        assert_select "a[href=\"#{drafts_deeds_path}\"]", 0
-        assert_select "a[href=\"#{user_drafts_path(user)}\"]", 'My drafts'
-      end
-    end
-  end
-
-  test 'user does not have draft deeds link' do
-    user = sign_in_as :user
-    get root_url
-    assert_select 'header' do
-      assert_select 'div.mdc-simple-menu' do
-        assert_select "a[href=\"#{drafts_deeds_path}\"]", 0
-        assert_select "a[href=\"#{user_drafts_path(user)}\"]", 0
       end
     end
   end
