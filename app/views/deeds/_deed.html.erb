@@ -7,8 +7,8 @@
     <p class="">You already thanked <%= deed.display_names %> 👍</p>
   </section>
   <% else %>
-  <section class="mdc-card__actions">
-    <%= link_to "Thank #{deed.display_names}", new_deed_thank_path(deed), class: 'mdc-button mdc-button--compact mdc-button--accent mdc-card__action ellipsis' %>
+  <section class="mdc-card__actions right">
+    <%= link_to "Thank #{deed.display_names}", new_deed_thank_path(deed), class: 'mdc-button mdc-button--compact mdc-button--accent mdc-button--raised mdc-card__action ellipsis' %>
   </section>
   <% end %>
 </div>
