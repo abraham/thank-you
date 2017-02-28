@@ -69,11 +69,23 @@ class HeaderTest < ActionDispatch::IntegrationTest
   end
 
   test 'admin has draft deeds link' do
-    sign_in_as :admin
+    user = sign_in_as :admin
     get root_url
     assert_select 'header' do
       assert_select 'div.mdc-simple-menu' do
-        assert_select "a[href=\"#{drafts_deeds_path}\"]", 'Draft deeds'
+        assert_select "a[href=\"#{drafts_deeds_path}\"]", 'All drafts'
+        assert_select "a[href=\"#{user_drafts_path(user)}\"]", 'My drafts'
+      end
+    end
+  end
+
+  test 'editor has draft deeds link' do
+    user = sign_in_as :editor
+    get root_url
+    assert_select 'header' do
+      assert_select 'div.mdc-simple-menu' do
+        assert_select "a[href=\"#{drafts_deeds_path}\"]", 0
+        assert_select "a[href=\"#{user_drafts_path(user)}\"]", 'My drafts'
       end
     end
   end

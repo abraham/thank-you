@@ -18,7 +18,14 @@
                 <%= link_to 'Create deed', new_deed_path, class: 'mdc-button' %>
               </li>
               <li class="mdc-list-item" role="menuitem" tabindex="0">
-                <%= link_to 'Draft deeds', drafts_deeds_path, class: 'mdc-button' %>
+                <%= link_to 'All drafts', drafts_deeds_path, class: 'mdc-button' %>
+              </li>
+              <li class="mdc-list-item" role="menuitem" tabindex="0">
+                <%= link_to 'My drafts', user_drafts_path(current_user), class: 'mdc-button' %>
+              </li>
+            <% elsif current_user.editor? || current_user.moderator? %>
+              <li class="mdc-list-item" role="menuitem" tabindex="0">
+                <%= link_to 'My drafts', user_drafts_path(current_user), class: 'mdc-button' %>
               </li>
             <% else %>
               <li class="mdc-list-item" role="menuitem" tabindex="0">
