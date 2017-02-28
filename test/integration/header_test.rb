@@ -57,13 +57,16 @@ class HeaderTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'admin has create deed link' do
-    sign_in_as :admin
-    get root_url
-    assert_select 'header' do
-      assert_select 'a[href="https://goo.gl/forms/D8N4bQsz3gl7kbKo2"]', 0
-      assert_select 'div.mdc-simple-menu' do
-        assert_select "a[href=\"#{new_deed_path}\"]", 'Create deed'
+  test 'editor and up has create deed link' do
+    [:editor, :moderator, :admin].each do |role|
+      user = sign_in_as role
+      get root_url
+      assert role.to_s, user.role
+      assert_select 'header' do
+        assert_select 'a[href="https://goo.gl/forms/D8N4bQsz3gl7kbKo2"]', 0
+        assert_select 'div.mdc-simple-menu' do
+          assert_select "a[href=\"#{new_deed_path}\"]", 'Create deed'
+        end
       end
     end
   end
@@ -91,11 +94,12 @@ class HeaderTest < ActionDispatch::IntegrationTest
   end
 
   test 'user does not have draft deeds link' do
-    sign_in_as :user
+    user = sign_in_as :user
     get root_url
     assert_select 'header' do
       assert_select 'div.mdc-simple-menu' do
         assert_select "a[href=\"#{drafts_deeds_path}\"]", 0
+        assert_select "a[href=\"#{user_drafts_path(user)}\"]", 0
       end
     end
   end

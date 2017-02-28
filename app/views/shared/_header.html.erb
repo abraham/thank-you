@@ -13,20 +13,18 @@
             <li class="mdc-list-item" role="menuitem" tabindex="0">
               <%= link_to "Hi @#{current_user.screen_name}", "https://twitter.com/#{current_user.screen_name}", class: 'mdc-button', target: '_blank' %>
             </li>
-            <% if current_user.admin? %>
+            <% if current_user.editor? || current_user.moderator? || current_user.admin? %>
               <li class="mdc-list-item" role="menuitem" tabindex="0">
                 <%= link_to 'Create deed', new_deed_path, class: 'mdc-button' %>
               </li>
               <li class="mdc-list-item" role="menuitem" tabindex="0">
-                <%= link_to 'All drafts', drafts_deeds_path, class: 'mdc-button' %>
-              </li>
-              <li class="mdc-list-item" role="menuitem" tabindex="0">
                 <%= link_to 'My drafts', user_drafts_path(current_user), class: 'mdc-button' %>
               </li>
-            <% elsif current_user.editor? || current_user.moderator? %>
-              <li class="mdc-list-item" role="menuitem" tabindex="0">
-                <%= link_to 'My drafts', user_drafts_path(current_user), class: 'mdc-button' %>
-              </li>
+              <% if current_user.admin? %>
+                <li class="mdc-list-item" role="menuitem" tabindex="0">
+                  <%= link_to 'All drafts', drafts_deeds_path, class: 'mdc-button' %>
+                </li>
+              <% end %>
             <% else %>
               <li class="mdc-list-item" role="menuitem" tabindex="0">
                 <%= link_to 'Suggest Thank You', 'https://goo.gl/forms/D8N4bQsz3gl7kbKo2', class: 'mdc-button', target: '_blank' %>
