@@ -237,7 +237,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test '#edit should hide names without values' do
-    deed = create(:deed, :draft, names: ['one', 'two', 'three'])
+    deed = create(:deed, :draft, names: ['one', 'two'])
     sign_in_as :admin
     get edit_deed_url(deed)
     assert_response :success
@@ -245,9 +245,9 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
       assert_select 'input[type=text]#deed_names_', 4
       assert_select 'input[type=text][value=one]#deed_names_', 1
       assert_select 'input[type=text][value=two]#deed_names_', 1
-      assert_select 'input[type=text][value=three]#deed_names_', 1
+      assert_select 'input[type=text][value]#deed_names_', 2
       assert_select 'section.name.hidden', 1
-      assert_select 'label[for=deed_names].mdc-textfield__label--float-above', 3
+      assert_select 'label[for=deed_names].mdc-textfield__label--float-above', 2
     end
   end
 

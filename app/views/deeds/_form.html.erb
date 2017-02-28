@@ -16,7 +16,7 @@
       </p>
     </section>
 
-    <section class="mdc-card__supporting-text name <%= 'hidden' unless names.size > 1 %>">
+    <section class="mdc-card__supporting-text name <%= 'hidden' unless names.size >= 1 %>">
       <div class="mdc-textfield mdc-textfield--fullwidth">
         <%= text_field_tag 'deed[names][]', names.second, class: 'mdc-textfield__input' %>
         <%= f.label :names, 'Name', class: "mdc-textfield__label #{'mdc-textfield__label--float-above' if names.size > 1}" %>
@@ -26,7 +26,7 @@
       </p>
     </section>
 
-    <section class="mdc-card__supporting-text name <%= 'hidden' unless names.size > 2 %>">
+    <section class="mdc-card__supporting-text name <%= 'hidden' unless names.size >= 2 %>">
       <div class="mdc-textfield mdc-textfield--fullwidth">
         <%= text_field_tag 'deed[names][]', names.third, class: 'mdc-textfield__input' %>
         <%= f.label :names, 'Name', class: "mdc-textfield__label #{'mdc-textfield__label--float-above' if names.size > 2}" %>
@@ -36,7 +36,7 @@
       </p>
     </section>
 
-    <section class="mdc-card__supporting-text name <%= 'hidden' unless names.size > 3 %>">
+    <section class="mdc-card__supporting-text name <%= 'hidden' unless names.size >= 3 %>">
       <div class="mdc-textfield mdc-textfield--fullwidth">
         <%= text_field_tag 'deed[names][]', names.fourth, class: 'mdc-textfield__input' %>
         <%= f.label :names, 'Name', class: "mdc-textfield__label #{'mdc-textfield__label--float-above' if names.size > 3}" %>
