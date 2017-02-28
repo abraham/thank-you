@@ -38,6 +38,12 @@ class ApplicationController < ActionController::Base
     redirect_to root_path, flash: { warning: 'You do not have permission to do that' }
   end
 
+  def require_editor
+    return if current_user && (current_user.editor? || current_user.moderator? || current_user.admin?)
+
+    redirect_to root_path, flash: { warning: 'You do not have permission to do that' }
+  end
+
   def render_not_found
     render :not_found, status: 404
   end

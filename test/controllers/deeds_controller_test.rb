@@ -136,6 +136,13 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_sessions_url
   end
 
+  test '#new redirects users with error' do
+    sign_in_as :user
+    get new_deed_path
+    assert_redirected_to root_path
+    assert_equal 'You do not have permission to do that', flash[:warning]
+  end
+
   test '#create requires authentication' do
     post deeds_path
     assert_redirected_to new_sessions_url
@@ -145,13 +152,6 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     deed = create(:deed)
     post deed_publish_path(deed)
     assert_redirected_to new_sessions_url
-  end
-
-  test '#new redirects users with error' do
-    sign_in_as :user
-    get new_deed_path
-    assert_redirected_to root_path
-    assert_equal 'You do not have permission to do that', flash[:warning]
   end
 
   test '#create redirects users with error' do
