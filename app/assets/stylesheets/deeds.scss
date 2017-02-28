@@ -7,7 +7,7 @@
 
 form.new_deed, form.edit_deed {
   .mdc-card__actions {
-    float: right;
+    justify-content: flex-end;
   }
 
   .hidden {
