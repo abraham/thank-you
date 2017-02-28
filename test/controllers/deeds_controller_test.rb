@@ -96,9 +96,6 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     deed = create(:deed, :draft)
     get deed_path(deed)
     assert_response :success
-    assert_select 'main' do
-      assert_select 'h1', deed.display_text
-    end
   end
 
   test '#show draft deeds have publish button' do
