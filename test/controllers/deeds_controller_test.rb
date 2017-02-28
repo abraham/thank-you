@@ -152,14 +152,31 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'You do not have permission to do that', flash[:warning]
   end
 
-  test '#create requires authentication' do
-    post deeds_path
-    assert_redirected_to new_sessions_url
+  test '#new renders for editors and up' do
+    [:editor, :moderator, :admin].each do |role|
+      user = sign_in_as role
+      get new_deed_path
+      assert_response :success
+      assert role.to_s, user.role
+    end
   end
 
-  test '#publish requires authentication' do
-    deed = create(:deed)
-    post deed_publish_path(deed)
+  test '#new should return form' do
+    sign_in_as :admin
+    get new_deed_path
+    assert_select "form[action=\"#{deeds_path}\"]#new_deed" do
+      assert_select 'input[type=text]#deed_names_', 4
+      assert_select 'button.add-name', 'Add name'
+      assert_select 'textarea#deed_text'
+      assert_select 'input[type=text]#deed_twitter_id'
+      assert_select 'input[type=submit][value="Preview"]'
+      assert_select 'input', 7
+      assert_select 'label', 6
+    end
+  end
+
+  test '#create requires authentication' do
+    post deeds_path
     assert_redirected_to new_sessions_url
   end
 
@@ -170,18 +187,12 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'You do not have permission to do that', flash[:warning]
   end
 
-  test '#new should return form' do
-    sign_in_as :admin
-    get new_deed_path
-    assert_response :success
-    assert_select "form[action=\"#{deeds_path}\"]#new_deed" do
-      assert_select 'input[type=text]#deed_names_', 4
-      assert_select 'button.add-name', 'Add name'
-      assert_select 'textarea#deed_text'
-      assert_select 'input[type=text]#deed_twitter_id'
-      assert_select 'input[type=submit][value="Preview"]'
-      assert_select 'input', 7
-      assert_select 'label', 6
+  test '#create renders for editors and up' do
+    [:editor, :moderator, :admin].each do |role|
+      user = sign_in_as role
+      post deeds_path params: { deed: { text: 'foo' } }
+      assert_response :success
+      assert role.to_s, user.role
     end
   end
 
@@ -283,6 +294,12 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_not_equal deed.twitter_id, twitter_id
     assert_equal deed.twitter_id, deed.tweet.id.to_s
     assert_equal 'Deed updated successfully.', flash[:notice]
+  end
+
+  test '#publish requires authentication' do
+    deed = create(:deed)
+    post deed_publish_path(deed)
+    assert_redirected_to new_sessions_url
   end
 
   test '#publish makes draft deeds go live' do
