@@ -403,6 +403,33 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_select 'h1 a', 'https://example.com/cool/stuff'
   end
 
+  test '#show has add link for own content' do
+    user = sign_in_as :user
+    deed = create(:deed, user: user)
+    get deed_path(deed)
+    assert_select '.links' do
+      assert_select "a[href=\"#{new_deed_link_path(deed)}\"]", 'Add link'
+    end
+  end
+
+  test '#show does not have add link for others content' do
+    sign_in_as :user
+    deed = create(:deed)
+    get deed_path(deed)
+    assert_select '.links' do
+      assert_select "a[href=\"#{new_deed_link_path(deed)}\"]", 0
+    end
+  end
+
+  test '#show has add link for admins' do
+    sign_in_as :admin
+    deed = create(:deed)
+    get deed_path(deed)
+    assert_select '.links' do
+      assert_select "a[href=\"#{new_deed_link_path(deed)}\"]", 'Add link'
+    end
+  end
+
   test '#show escapes evil deed text' do
     deed = create(:deed, text: '<a href="javascript:alert(666)">evil</a> <script>alert(666)</script>')
     get deed_path(deed)

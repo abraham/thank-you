@@ -1,10 +1,10 @@
-<p>
+<p class='links'>
   Citations:
   <% if deed.twitter_id %>
     <%= link_to 'Twitter', "https://twitter.com/#{deed.data['user']['screen_name']}/status/#{deed.twitter_id}", target: '_blank' %>
   <% end %>
   <%= render links %>
-  <% if current_user && current_user.admin? %>
+  <% if current_user && (current_user.edit?(deed) || current_user.admin?) %>
     <span><%= link_to 'Add link', new_deed_link_path(deed) %></span>
   <% end %>
 <p>
