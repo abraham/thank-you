@@ -1,13 +1,14 @@
 require 'test_helper'
 
 class TweetTest < ActionDispatch::IntegrationTest
-  test '#show should not include tweet card' do
+  test 'Deed#show should not include tweet card' do
     deed = create(:deed)
     get deed_url(deed)
     assert_response :success
     assert_select '.tweet', false
     assert_nil deed.twitter_id
     assert_nil deed.data
+    assert_select 'p', count: 0, text: /in reply to.../
   end
 
   test 'Deed#show should include tweet card' do
@@ -16,6 +17,7 @@ class TweetTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert deed.twitter_id
     assert deed.data
+    assert_select 'p', /in reply to.../
     assert_select '.tweet', 1
     assert_select ".tweet-#{deed.twitter_id}" do
       assert_select '.mdc-card__media', 0
@@ -36,7 +38,7 @@ class TweetTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test '#show should include tweet with media' do
+  test 'Deed#show should include tweet with media' do
     deed = create(:deed, :with_photo_tweet)
     get deed_url(deed)
     assert_response :success

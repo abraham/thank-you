@@ -1,17 +1,3 @@
-<div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-  <p>
-    Added by @<%= link_to deed.user.screen_name, "https://twitter.com/#{deed.user.screen_name}", target: '_blank' %>
-  </p>
-</div>
-
-<% if deed.tweet? %>
-  <%= render 'shared/tweet', tweet: deed.tweet %>
-
-  <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-    <p>In reply...</a>
-  </div>
-<% end %>
-
 <div class="mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
   <section class="mdc-card__primary">
     <h1 class="mdc-card__title mdc-card__title--large"><%= raw link_tweet_text(deed.display_text) %></h1>
@@ -26,6 +12,19 @@
   </section>
   <% end %>
 </div>
+
+<div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+  <p>
+    Added by @<%= link_to deed.user.screen_name, "https://twitter.com/#{deed.user.screen_name}", target: '_blank' %>
+    <% if deed.tweet? %>
+      in reply to...
+    <% end %>
+  </p>
+</div>
+
+<% if deed.tweet? %>
+  <%= render 'shared/tweet', tweet: deed.tweet %>
+<% end %>
 
 <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
   <%= render 'links/links', deed: deed, links: deed.links %>
