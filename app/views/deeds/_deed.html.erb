@@ -12,25 +12,20 @@
   </div>
 <% end %>
 
-<% if @thanked %>
-  <div class="mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-    <section class="mdc-card__primary">
-      <h1 class="mdc-card__title mdc-card__title--large"><%= raw link_tweet_text(deed.display_text) %></h1>
-    </section>
-    <section class="mdc-card__supporting-text">
-      <p class="">You already thanked this deed 👍</p>
-    </section>
-  </div>
-<% else %>
-  <div class="mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-    <section class="mdc-card__primary">
-      <h1 class="mdc-card__title mdc-card__title--large"><%= raw link_tweet_text(deed.display_text) %></h1>
-    </section>
-    <section class="mdc-card__actions">
-      <%= link_to "Thank #{deed.display_names}", new_deed_thank_path(deed), class: 'mdc-button mdc-button--compact mdc-button--accent mdc-card__action ellipsis' %>
-    </section>
-  </div>
-<% end %>
+<div class="mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+  <section class="mdc-card__primary">
+    <h1 class="mdc-card__title mdc-card__title--large"><%= raw link_tweet_text(deed.display_text) %></h1>
+  </section>
+  <% if @thanked %>
+  <section class="mdc-card__supporting-text">
+    <p class="">You already thanked <%= deed.display_names %> 👍</p>
+  </section>
+  <% else %>
+  <section class="mdc-card__actions">
+    <%= link_to "Thank #{deed.display_names}", new_deed_thank_path(deed), class: 'mdc-button mdc-button--compact mdc-button--accent mdc-card__action ellipsis' %>
+  </section>
+  <% end %>
+</div>
 
 <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
   <%= render 'links/links', deed: deed, links: deed.links %>

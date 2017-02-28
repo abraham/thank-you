@@ -81,6 +81,18 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
       assert_select 'h1', 1
       assert_select 'p', 'Citations:'
       assert_select 'p', "Added by @#{deed.user.screen_name}"
+      assert_select "a[href=\"#{new_deed_thank_path(deed)}\"]", "Thank @#{deed.names.first}"
+    end
+  end
+
+  test '#show if user thanked' do
+    user = sign_in_as :user
+    deed = create(:deed)
+    create(:thank, user: user, deed: deed)
+    get deed_path(deed)
+    assert_response :success
+    assert_select 'main' do
+      assert_select 'p', "You already thanked #{deed.display_names} 👍"
     end
   end
 
