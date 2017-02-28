@@ -1,10 +1,11 @@
 class LinksController < ApplicationController
   before_action :require_signin
-  before_action :require_admin
-  before_action :find_deed, only: [:create, :new]
+  before_action :find_deed
+  before_action :require_edit_access
 
   def create
-    @link = current_user.links.new(links_params.merge(deed: @deed))
+    @link = current_user.links.new(links_params)
+    @link.deed = @deed
 
     if @link.save
       redirect_to @deed, flash: { notice: 'Link was successfully created.' }
@@ -25,5 +26,15 @@ class LinksController < ApplicationController
 
   def find_deed
     @deed = Deed.find(params[:deed_id])
+  end
+
+  def user_can_modify_deed?
+    current_user && current_user.edit?(@deed)
+  end
+
+  def require_edit_access
+    return if user_can_modify_deed?
+
+    redirect_to deed_path(@deed), flash: { warning: 'You do not have permission to do that' }
   end
 end

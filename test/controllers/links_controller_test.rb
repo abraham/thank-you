@@ -22,7 +22,7 @@ class LinksControllerTest < ActionDispatch::IntegrationTest
   test '#new requires admin' do
     sign_in_as :user
     get new_deed_link_url(@deed)
-    assert_redirected_to root_url
+    assert_redirected_to deed_url(@deed)
     assert_equal 'You do not have permission to do that', flash[:warning]
   end
 
@@ -46,7 +46,7 @@ class LinksControllerTest < ActionDispatch::IntegrationTest
   test '#create requires admin' do
     sign_in_as :user
     post deed_links_url(@deed)
-    assert_redirected_to root_url
+    assert_redirected_to deed_url(@deed)
     assert_equal 'You do not have permission to do that', flash[:warning]
   end
 

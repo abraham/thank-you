@@ -62,7 +62,7 @@ class DeedsController < ApplicationController
   end
 
   def user_can_modify_deed?
-    current_user && (current_user.admin? || current_user == @deed.user)
+    current_user && current_user.edit?(@deed)
   end
 
   def deeds_params
