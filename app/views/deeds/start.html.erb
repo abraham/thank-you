@@ -1,7 +1,7 @@
 <%= render 'shared/model_flash', item: @deed, name: 'Deed' %>
 
 <div class="mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
-  <%= form_for :deed, url: etl_deeds_path, html: { class: 'start_deed' } do |f| %>
+  <%= form_for :deed, url: etl_deeds_path, html: { class: 'start_deed', autocomplete: 'off' } do |f| %>
     <section class="mdc-card__supporting-text">
       <div class="mdc-textfield mdc-textfield--fullwidth">
         <%= f.text_field :twitter_id, class: 'mdc-textfield__input', 'aria-controls' => 'deed_twitter_id-helptext' %>
