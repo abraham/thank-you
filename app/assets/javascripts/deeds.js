@@ -8,7 +8,7 @@ document.addEventListener('turbolinks:load', function() {
     return;
   }
 
-  document.querySelectorAll('form#new_deed .mdc-textfield').forEach(function(textfield) {
+  deedForm.querySelectorAll('.mdc-textfield').forEach(function(textfield) {
     mdc.textfield.MDCTextfield.attachTo(textfield);
   });
 
