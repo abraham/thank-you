@@ -1,9 +1,9 @@
 FactoryGirl.define do
   factory :thank do
-    user_name = Faker::Internet.user_name(nil, ['_'])
+    screen_name = Faker::Twitter.screen_name
     data { Faker::Twitter.status }
     twitter_id { data[:id] }
-    text { "Thank you @#{user_name} for #{Faker::Hipster.word}" }
+    text { "Thank you @#{screen_name} for #{Faker::Hipster.word}" }
     user
     deed
   end

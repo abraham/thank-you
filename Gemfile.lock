@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/abraham/faker.git
-  revision: 5785cd76ea0226deeefa407d29437647f4a9edb0
+  revision: efaf2b05ecb8c40fd9c541ba8b3a1f9119a63263
   branch: twitter
   specs:
     faker (1.7.3)
@@ -101,7 +101,7 @@ GEM
       domain_name (~> 0.5)
     http-form_data (1.0.1)
     http_parser.rb (0.6.0)
-    i18n (0.8.0)
+    i18n (0.8.1)
     jbuilder (2.6.1)
       activesupport (>= 3.0.0, < 5.1)
       multi_json (~> 1.2)

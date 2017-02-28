@@ -11,7 +11,7 @@ class DeedTest < ActiveSupport::TestCase
 
   test 'should save with text' do
     deed = Deed.new(text: Faker::Hipster.sentence,
-                    names: [Faker::Internet.user_name(nil, ['_'])],
+                    names: [Faker::Twitter.screen_name],
                     user: create(:user))
     assert deed.save
     assert deed.published!
@@ -19,10 +19,10 @@ class DeedTest < ActiveSupport::TestCase
 
   test 'should save with four names' do
     names = [
-      Faker::Internet.user_name(nil, ['_']),
-      Faker::Internet.user_name(nil, ['_']),
-      Faker::Internet.user_name(nil, ['_']),
-      Faker::Internet.user_name(nil, ['_'])
+      Faker::Twitter.screen_name,
+      Faker::Twitter.screen_name,
+      Faker::Twitter.screen_name,
+      Faker::Twitter.screen_name
     ]
     deed = Deed.new(text: Faker::Hipster.sentence,
                     names: names,
@@ -32,11 +32,11 @@ class DeedTest < ActiveSupport::TestCase
 
   test 'should not save with more than four names' do
     names = [
-      Faker::Internet.user_name(nil, ['_']),
-      Faker::Internet.user_name(nil, ['_']),
-      Faker::Internet.user_name(nil, ['_']),
-      Faker::Internet.user_name(nil, ['_']),
-      Faker::Internet.user_name(nil, ['_'])
+      Faker::Twitter.screen_name,
+      Faker::Twitter.screen_name,
+      Faker::Twitter.screen_name,
+      Faker::Twitter.screen_name,
+      Faker::Twitter.screen_name
     ]
     deed = Deed.new(text: Faker::Hipster.sentence,
                     names: names,
@@ -111,8 +111,8 @@ class DeedTest < ActiveSupport::TestCase
   test '#display_text' do
     deed = create(:deed)
     assert_equal "Thank You @#{deed.names.first} for #{deed.text}", deed.display_text
-    deed.names << Faker::Internet.user_name(nil, ['_'])
-    deed.names << Faker::Internet.user_name(nil, ['_'])
+    deed.names << Faker::Twitter.screen_name
+    deed.names << Faker::Twitter.screen_name
     text = "Thank You @#{deed.names.first}, @#{deed.names.second}, and @#{deed.names.third} for #{deed.text}"
     assert_equal text, deed.display_text
   end
@@ -120,8 +120,8 @@ class DeedTest < ActiveSupport::TestCase
   test '#display_names' do
     deed = create(:deed)
     assert_equal "@#{deed.names.first}", deed.display_names
-    deed.names << Faker::Internet.user_name(nil, ['_'])
-    deed.names << Faker::Internet.user_name(nil, ['_'])
+    deed.names << Faker::Twitter.screen_name
+    deed.names << Faker::Twitter.screen_name
     assert_equal "@#{deed.names.first}, @#{deed.names.second}, and @#{deed.names.third}", deed.display_names
   end
 
