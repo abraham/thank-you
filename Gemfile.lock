@@ -8,7 +8,7 @@ GIT
 
 GIT
   remote: https://github.com/rails/webpacker.git
-  revision: b602f8ae664c1be839b0534d5fce200aa9378619
+  revision: 9ef79dd9d1a5ab0a2e9ada35b471a81bbe1ab132
   specs:
     webpacker (1.0)
       activesupport (>= 4.2)
@@ -62,7 +62,7 @@ GEM
     brakeman (3.5.0)
     buftok (0.2.0)
     builder (3.2.3)
-    bullet (5.5.0)
+    bullet (5.5.1)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.10.0)
     byebug (9.0.6)
@@ -157,7 +157,7 @@ GEM
       nokogiri (~> 1.6)
     rails-html-sanitizer (1.0.3)
       loofah (~> 2.0)
-    rails_best_practices (1.17.0)
+    rails_best_practices (1.18.0)
       activesupport
       code_analyzer (>= 0.4.3)
       erubis
