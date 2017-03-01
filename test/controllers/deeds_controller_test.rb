@@ -86,14 +86,38 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test '#show renders thanks' do
+    deed = create(:deed)
+    thanks = [
+      create(:thank, deed: deed),
+      create(:thank, deed: deed),
+      create(:thank, deed: deed)
+    ]
+    get deed_path(deed)
+    assert_response :success
+    assert_select 'main' do
+      thanks.each do |thank|
+        a = "a[href=\"https://twitter.com/#{thank.user.screen_name}/status/#{thank.twitter_id}\"]"
+        img = "img[src=\"#{thank.user.avatar_url}\"]"
+        assert_select "#{a} #{img}", 1
+      end
+      assert_select 'span', 'Thanked by'
+    end
+  end
+
   test '#show if user thanked' do
     user = sign_in_as :user
     deed = create(:deed)
-    create(:thank, user: user, deed: deed)
+    thank = create(:thank, user: user, deed: deed)
+    create(:thank, deed: deed)
     get deed_path(deed)
     assert_response :success
     assert_select 'main' do
       assert_select 'p', "You already thanked #{deed.display_names} 👍"
+      assert_select 'span', 'Thanked by you and 1 other'
+      a = "a[href=\"https://twitter.com/#{user.screen_name}/status/#{thank.twitter_id}\"]"
+      img = "img[src=\"#{user.avatar_url}\"]"
+      assert_select "#{a} #{img}", 1
     end
   end
 

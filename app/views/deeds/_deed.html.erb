@@ -32,15 +32,17 @@
 
 <div class="mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
   <section class="mdc-card__primary">
-    <% if deed.thanks_count == 0 %>
-      You can be the first to thank <%= deed.display_names %>
-    <% else %>
-      <% if @thanked %>
-        <span class="mdc-card__title">Thanked by you and <%= pluralize(deed.thanks_count - 1, 'other') %></span>
+    <span class="mdc-card__title">
+      <% if deed.thanks_count == 0 %>
+        You can be the first to thank <%= deed.display_names %>
       <% else %>
-        <span class="mdc-card__title">Thanked by</span>
+        <% if @thanked %>
+          Thanked by you and <%= pluralize(deed.thanks_count - 1, 'other') %>
+        <% else %>
+          Thanked by
+        <% end %>
       <% end %>
-    <% end %>
+    </span>
   </section>
   <section class="mdc-card__supporting-text">
     <%= render 'thanks/thanks', thanks: deed.thanks, more: deed.thanks_count - 10 %>
