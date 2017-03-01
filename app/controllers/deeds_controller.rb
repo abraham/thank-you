@@ -20,6 +20,11 @@ class DeedsController < ApplicationController
     @thanked_deed_ids = Thank.where(deed: @deeds).where(user: current_user).pluck(:deed_id)
   end
 
+  def popular
+    @deeds = Deed.published.reorder(thanks_count: :desc).includes(thanks: :user).limit(25)
+    @thanked_deed_ids = Thank.where(deed: @deeds).where(user: current_user).pluck(:deed_id)
+  end
+
   def drafts
     @deeds = Deed.draft.includes(thanks: :user).limit(25)
     @thanked_deed_ids = Thank.where(deed: @deeds).where(user: current_user).pluck(:deed_id)

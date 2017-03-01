@@ -10,6 +10,7 @@ Rails.application.routes.draw do
 
   resources :deeds, only: [:new, :create, :show, :edit, :index, :update] do
     root to: redirect('/')
+    get :popular, on: :collection
     get :drafts, on: :collection
     get :start, on: :collection
     post :etl, on: :collection
