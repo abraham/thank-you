@@ -17,7 +17,7 @@ class TweetTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert deed.twitter_id
     assert deed.data
-    assert_select 'p', /in reply to.../
+    assert_select 'section', /in reply to.../
     assert_select '.tweet', 1
     assert_select ".tweet-#{deed.twitter_id}" do
       assert_select '.mdc-card__media', 0
