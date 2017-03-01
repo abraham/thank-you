@@ -7,5 +7,5 @@ test:
   sign_in_enabled: true
 
 production:
-  posting_to_twitter_enabled: <%= ENV['POSTING_TO_TWITTER_ENABLED'] %>
-  sign_in_enabled: <%= ENV['SIGN_IN_ENABLED'] %>
+  posting_to_twitter_enabled: <%= ENV['APP_POSTING_TO_TWITTER_ENABLED'] %>
+  sign_in_enabled: <%= ENV['APP_SIGN_IN_ENABLED'] %>
