@@ -6,7 +6,7 @@
 
   <%= form_for [@deed, @link] do |f| %>
     <section class="mdc-card__supporting-text">
-      <div class="mdc-textfield">
+      <div class="mdc-textfield mdc-textfield--fullwidth">
         <%= f.text_field :text, class: 'mdc-textfield__input', 'aria-controls' => 'link_text-helptext', required: true %>
         <%= f.label :text, 'Title', class: "mdc-textfield__label #{'mdc-textfield__label--float-above' if @link.text}" %>
       </div>
@@ -16,7 +16,7 @@
     </section>
 
     <section class="mdc-card__supporting-text">
-      <div class="mdc-textfield">
+      <div class="mdc-textfield mdc-textfield--fullwidth">
         <%= f.text_field :url, class: 'mdc-textfield__input', 'aria-controls' => 'link_text-helptext', required: true, type: :url %>
         <%= f.label :url, 'URL', class: "mdc-textfield__label #{'mdc-textfield__label--float-above' if @link.text}" %>
       </div>
