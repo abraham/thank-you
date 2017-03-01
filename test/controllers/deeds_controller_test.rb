@@ -82,6 +82,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
       assert_select 'p', 'Citations:'
       assert_select 'p', "Added by @#{deed.user.screen_name}"
       assert_select "a[href=\"#{new_deed_thank_path(deed)}\"]", "Thank @#{deed.names.first}"
+      assert_select 'section', "You can be the first to thank #{deed.display_names}"
     end
   end
 
