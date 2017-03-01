@@ -608,7 +608,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     deed = create(:deed, text: '<a href="javascript:alert(666)">evil</a> <script>alert(666)</script>')
     get deed_path(deed)
     assert_response :success
-    assert_select 'h1', "Thank You #{deed.display_names} for evil alert(666)"
+    assert_select 'h1', "#{deed.display_names} is evil alert(666)"
     assert_select 'h1 a[href]', 1
     assert_select "h1 a[href=\"https://twitter.com/#{deed.names.first}\"]", 1
     assert_select 'h1 script', 0

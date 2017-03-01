@@ -108,12 +108,21 @@ class DeedTest < ActiveSupport::TestCase
     assert_nil deed.data
   end
 
-  test '#display_text' do
+  test '#thank_text' do
     deed = create(:deed)
-    assert_equal "Thank You @#{deed.names.first} for #{deed.text}", deed.display_text
+    assert_equal "Thank You @#{deed.names.first} for #{deed.text}", deed.thank_text
     deed.names << Faker::Twitter.screen_name
     deed.names << Faker::Twitter.screen_name
     text = "Thank You @#{deed.names.first}, @#{deed.names.second}, and @#{deed.names.third} for #{deed.text}"
+    assert_equal text, deed.thank_text
+  end
+
+  test '#display_text' do
+    deed = create(:deed)
+    assert_equal "@#{deed.names.first} is #{deed.text}", deed.display_text
+    deed.names << Faker::Twitter.screen_name
+    deed.names << Faker::Twitter.screen_name
+    text = "@#{deed.names.first}, @#{deed.names.second}, and @#{deed.names.third} are #{deed.text}"
     assert_equal text, deed.display_text
   end
 

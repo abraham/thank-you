@@ -18,7 +18,7 @@ class ThanksController < ApplicationController
   end
 
   def new
-    @thank = @deed.thanks.new(text: @deed.display_text)
+    @thank = @deed.thanks.new(text: @deed.thank_text)
   end
 
   private

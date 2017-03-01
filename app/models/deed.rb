@@ -17,8 +17,12 @@ class Deed < ApplicationRecord
 
   default_scope { order(created_at: :desc) }
 
-  def display_text
+  def thank_text
     "Thank You #{display_names} for #{text}"
+  end
+
+  def display_text
+    "#{display_names} #{names.size == 1 ? 'is' : 'are'} #{text}"
   end
 
   def display_names

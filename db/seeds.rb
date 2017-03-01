@@ -69,7 +69,7 @@ thanks = deeds.map do |deed|
     next if user.thanked?(deed)
     status = Faker::Twitter.status
     thank = Thank.create(deed: deed,
-                         text: deed.display_text,
+                         text: deed.thank_text,
                          data: status,
                          twitter_id: status[:id],
                          user: user)
