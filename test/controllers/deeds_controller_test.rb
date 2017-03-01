@@ -121,6 +121,16 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test '#show renders social links' do
+    deed = create(:deed)
+    get deed_path(deed)
+    assert_select 'main' do
+      assert_select 'a', href: "https://plus.google.com/share?url=#{deed_url(deed)}", text: 'Google+'
+      assert_select 'a', href: "https://www.facebook.com/sharer/sharer.php?u=#{deed_url(deed)}", text: 'Facebook'
+      assert_select 'a', href: "https://www.linkedin.com/shareArticle?url=#{deed_url(deed)}", text: 'LinkedIn'
+    end
+  end
+
   test '#show does not render draft deeds' do
     deed = create(:deed, :draft)
     get deed_path(deed)
