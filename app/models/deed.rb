@@ -15,7 +15,7 @@ class Deed < ApplicationRecord
   before_validation :clean_names
   before_validation :etl
 
-  default_scope { order(created_at: :desc) }
+  scope :newest, -> { order(created_at: :desc) }
 
   def thank_text
     "Thank You #{display_names} for #{text}"

@@ -55,6 +55,55 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test '#index should get most recent deeds' do
+    deed = create(:deed, created_at: 1.day.ago)
+    create_list(:deed, 10)
+    get root_path
+    assert_response :success
+    assert_select '.content' do
+      assert_select '.mdc-card', 10
+      assert_select 'h2 a', 10
+      assert_select "h2 a[href=\"#{deed_path(deed)}\"]", 0
+    end
+  end
+
+  test '#index should not results text' do
+
+  end
+
+  test '#index should show older button' do
+    deeds = create_list(:deed, 10)
+    get root_path
+    assert_response :success
+    assert_select '.content' do
+      assert_select '.pagination a', href: root_path(before: deeds.last.created_at), text: 'Older'
+      assert_select '.pagination a', count: 0, text: 'Newer'
+    end
+  end
+
+  test '#index should show page 1 newer and older button' do
+    newer_deeds = create_list(:deed, 10)
+    older_deeds = create_list(:deed, 10, created_at: 1.day.ago)
+    get root_path(before: newer_deeds.last.created_at)
+    assert_response :success
+    assert_select '.content' do
+      assert_select '.pagination a', href: root_path, text: 'Newer'
+      assert_select '.pagination a', href: root_path(before: older_deeds.last.created_at), text: 'Older'
+    end
+  end
+
+  test '#index should show newer button' do
+    newer_deeds = create_list(:deed, 10)
+    middle_deeds = create_list(:deed, 10, created_at: 1.day.ago)
+    create_list(:deed, 5, created_at: 2.days.ago)
+    get root_path(before: middle_deeds.last.created_at)
+    assert_response :success
+    assert_select '.content' do
+      assert_select '.pagination a', href: root_path(before: newer_deeds.last.created_at), text: 'Newer'
+      assert_select '.pagination a', count: 0, text: 'Older'
+    end
+  end
+
   test '#index should show if thanked text' do
     user = sign_in_as :user
     deeds = [create(:deed), create(:deed), create(:deed)]
@@ -86,8 +135,8 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     get popular_deeds_path
     assert_response :success
     assert_select '.content' do
-      assert_select '.mdc-card', 25
-      assert_select 'h2 a', 25
+      assert_select '.mdc-card', 10
+      assert_select 'h2 a', 10
       assert_select "h2 a[href=\"#{deed_path(deeds.first)}\"]", deeds.first.display_text
       assert_select "h2 a[href=\"#{deed_path(deeds.second)}\"]", deeds.second.display_text
     end

@@ -5,6 +5,8 @@ class DeedsController < ApplicationController
   before_action :require_edit_access, only: [:edit, :update, :publish]
   before_action :require_editor, only: [:start, :etl, :new, :create]
 
+  PAGE_COUNT = 10
+
   def create
     @deed = current_user.deeds.create(deeds_params)
 
@@ -16,17 +18,27 @@ class DeedsController < ApplicationController
   end
 
   def index
-    @deeds = Deed.published.includes(thanks: :user).limit(25)
+    @next = true if params[:before] && !params[:after]
+    @before = Time.parse(params[:before]) if params[:before]
+    @after = Time.parse(params[:after]) if params[:after]
+
+    @deeds = Deed.newest.published.where(Deed.arel_table[:created_at].lt(@before || Time.now.utc))
+                 .limit(PAGE_COUNT)
+                 .includes(thanks: :user)
     @thanked_deed_ids = Thank.where(deed: @deeds).where(user: current_user).pluck(:deed_id)
+
+    @next_before = @after
+    @prev_before = @deeds.last.created_at if @deeds.size >= PAGE_COUNT
+    @prev_after = @before
   end
 
   def popular
-    @deeds = Deed.published.reorder(thanks_count: :desc).includes(thanks: :user).limit(25)
+    @deeds = Deed.published.order(thanks_count: :desc).includes(thanks: :user).limit(PAGE_COUNT)
     @thanked_deed_ids = Thank.where(deed: @deeds).where(user: current_user).pluck(:deed_id)
   end
 
   def drafts
-    @deeds = Deed.draft.includes(thanks: :user).limit(25)
+    @deeds = Deed.draft.includes(thanks: :user).limit(PAGE_COUNT)
     @thanked_deed_ids = Thank.where(deed: @deeds).where(user: current_user).pluck(:deed_id)
   end
 
