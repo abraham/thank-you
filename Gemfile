@@ -18,8 +18,8 @@ gem 'sentry-raven'
 gem 'turbolinks', '~> 5'
 gem 'twitter-text', '~> 1'
 gem 'twitter', '~> 6'
-gem 'uglifier', '>= 1.3.0'
-gem 'webpacker', github: 'rails/webpacker'
+gem 'uglifier', '~> 3'
+gem 'webpacker', '~> 1'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
