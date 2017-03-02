@@ -17,6 +17,26 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_routing({ path: 'deeds/123', method: :get }, controller: 'deeds', action: 'show', id: '123')
   end
 
+  test 'GET /deeds/popular' do
+    assert_routing({ path: 'deeds/popular', method: :get }, controller: 'deeds', action: 'popular')
+  end
+
+  test 'GET /deeds/drafts' do
+    assert_routing({ path: 'deeds/drafts', method: :get }, controller: 'deeds', action: 'drafts')
+  end
+
+  test 'GET /deeds/start' do
+    assert_routing({ path: 'deeds/start', method: :get }, controller: 'deeds', action: 'start')
+  end
+
+  test 'POST /deeds/etl' do
+    assert_routing({ path: 'deeds/etl', method: :post }, controller: 'deeds', action: 'etl')
+  end
+
+  test 'POST /deeds/:id/publish' do
+    assert_routing({ path: 'deeds/123/publish', method: :post }, controller: 'deeds', action: 'publish', deed_id: '123')
+  end
+
   test '#index redirects to root' do
     get deeds_path
     assert_redirected_to root_path
