@@ -38,7 +38,7 @@ class DeedsController < ApplicationController
   end
 
   def drafts
-    @deeds = Deed.draft.includes(thanks: :user).limit(PAGE_COUNT)
+    @deeds = Deed.newest.draft.includes(thanks: :user).limit(PAGE_COUNT)
     @thanked_deed_ids = Thank.where(deed: @deeds).where(user: current_user).pluck(:deed_id)
   end
 
