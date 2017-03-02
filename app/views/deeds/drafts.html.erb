@@ -1,1 +1,1 @@
-<%= render partial: 'slim_deed', collection: @deeds, as: :deed %>
+<%= render(partial: 'slim_deed', collection: @deeds, as: :deed) || render('shared/empty_list') %>

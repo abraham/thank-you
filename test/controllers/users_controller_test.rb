@@ -23,6 +23,15 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test '#drafts should show no results text' do
+    user = sign_in_as :editor
+    get user_drafts_url(user)
+    assert_response :success
+    assert_select '.content' do
+      assert_select 'div', 'No content found.'
+    end
+  end
+
   test '#drafts is not available to users' do
     user = sign_in_as :user
     get user_drafts_url(user)

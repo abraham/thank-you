@@ -67,8 +67,12 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test '#index should not results text' do
-
+  test '#index should show no results text' do
+    get root_path
+    assert_response :success
+    assert_select '.content' do
+      assert_select 'div', 'No content found.'
+    end
   end
 
   test '#index should show older button' do
@@ -152,6 +156,14 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test '#popular should show no results text' do
+    get popular_deeds_path
+    assert_response :success
+    assert_select '.content' do
+      assert_select 'div', 'No content found.'
+    end
+  end
+
   test '#drafts requires admin' do
     [:user, :editor, :moderator].each do |role|
       sign_in_as role
@@ -171,6 +183,15 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
       assert_select "h2 a[href=\"#{deed_path(deeds.first)}\"]", deeds.first.display_text
       assert_select "h2 a[href=\"#{deed_path(deeds.second)}\"]", 0
       assert_select "h2 a[href=\"#{deed_path(deeds.third)}\"]", deeds.third.display_text
+    end
+  end
+
+  test '#drafts should show no results text' do
+    sign_in_as :admin
+    get drafts_deeds_path
+    assert_response :success
+    assert_select '.content' do
+      assert_select 'div', 'No content found.'
     end
   end
 
