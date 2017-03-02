@@ -21,7 +21,4 @@ header {
   .mdc-toolbar__title a {
     @include mdc-theme-prop(color, text-primary-on-primary);
   }
-  .mdc-simple-menu {
-    margin-top: 100px;
-  }
 }
