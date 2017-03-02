@@ -2,12 +2,12 @@
   <section class="mdc-card__actions">
     <div>
       <% if @next_before || @next %>
-        <%= link_to 'Newer', root_path(after: @next_after, before: @next_before), class: 'mdc-button mdc-button--compact mdc-card__action' %>
+        <%= link_to 'Newer', root_path(after: @next_after, before: @next_before), rel: :next, class: 'mdc-button mdc-button--compact mdc-card__action' %>
       <% end %>
     </div>
     <div class="right">
       <% if @prev_before %>
-        <%= link_to 'Older', root_path(after: @prev_after, before: @prev_before), class: 'mdc-button mdc-button--compact mdc-card__action' %>
+        <%= link_to 'Older', root_path(after: @prev_after, before: @prev_before), rel: :prev, class: 'mdc-button mdc-button--compact mdc-card__action' %>
       <% end %>
     </div>
   </section>
