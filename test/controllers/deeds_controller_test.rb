@@ -80,8 +80,8 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     get root_path
     assert_response :success
     assert_select '.content' do
-      assert_select '.pagination a', href: root_path(before: deeds.last.created_at), text: 'Older'
       assert_select '.pagination a', count: 0, text: 'Newer'
+      assert_select '.pagination a[rel=prev]', href: root_path(before: deeds.last.created_at), text: 'Older'
     end
   end
 
@@ -91,8 +91,8 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     get root_path(before: newer_deeds.last.created_at)
     assert_response :success
     assert_select '.content' do
-      assert_select '.pagination a', href: root_path, text: 'Newer'
-      assert_select '.pagination a', href: root_path(before: older_deeds.last.created_at), text: 'Older'
+      assert_select '.pagination a[rel=next]', href: root_path, text: 'Newer'
+      assert_select '.pagination a[rel=prev]', href: root_path(before: older_deeds.last.created_at), text: 'Older'
     end
   end
 
@@ -103,7 +103,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     get root_path(before: middle_deeds.last.created_at)
     assert_response :success
     assert_select '.content' do
-      assert_select '.pagination a', href: root_path(before: newer_deeds.last.created_at), text: 'Newer'
+      assert_select '.pagination a[rel=next]', href: root_path(before: newer_deeds.last.created_at), text: 'Newer'
       assert_select '.pagination a', count: 0, text: 'Older'
     end
   end
