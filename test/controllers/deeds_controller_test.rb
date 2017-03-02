@@ -55,6 +55,21 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test '#index should show if thanked text' do
+    user = sign_in_as :user
+    deeds = [create(:deed), create(:deed), create(:deed)]
+    thank = user.thanks.new(deed: deeds[1], text: deeds[1].text, url: deed_url(deeds[1]))
+    status = "#{deeds[1].text} #{deed_url(deeds[1])}"
+    stub_statuses_update(Faker::Twitter.status, status, in_reply_to_status_id: nil)
+    thank.tweet
+    thank.save
+    get root_path
+    assert_response :success
+    assert_select "a[href=\"#{new_deed_thank_path(deeds[0])}\"]", "Thank @#{deeds[0].names.first}"
+    assert_select "a[href=\"#{deed_path(deeds[1])}\"]", 'Already thanked'
+    assert_select "a[href=\"#{new_deed_thank_path(deeds[2])}\"]", "Thank @#{deeds[2].names.first}"
+  end
+
   test '#drafts requires admin' do
     [:user, :editor, :moderator].each do |role|
       sign_in_as role
@@ -75,21 +90,6 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
       assert_select "h2 a[href=\"#{deed_path(deeds.second)}\"]", 0
       assert_select "h2 a[href=\"#{deed_path(deeds.third)}\"]", deeds.third.display_text
     end
-  end
-
-  test '#index should show if thanked text' do
-    user = sign_in_as :user
-    deeds = [create(:deed), create(:deed), create(:deed)]
-    thank = user.thanks.new(deed: deeds[1], text: deeds[1].text, url: deed_url(deeds[1]))
-    status = "#{deeds[1].text} #{deed_url(deeds[1])}"
-    stub_statuses_update(Faker::Twitter.status, status, in_reply_to_status_id: nil)
-    thank.tweet
-    thank.save
-    get root_path
-    assert_response :success
-    assert_select "a[href=\"#{new_deed_thank_path(deeds[0])}\"]", "Thank @#{deeds[0].names.first}"
-    assert_select "a[href=\"#{deed_path(deeds[1])}\"]", 'Already thanked'
-    assert_select "a[href=\"#{new_deed_thank_path(deeds[2])}\"]", "Thank @#{deeds[2].names.first}"
   end
 
   test '#show renders deed' do
