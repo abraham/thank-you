@@ -70,6 +70,19 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_select "a[href=\"#{new_deed_thank_path(deeds[2])}\"]", "Thank @#{deeds[2].names.first}"
   end
 
+  test '#popular should get popular deeds' do
+    deeds = [create(:deed, :popular), create(:deed, :popular)]
+    create_list(:deed, 25)
+    get popular_deeds_path
+    assert_response :success
+    assert_select '.content' do
+      assert_select '.mdc-card', 25
+      assert_select 'h2 a', 25
+      assert_select "h2 a[href=\"#{deed_path(deeds.first)}\"]", deeds.first.display_text
+      assert_select "h2 a[href=\"#{deed_path(deeds.second)}\"]", deeds.second.display_text
+    end
+  end
+
   test '#drafts requires admin' do
     [:user, :editor, :moderator].each do |role|
       sign_in_as role

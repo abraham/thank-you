@@ -1,6 +1,6 @@
 class DeedsController < ApplicationController
   before_action :find_deed, only: [:show, :edit, :update, :publish]
-  before_action :require_signin, except: [:index, :show]
+  before_action :require_signin, except: [:index, :popular, :show]
   before_action :require_admin, only: [:drafts]
   before_action :require_edit_access, only: [:edit, :update, :publish]
   before_action :require_editor, only: [:start, :etl, :new, :create]

@@ -5,6 +5,10 @@ FactoryGirl.define do
     names { [Faker::Twitter.screen_name] }
     user
 
+    transient do
+      thanks_count 0
+    end
+
     trait :draft do
       status :draft
     end
@@ -19,6 +23,16 @@ FactoryGirl.define do
       data { Faker::Twitter.status(include_photo: true) }
       twitter_id { data[:id] }
       names { [data[:user][:screen_name]] }
+    end
+
+    trait :popular do
+      transient do
+        thanks_count 5
+      end
+    end
+
+    after(:create) do |deed, evaluator|
+      create_list(:thank, evaluator.thanks_count, deed: deed)
     end
   end
 end
