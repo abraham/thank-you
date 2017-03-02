@@ -70,6 +70,16 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_select "a[href=\"#{new_deed_thank_path(deeds[2])}\"]", "Thank @#{deeds[2].names.first}"
   end
 
+  test '#index should have sort button' do
+    get root_path
+    assert_response :success
+    assert_select '.content' do
+      assert_select 'button', 'sort Sort by'
+      assert_select "a[href=\"#{root_path}\"].mdc-button--accent", 'Most recent'
+      assert_select "a[href=\"#{popular_deeds_path}\"]:not(.mdc-button--accent)", 'Most popular'
+    end
+  end
+
   test '#popular should get popular deeds' do
     deeds = [create(:deed, :popular), create(:deed, :popular)]
     create_list(:deed, 25)
@@ -80,6 +90,16 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
       assert_select 'h2 a', 25
       assert_select "h2 a[href=\"#{deed_path(deeds.first)}\"]", deeds.first.display_text
       assert_select "h2 a[href=\"#{deed_path(deeds.second)}\"]", deeds.second.display_text
+    end
+  end
+
+  test '#popular should have sort button' do
+    get popular_deeds_path
+    assert_response :success
+    assert_select '.content' do
+      assert_select 'button', 'sort Sort by'
+      assert_select "a[href=\"#{root_path}\"]:not(.mdc-button--accent)", 'Most recent'
+      assert_select "a[href=\"#{popular_deeds_path}\"].mdc-button--accent", 'Most popular'
     end
   end
 

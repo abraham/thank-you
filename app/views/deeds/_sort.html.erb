@@ -1,0 +1,15 @@
+<div class="sort mdc-layout-grid__cell mdc-layout-grid__cell--span-12 mdc-menu-anchor">
+  <div class='right'>
+    <button class="mdc-button menu"><i class="material-icons">sort</i> Sort by</button>
+    <div class="mdc-simple-menu" tabindex="-1">
+      <ul class="mdc-simple-menu__items mdc-list" role="menu" aria-hidden="true">
+        <li class="mdc-list-item" role="menuitem" tabindex="0">
+          <%= link_to 'Most recent', root_path, class: "mdc-button #{'mdc-button--accent' if current == :recent}" %>
+        </li>
+        <li class="mdc-list-item" role="menuitem" tabindex="0">
+          <%= link_to 'Most popular', popular_deeds_path, class: "mdc-button #{'mdc-button--accent' if current == :popular}" %>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
