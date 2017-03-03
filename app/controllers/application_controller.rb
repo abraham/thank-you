@@ -22,26 +22,26 @@ class ApplicationController < ActionController::Base
   def require_active_user
     return unless current_user && current_user.disabled?
     reset_session
-    redirect_to root_url, flash: { warning: 'Your account is not activated' }
+    redirect_to root_url, flash: { warning: 'Your account is not activated.' }
   end
 
   def require_signin
     return if current_user
     session[:next_path] = request.path if request.get?
 
-    redirect_to new_sessions_path, flash: { warning: 'You must be signed in to do that' }
+    redirect_to new_sessions_path, flash: { warning: 'You must be signed in to do that.' }
   end
 
   def require_admin
     return if current_user && current_user.admin?
 
-    redirect_to root_path, flash: { warning: 'You do not have permission to do that' }
+    redirect_to root_path, flash: { warning: 'You do not have permission to do that.' }
   end
 
   def require_editor
     return if current_user && (current_user.editor? || current_user.moderator? || current_user.admin?)
 
-    redirect_to root_path, flash: { warning: 'You do not have permission to do that' }
+    redirect_to root_path, flash: { warning: 'You do not have permission to do that.' }
   end
 
   def render_not_found

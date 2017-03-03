@@ -5,7 +5,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     user = create(:user)
     get user_drafts_url(user)
     assert_redirected_to new_sessions_path
-    assert_equal 'You must be signed in to do that', flash[:warning]
+    assert_equal 'You must be signed in to do that.', flash[:warning]
   end
 
   test '#drafts are only available to to current_use' do
@@ -14,7 +14,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     get user_drafts_url(other_user)
     assert_not_equal user.id, other_user.id
     assert_redirected_to root_url
-    assert_equal 'You do not have permission to do that', flash[:warning]
+    assert_equal 'You do not have permission to do that.', flash[:warning]
   end
 
   test '#drafts should get drafts' do
@@ -36,7 +36,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     user = sign_in_as :user
     get user_drafts_url(user)
     assert_redirected_to root_url
-    assert_equal 'You do not have permission to do that', flash[:warning]
+    assert_equal 'You do not have permission to do that.', flash[:warning]
   end
 
   test '#drafts requires admin' do

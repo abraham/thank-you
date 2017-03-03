@@ -16,14 +16,14 @@ class LinksControllerTest < ActionDispatch::IntegrationTest
   test '#new requires auth' do
     get new_deed_link_url(@deed)
     assert_redirected_to new_sessions_url
-    assert_equal 'You must be signed in to do that', flash[:warning]
+    assert_equal 'You must be signed in to do that.', flash[:warning]
   end
 
   test '#new requires edit?' do
     sign_in_as :user
     get new_deed_link_url(@deed)
     assert_redirected_to deed_url(@deed)
-    assert_equal 'You do not have permission to do that', flash[:warning]
+    assert_equal 'You do not have permission to do that.', flash[:warning]
   end
 
   test '#new allows editing own content' do
@@ -47,14 +47,14 @@ class LinksControllerTest < ActionDispatch::IntegrationTest
   test '#create requires auth' do
     post deed_links_url(@deed)
     assert_redirected_to new_sessions_url
-    assert_equal 'You must be signed in to do that', flash[:warning]
+    assert_equal 'You must be signed in to do that.', flash[:warning]
   end
 
   test '#create requires edit?' do
     sign_in_as :user
     post deed_links_url(@deed)
     assert_redirected_to deed_url(@deed)
-    assert_equal 'You do not have permission to do that', flash[:warning]
+    assert_equal 'You do not have permission to do that.', flash[:warning]
   end
 
   test '#create allows user to add link to their own deed' do
@@ -71,7 +71,7 @@ class LinksControllerTest < ActionDispatch::IntegrationTest
 
     link = deed.links.last
     assert_redirected_to deed_path(deed)
-    assert_equal 'Link was successfully created.', flash[:notice]
+    assert_equal 'Link added', flash[:notice]
     assert_equal text, link.text
     assert_equal url, link.url
   end
@@ -86,7 +86,7 @@ class LinksControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to deed_path(@deed)
-    assert_equal 'Link was successfully created.', flash[:notice]
+    assert_equal 'Link added', flash[:notice]
   end
 
   test '#create shows model errors' do

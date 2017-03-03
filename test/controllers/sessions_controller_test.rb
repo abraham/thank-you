@@ -39,7 +39,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     get finish_sessions_url params: { oauth_token: token, oauth_verifier: 'verifier' }
 
     assert_redirected_to new_sessions_url
-    assert_equal 'You have to start the Sign in with Twitter flow before finishing it.', flash[:warning]
+    assert_equal 'Starting Sign in with Twitter flow.', flash[:warning]
   end
 
   test '#finish requires known request_token' do
@@ -51,7 +51,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     get finish_sessions_url params: { oauth_token: 'different-token', oauth_verifier: 'verifier' }
 
     assert_redirected_to new_sessions_url
-    assert_equal 'Sign in with Twitter details do not match. Starting over.', flash[:warning]
+    assert_equal 'Something went wrong. Starting over.', flash[:warning]
   end
 
   test '#create starts session flow' do
@@ -138,7 +138,7 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     get finish_sessions_url params: { denied: 'D_gvkwAAAAAAy9zXAAABWhooOmA' }
 
     assert_redirected_to new_sessions_url
-    assert_equal 'To sign in you must allow access to your Twitter account.', flash[:warning]
+    assert_equal 'Twitter access is needed to sign in.', flash[:warning]
   end
 
   test '#finish returns to previous location' do
@@ -167,6 +167,6 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_not_equal session_id, session.id
     assert_redirected_to root_url
     assert_nil session[:user_id]
-    assert_equal flash[:notice], 'Signed out.'
+    assert_equal flash[:notice], 'Signed out'
   end
 end

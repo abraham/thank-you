@@ -8,7 +8,7 @@ class LinksController < ApplicationController
     @link.deed = @deed
 
     if @link.save
-      redirect_to @deed, flash: { notice: 'Link was successfully created.' }
+      redirect_to @deed, flash: { notice: 'Link added' }
     else
       render :new
     end
@@ -35,6 +35,6 @@ class LinksController < ApplicationController
   def require_edit_access
     return if user_can_modify_deed?
 
-    redirect_to deed_path(@deed), flash: { warning: 'You do not have permission to do that' }
+    redirect_to deed_path(@deed), flash: { warning: 'You do not have permission to do that.' }
   end
 end

@@ -169,7 +169,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
       sign_in_as role
       get drafts_deeds_path
       assert_redirected_to root_url
-      assert_equal 'You do not have permission to do that', flash[:warning]
+      assert_equal 'You do not have permission to do that.', flash[:warning]
     end
   end
 
@@ -316,7 +316,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as :user
     get start_deeds_path
     assert_redirected_to root_path
-    assert_equal 'You do not have permission to do that', flash[:warning]
+    assert_equal 'You do not have permission to do that.', flash[:warning]
   end
 
   test '#start renders for editors and up' do
@@ -349,7 +349,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as :user
     post etl_deeds_path
     assert_redirected_to root_path
-    assert_equal 'You do not have permission to do that', flash[:warning]
+    assert_equal 'You do not have permission to do that.', flash[:warning]
   end
 
   test '#etl renders for editors and up' do
@@ -414,7 +414,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as :user
     get new_deed_path
     assert_redirected_to root_path
-    assert_equal 'You do not have permission to do that', flash[:warning]
+    assert_equal 'You do not have permission to do that.', flash[:warning]
   end
 
   test '#new renders for editors and up' do
@@ -450,7 +450,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as :user
     post deeds_path
     assert_redirected_to root_path
-    assert_equal 'You do not have permission to do that', flash[:warning]
+    assert_equal 'You do not have permission to do that.', flash[:warning]
   end
 
   test '#create renders for editors and up' do
@@ -467,7 +467,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as :admin
     get edit_deed_url(deed)
     assert_redirected_to deed_path(deed)
-    assert_equal "You can't edit published deeds", flash[:notice]
+    assert_equal "Published Deeds can't be edited.", flash[:notice]
   end
 
   test '#edit should not allow users to edit other peoples deeds' do
@@ -475,7 +475,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     sign_in_as :user
     get edit_deed_url(deed)
     assert_redirected_to deed_path(deed)
-    assert_equal 'You do not have permission to do that', flash[:warning]
+    assert_equal 'You do not have permission to do that.', flash[:warning]
   end
 
   test '#edit should allow editing own deeds' do
@@ -531,7 +531,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert deed.draft?
     assert_equal text, deed.text
     assert_equal names, deed.names
-    assert_equal 'Deed updated successfully.', flash[:notice]
+    assert_equal 'Deed updated', flash[:notice]
   end
 
   test '#update allows users to update thier own Deeds' do
@@ -547,7 +547,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert deed.draft?
     assert_equal text, deed.text
     assert_equal names, deed.names
-    assert_equal 'Deed updated successfully.', flash[:notice]
+    assert_equal 'Deed updated', flash[:notice]
   end
 
   test '#update does not allow users to update others Deeds' do
@@ -563,7 +563,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert deed.draft?
     assert_equal text, deed.text
     assert_equal names, deed.names
-    assert_equal 'You do not have permission to do that', flash[:warning]
+    assert_equal 'You do not have permission to do that.', flash[:warning]
   end
 
   test '#update allows changing tweet on draft Deed' do
@@ -582,7 +582,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_equal deed.twitter_id, status[:id].to_s
     assert_not_equal deed.twitter_id, twitter_id
     assert_equal deed.twitter_id, deed.tweet.id.to_s
-    assert_equal 'Deed updated successfully.', flash[:notice]
+    assert_equal 'Deed updated', flash[:notice]
   end
 
   test '#publish requires authentication' do
@@ -601,7 +601,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to deed_path(deed)
     deed.reload
     assert deed.published?
-    assert_equal 'Deed published.', flash[:notice]
+    assert_equal 'Published', flash[:notice]
   end
 
   test '#create allows admins to create Deeds' do
@@ -616,7 +616,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert deed.draft?
     assert_equal text, deed.text
     assert_equal names, deed.names
-    assert_equal 'Deed created successfully.', flash[:notice]
+    assert_equal 'Deed created', flash[:notice]
   end
 
   test '#create allows admins to create Deeds with a Tweet' do
@@ -632,7 +632,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert deed.draft?
     assert_equal status[:id].to_s, deed.twitter_id
     assert_equal status[:id], deed.data['id']
-    assert_equal 'Deed created successfully.', flash[:notice]
+    assert_equal 'Deed created', flash[:notice]
   end
 
   test '#create allows admins to create Deeds with a Tweet URL instead of an ID' do
@@ -648,7 +648,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to deed_path(deed)
     assert_equal status[:id].to_s, deed.twitter_id
     assert_equal status[:id], deed.data['id']
-    assert_equal 'Deed created successfully.', flash[:notice]
+    assert_equal 'Deed created', flash[:notice]
   end
 
   test '#create allows admins to create Deeds with multiple names' do
@@ -666,7 +666,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to deed_path(deed)
     assert_equal text, deed.text
     assert_equal names, deed.names
-    assert_equal 'Deed created successfully.', flash[:notice]
+    assert_equal 'Deed created', flash[:notice]
   end
 
   test '#create shows model errors' do

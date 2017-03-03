@@ -1,9 +1,16 @@
 <% if flash.any? %>
   <% flash.each do |name, message| %>
-    <div class='mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12 card-<%= name %>'>
-      <section class="mdc-card__primary">
-        <h3 class="mdc-card__title mdc-card__title--large"><%= message %></h3>
-      </section>
-    </div>
+    <% if message.is_a? String %>
+      <div class='snackbar-message' data-message="<%= message %>" data-type="<%= name %>" data-multiline="<%= message.size >= 48 %>"></div>
+    <% else %>
+      <div class='snackbar-message' data-message="<%= message[:message] %>" data-type="<%= name %>" data-multiline="<%= message[:message].size >= 48 %>"></div>
+    <% end %>
   <% end %>
 <% end %>
+
+<div class="mdc-snackbar" aria-live="assertive" aria-atomic="true" aria-hidden="true">
+  <div class="mdc-snackbar__text"></div>
+  <div class="mdc-snackbar__action-wrapper">
+    <button type="button" class="mdc-button mdc-snackbar__action-button"></button>
+  </div>
+</div>

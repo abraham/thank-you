@@ -28,7 +28,7 @@ class SessionsController < ApplicationController
 
   def destroy
     reset_session
-    redirect_to root_path, flash: { notice: 'Signed out.' }
+    redirect_to root_path, flash: { notice: 'Signed out' }
   end
 
   private
@@ -54,18 +54,18 @@ class SessionsController < ApplicationController
   end
 
   def require_request_token
-    flash[:warning] = 'You have to start the Sign in with Twitter flow before finishing it.'
+    flash[:warning] = 'Starting Sign in with Twitter flow.'
     redirect_to new_sessions_path unless session[:request_token]
   end
 
   def require_known_request_token
-    flash[:warning] = 'Sign in with Twitter details do not match. Starting over.'
+    flash[:warning] = 'Something went wrong. Starting over.'
     redirect_to new_sessions_path unless session[:request_token]['token'] == params[:oauth_token]
   end
 
   def require_not_denied
     return unless params[:denied]
-    flash[:warning] = 'To sign in you must allow access to your Twitter account.'
+    flash[:warning] = 'Twitter access is needed to sign in.'
     redirect_to new_sessions_path
   end
 end

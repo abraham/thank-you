@@ -25,13 +25,13 @@ class ThanksController < ApplicationController
 
   def deed_published
     return if @deed.published?
-    flash[:error] = 'Deed must be published first'
+    flash[:error] = 'Deed must be published first.'
     redirect_to deed_path(@deed)
   end
 
   def not_already_thanked
     return unless current_user.thanked?(@deed)
-    flash[:error] = "You already thanked #{@deed.display_names}"
+    flash[:error] = 'Already thanked'
     redirect_to deed_path(@deed)
   end
 

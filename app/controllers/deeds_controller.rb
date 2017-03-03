@@ -11,7 +11,7 @@ class DeedsController < ApplicationController
     @deed = current_user.deeds.create(deeds_params)
 
     if @deed.valid?
-      redirect_to @deed, flash: { notice: 'Deed created successfully.' }
+      redirect_to @deed, flash: { notice: 'Deed created' }
     else
       render :new
     end
@@ -48,7 +48,7 @@ class DeedsController < ApplicationController
   end
 
   def edit
-    redirect_to @deed, flash: { notice: "You can't edit published deeds" } unless @deed.draft?
+    redirect_to @deed, flash: { notice: "Published Deeds can't be edited." } unless @deed.draft?
     @thanked = current_user && current_user.thanked?(@deed)
   end
 
@@ -66,7 +66,7 @@ class DeedsController < ApplicationController
     end
 
     if @deed.tweet? && @deed.save
-      redirect_to edit_deed_path(@deed), flash: { notice: 'Deed created successfully.' }
+      redirect_to edit_deed_path(@deed), flash: { notice: 'Deed created' }
     else
       render :start
     end
@@ -78,7 +78,7 @@ class DeedsController < ApplicationController
 
   def update
     if @deed.update(deeds_params) && @deed.valid? && @deed.save
-      redirect_to @deed, flash: { notice: 'Deed updated successfully.' }
+      redirect_to @deed, flash: { notice: 'Deed updated' }
     else
       render :edit
     end
@@ -86,7 +86,7 @@ class DeedsController < ApplicationController
 
   def publish
     if @deed.published!
-      redirect_to @deed, flash: { notice: 'Deed published.' }
+      redirect_to @deed, flash: { notice: 'Published' }
     else
       render :edit
     end
@@ -109,6 +109,6 @@ class DeedsController < ApplicationController
   def require_edit_access
     return if user_can_modify_deed?
 
-    redirect_to deed_path(@deed), flash: { warning: 'You do not have permission to do that' }
+    redirect_to deed_path(@deed), flash: { warning: 'You do not have permission to do that.' }
   end
 end

@@ -8,6 +8,6 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
     get deed_url(deed)
     assert_redirected_to root_url
     assert_nil session[:user_id]
-    assert_equal 'Your account is not activated', flash[:warning]
+    assert_equal 'Your account is not activated.', flash[:warning]
   end
 end

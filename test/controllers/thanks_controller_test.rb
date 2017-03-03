@@ -16,13 +16,13 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
   test '#new should require user' do
     get new_deed_thank_url(@deed)
     assert_redirected_to new_sessions_url
-    assert_equal 'You must be signed in to do that', flash[:warning]
+    assert_equal 'You must be signed in to do that.', flash[:warning]
   end
 
   test '#create should require user' do
     post deed_thanks_url(@deed)
     assert_redirected_to new_sessions_url
-    assert_equal 'You must be signed in to do that', flash[:warning]
+    assert_equal 'You must be signed in to do that.', flash[:warning]
   end
 
   test '#new should render a form' do
@@ -72,7 +72,7 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
     assert @deed.draft!
     get new_deed_thank_url(@deed)
     assert_redirected_to deed_path(@deed)
-    assert_equal 'Deed must be published first', flash[:error]
+    assert_equal 'Deed must be published first.', flash[:error]
   end
 
   test '#create should only allow thanking published Deeds' do
@@ -80,7 +80,7 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
     assert @deed.draft!
     post deed_thanks_url(@deed), params: { thank: { text: "#{@deed.text} second" } }
     assert_redirected_to deed_path(@deed)
-    assert_equal 'Deed must be published first', flash[:error]
+    assert_equal 'Deed must be published first.', flash[:error]
   end
 
   test '#new should only allow creating one thank' do
@@ -88,7 +88,7 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
     create(:thank, text: "#{@deed.text} first", user: user, deed: @deed)
     get new_deed_thank_url(@deed)
     assert_redirected_to deed_path(@deed)
-    assert_equal "You already thanked #{@deed.display_names}", flash[:error]
+    assert_equal 'Already thanked', flash[:error]
   end
 
   test '#create should only allow creating one thank' do
@@ -102,7 +102,7 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to deed_path(@deed)
-    assert_equal "You already thanked #{@deed.display_names}", flash[:error]
+    assert_equal 'Already thanked', flash[:error]
   end
 
   test '#create shows model errors' do
