@@ -64,7 +64,7 @@ class ThanksControllerTest < ActionDispatch::IntegrationTest
     thank = @deed.thanks.last
     assert_redirected_to deed_path(@deed)
     assert_equal tweet[:text], thank.text
-    assert_equal 'Your Thank You has been tweeted.', flash[:notice]
+    assert_equal 'Thank You has been tweeted.', flash[:notice]
   end
 
   test '#new should only allow thanking published Deeds' do
