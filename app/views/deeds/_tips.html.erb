@@ -1,0 +1,24 @@
+<div class="tips mdc-card mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+  <section class="mdc-card__primary">
+    <h1 class="mdc-card__title mdc-card__title--large">Tips</h1>
+    <h2 class="mdc-card__subtitle">What makes a deed good?</h2>
+  </section>
+  <section class="mdc-card__supporting-text">
+    <ul class="mdc-list">
+      <% @examples_deeds.each do |example| %>
+        <% if example[:deed] %>
+          <li class="example-deed mdc-list-item">
+            <span class="mdc-list-item__text">
+              <span class="mdc-list-item__text__primary">
+                <%= example[:text] %>
+              </span>
+              <span class="mdc-list-item__text__secondary">
+                <%= link_to example[:deed].display_text, example[:deed], class: 'ellipsis' %>
+              </span>
+            </span>
+          </li>
+          <% end %>
+      <% end %>
+    </ul>
+  </section>
+</div>

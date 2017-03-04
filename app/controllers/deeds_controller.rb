@@ -53,10 +53,12 @@ class DeedsController < ApplicationController
   end
 
   def start
+    @examples_deeds = example_deeds
     @deed = Deed.new
   end
 
   def etl
+    @examples_deeds = example_deeds
     @deed = current_user.deeds.build(deeds_params)
     @deed.etl
 
@@ -93,6 +95,19 @@ class DeedsController < ApplicationController
   end
 
   private
+
+  def example_deeds
+    [{
+      text: 'Local community impact',
+      deed: Deed.find_by_id('fe5b2ec6-1ad2-4bef-b8ab-506505501c46')
+    }, {
+      text: 'Standing up to authority',
+      deed: Deed.find_by_id('12b168b4-a994-4a0a-884a-5c5711e0b18f')
+    }, {
+      text: 'Supporting underrepresented groups',
+      deed: Deed.find_by_id('996b8041-e52f-49cc-8ea0-3aee5ad00bbe')
+    }]
+  end
 
   def find_deed
     @deed = Deed.includes(:links, thanks: :user).find(params[:id] || params[:deed_id])

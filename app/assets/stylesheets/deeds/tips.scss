@@ -1,0 +1,13 @@
+.tips {
+  .mdc-list-item__text {
+    width: 100%;
+  }
+
+  .ellipsis {
+    width: 100%;
+    display: block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+}

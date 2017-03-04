@@ -8,7 +8,7 @@
         <%= f.label :twitter_id, 'Tweet URL', class: "mdc-textfield__label #{'mdc-textfield__label--float-above' if @deed.twitter_id.present?}" %>
       </div>
       <p id="deed_twitter_id-helptext" class="mdc-textfield-helptext" aria-hidden="true">
-        Tweet URL Thank Yous should be linked to.
+        Tweet URL Thank Yous should be linked to. https://twitter.com/jack/status/20
       </p>
     </section>
 
@@ -18,3 +18,5 @@
     </section>
   <% end %>
 </div>
+
+<%= render 'tips' %>
