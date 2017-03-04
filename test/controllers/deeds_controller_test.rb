@@ -525,6 +525,24 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test '#edit renders tips' do
+    deed = create(:deed, :draft)
+    deeds = example_deeds
+    sign_in_as :admin
+    get edit_deed_url(deed)
+    assert_response :success
+    assert_select '.tips' do
+      assert_select '.example-deed', 3
+      assert_select '.mdc-list-item__text__primary', 'Local community impact'
+      assert_select '.mdc-list-item__text__primary', 'Standing up to authority'
+      assert_select '.mdc-list-item__text__primary', 'Supporting underrepresented groups'
+
+      deeds.each do |example|
+        assert_select '.mdc-list-item__text__secondary a', href: deed_url(example), text: example.text
+      end
+    end
+  end
+
   test '#edit should hide names without values' do
     deed = create(:deed, :draft, names: ['one', 'two'])
     sign_in_as :admin

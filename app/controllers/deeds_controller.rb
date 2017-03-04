@@ -4,6 +4,7 @@ class DeedsController < ApplicationController
   before_action :require_admin, only: [:drafts]
   before_action :require_edit_access, only: [:edit, :update, :publish]
   before_action :require_editor, only: [:start, :etl, :new, :create]
+  before_action :find_example_deeds, only: [:start, :etl, :edit, :create]
 
   PAGE_COUNT = 10
 
@@ -53,12 +54,10 @@ class DeedsController < ApplicationController
   end
 
   def start
-    @examples_deeds = example_deeds
     @deed = Deed.new
   end
 
   def etl
-    @examples_deeds = example_deeds
     @deed = current_user.deeds.build(deeds_params)
     @deed.etl
 
@@ -96,8 +95,8 @@ class DeedsController < ApplicationController
 
   private
 
-  def example_deeds
-    [{
+  def find_example_deeds
+    @examples_deeds = [{
       text: 'Local community impact',
       deed: Deed.find_by_id('fe5b2ec6-1ad2-4bef-b8ab-506505501c46')
     }, {
