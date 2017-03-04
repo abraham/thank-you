@@ -320,6 +320,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test '#start renders for editors and up' do
+    example_deeds
     [:editor, :moderator, :admin].each do |role|
       user = sign_in_as role
       get start_deeds_path
@@ -329,6 +330,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test '#start should return form' do
+    example_deeds
     sign_in_as :admin
     get start_deeds_path
     assert_select "form[action=\"#{etl_deeds_path}\"]" do
@@ -337,6 +339,22 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
       assert_select 'input[type=submit][value="Preview"]'
       assert_select 'input', 3
       assert_select 'label', 1
+    end
+  end
+
+  test '#start renders tips' do
+    deeds = example_deeds
+    sign_in_as :editor
+    get start_deeds_path
+    assert_select '.tips' do
+      assert_select '.example-deed', 3
+      assert_select '.mdc-list-item__text__primary', 'Local community impact'
+      assert_select '.mdc-list-item__text__primary', 'Standing up to authority'
+      assert_select '.mdc-list-item__text__primary', 'Supporting underrepresented groups'
+
+      deeds.each do |deed|
+        assert_select '.mdc-list-item__text__secondary a', href: deed_url(deed), text: deed.text
+      end
     end
   end
 
@@ -353,6 +371,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test '#etl renders for editors and up' do
+    example_deeds
     [:editor, :moderator, :admin].each do |role|
       user = sign_in_as role
       status = Faker::Twitter.status
@@ -365,13 +384,14 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test '#etl creates a deed from ID' do
+    example_deeds
     user = sign_in_as :admin
     status = Faker::Twitter.status
     stub_statuses_show status
     assert_difference 'user.deeds.count', 1 do
       post etl_deeds_path params: { deed: { twitter_id: status[:id] } }
     end
-    deed = Deed.last
+    deed = Deed.find_by_twitter_id(status[:id])
     assert_redirected_to edit_deed_url(deed)
     assert_equal status[:id].to_s, deed.twitter_id
     assert_equal [status[:user][:screen_name]], deed.names
@@ -379,6 +399,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test '#etl creates a deed from URL' do
+    example_deeds
     user = sign_in_as :admin
     status = Faker::Twitter.status
     stub_statuses_show status
@@ -386,7 +407,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_difference 'user.deeds.count', 1 do
       post etl_deeds_path params: { deed: { twitter_id: twitter_id } }
     end
-    deed = Deed.last
+    deed = Deed.find_by_twitter_id(status[:id])
     assert_redirected_to edit_deed_url(deed)
     assert_equal status[:id].to_s, deed.twitter_id
     assert_equal [status[:user][:screen_name]], deed.names
@@ -394,6 +415,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test '#etl shows tweet not found error' do
+    example_deeds
     sign_in_as :admin
     stub_status_not_found
     assert_no_difference 'Deed.count' do
@@ -611,7 +633,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_difference 'Deed.count', 1 do
       post deeds_path, params: { deed: { text: text, names: names, twitter_id: '' } }
     end
-    deed = Deed.last
+    deed = Deed.first
     assert_redirected_to deed_path(deed)
     assert deed.draft?
     assert_equal text, deed.text
@@ -627,7 +649,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_difference 'Deed.count', 1 do
       post deeds_path, params: { deed: { text: text, names: [status[:user][:screen_name]], twitter_id: status[:id] } }
     end
-    deed = Deed.last
+    deed = Deed.first
     assert_redirected_to deed_path(deed)
     assert deed.draft?
     assert_equal status[:id].to_s, deed.twitter_id
@@ -644,7 +666,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
       url = "https://twitter.com/#{status[:user][:screen_name]}/status/#{status[:id]}"
       post deeds_path, params: { deed: { text: text, names: [status[:user][:screen_name]], twitter_id: url } }
     end
-    deed = Deed.last
+    deed = Deed.first
     assert_redirected_to deed_path(deed)
     assert_equal status[:id].to_s, deed.twitter_id
     assert_equal status[:id], deed.data['id']
@@ -662,7 +684,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     assert_difference 'Deed.count', 1 do
       post deeds_path, params: { deed: { text: text, names: names } }
     end
-    deed = Deed.last
+    deed = Deed.first
     assert_redirected_to deed_path(deed)
     assert_equal text, deed.text
     assert_equal names, deed.names
@@ -776,5 +798,13 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
       assert_select 'li', "Data can't be blank"
       assert_select 'li', 2
     end
+  end
+
+  def example_deeds
+    [
+      create(:deed, id: 'fe5b2ec6-1ad2-4bef-b8ab-506505501c46'),
+      create(:deed, id: '12b168b4-a994-4a0a-884a-5c5711e0b18f'),
+      create(:deed, id: '996b8041-e52f-49cc-8ea0-3aee5ad00bbe')
+    ]
   end
 end
