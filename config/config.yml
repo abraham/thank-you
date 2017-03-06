@@ -1,11 +1,20 @@
 development:
   posting_to_twitter_enabled: true
   sign_in_enabled: true
+  push_messaging_enabled: true
+  firebase_messaging_sender_id: 133536989471
+  firebase_api_key: AIzaSyD-bJd7gfkobCKrhclz-yyjA-Jva_Q0F2o
 
 test:
   posting_to_twitter_enabled: true
   sign_in_enabled: true
+  push_messaging_enabled: true
+  firebase_messaging_sender_id: 133536989471
+  firebase_api_key: AIzaSyD-bJd7gfkobCKrhclz-yyjA-Jva_Q0F2o
 
 production:
   posting_to_twitter_enabled: <%= ENV['APP_POSTING_TO_TWITTER_ENABLED'] %>
   sign_in_enabled: <%= ENV['APP_SIGN_IN_ENABLED'] %>
+  push_messaging_enabled: <%= ENV['APP_PUSH_MESSAGING_ENABLED'] %>
+  firebase_messaging_sender_id: <%= ENV['APP_FIREBASE_MESSAGING_SENDER_ID'] %>
+  firebase_api_key: <%= ENV['APP_FIREBASE_API_KEY'] %>

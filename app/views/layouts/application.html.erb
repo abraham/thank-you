@@ -12,12 +12,17 @@
 
     <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1.0" />
     <meta name="google-site-verification" content="LnlhY2aAHURVtezyLqyOzHygj1fHG_lS4Y9XSeQ2A2Q" />
+    <%= tag :meta, name: 'firebase-api-key', content: AppConfig.firebase_api_key %>
+    <%= tag :meta, name: 'firebase-messaging-sender-id', content: AppConfig.firebase_messaging_sender_id %>
+
     <%= favicon_link_tag image_path('heart.png') %>
     <%= tag :link, rel: 'manifest', href: manifest_path(format: :json) %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= stylesheet_link_tag 'https://fonts.googleapis.com/css?family=Roboto' %>
     <%= stylesheet_link_tag 'https://fonts.googleapis.com/icon?family=Material+Icons' %>
+    <%= javascript_include_tag 'https://www.gstatic.com/firebasejs/3.6.10/firebase-app.js' %>
+    <%= javascript_include_tag 'https://www.gstatic.com/firebasejs/3.6.10/firebase-messaging.js' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 

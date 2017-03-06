@@ -87,6 +87,14 @@ class DeedsController < ApplicationController
 
   def publish
     if @deed.published!
+      fcm = FCM.new(Rails.application.secrets.firebase_messaging_key)
+      notification = {
+        title: "@#{current_user.screen_name} added a new Deed on Thank You",
+        body: @deed.display_text,
+        icon: current_user.avatar_url,
+        click_action: deed_url(@deed)
+      }
+      fcm.send_to_topic('deeds', notification: notification)
       redirect_to @deed, flash: { notice: 'Published' }
     else
       render :edit

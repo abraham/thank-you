@@ -1,0 +1,30 @@
+if (importScripts) {
+  importScripts('https://www.gstatic.com/firebasejs/3.5.2/firebase-app.js');
+  importScripts('https://www.gstatic.com/firebasejs/3.5.2/firebase-messaging.js');
+
+  firebase.initializeApp({
+    'messagingSenderId': '<%= AppConfig.firebase_messaging_sender_id %>'
+  });
+
+  var messaging = firebase.messaging();
+
+  self.addEventListener('push', function(event) {
+    var data = event.data.json();
+    console.log('[Service Worker] Push Received.');
+    console.log('[Service Worker] Push had this data: ' + event.data.text());
+
+    if (data.notification) {
+      data.notification.data = data.notification.click_action;
+      event.waitUntil(self.registration.showNotification(data.notification.title, data.notification));
+    }
+  });
+
+  self.addEventListener('notificationclick', function(event) {
+    event.notification.close();
+    if (event.notification.data) {
+      clients.openWindow(event.notification.data);
+    }
+  });
+} else {
+  console.log('Ignoring non SW ENV');
+}

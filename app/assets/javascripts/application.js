@@ -22,3 +22,10 @@ document.addEventListener('turbolinks:load', function() {
     mdc.ripple.MDCRipple.attachTo(btn);
   });
 });
+
+var config = {
+  apiKey: document.querySelector('meta[name=firebase-api-key]').getAttribute('content'),
+  messagingSenderId: document.querySelector('meta[name=firebase-messaging-sender-id]').getAttribute('content')
+};
+firebase.initializeApp(config);
+var messaging = firebase.messaging();

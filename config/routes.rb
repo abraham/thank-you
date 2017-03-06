@@ -7,6 +7,9 @@ Rails.application.routes.draw do
   get 'about/privacy'
 
   get 'manifest', to: 'manifest#index'
+  get 'firebase-messaging-sw', to: 'static#firebase_messaging_sw'
+
+  get 'notifications', to: 'notifications#index'
 
   resources :deeds, only: [:new, :create, :show, :edit, :index, :update] do
     root to: redirect('/')
@@ -18,6 +21,8 @@ Rails.application.routes.draw do
     resources :thanks, only: [:new, :create]
     resources :links, only: [:new, :create]
   end
+
+  resource :subscriptions, only: [:create, :destroy, :show]
 
   resource :sessions, only: [:new, :create, :destroy] do
     get :finish

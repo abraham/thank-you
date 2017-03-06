@@ -632,8 +632,9 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test '#publish makes draft deeds go live' do
-    sign_in_as :admin
-    deed = create(:deed, :draft)
+    user = sign_in_as :admin
+    deed = create(:deed, :draft, user: user)
+    stub_send_push :deeds, deed
     assert deed.draft?
     assert_no_difference 'Deed.count' do
       post deed_publish_path(deed)

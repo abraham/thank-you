@@ -95,13 +95,47 @@ module TwitterHelper
   end
 end
 
+module GoogleHelper
+  GOOGLE_API_KEY = 'fake_key'.freeze
+  GOOGLE_TOKEN = 'secret-token'.freeze
+
+  def stub_topic_subscription(topic)
+    stub_request(:post, 'https://iid.googleapis.com/iid/v1:batchAdd')
+      .with(headers: {
+              'Authorization' => "key=#{GOOGLE_API_KEY}"
+            },
+            body: {
+              registration_tokens: ['secret-token'],
+              to: "/topics/#{topic}"
+            })
+      .to_return(status: 200, body: { results: [{}] }.to_json)
+  end
+
+  def stub_send_push(topic, deed)
+    stub_request(:post, 'https://fcm.googleapis.com/fcm/send')
+      .with(body: {
+              to: "/topics/#{topic}",
+              notification: {
+                title: "@#{deed.user.screen_name} added a new Deed on Thank You",
+                body: deed.display_text,
+                icon: deed.user.avatar_url,
+                click_action: deed_url(deed)
+              }
+            },
+            headers: { 'Authorization' => 'key=fake_key' })
+      .to_return(status: 200, body: '')
+  end
+end
+
 class ActionDispatch::IntegrationTest
   include SessionsHelper
+  include GoogleHelper
   include TwitterHelper
 end
 
 class ActiveSupport::TestCase
   include FactoryGirl::Syntax::Methods
+  include GoogleHelper
   include TwitterHelper
 
   FactoryGirl.find_definitions
