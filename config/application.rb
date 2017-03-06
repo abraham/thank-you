@@ -14,7 +14,7 @@ module ThankYou
 
     csp = [
       "default-src 'self'",
-      "script-src 'self' https://www.google-analytics.com/ https://www.gstatic.com/",
+      "script-src 'self' https://www.google-analytics.com/ https://www.gstatic.com/ https://cdn.ravenjs.com/",
       "connect-src 'self' https://fcm.googleapis.com/",
       "img-src https:",
       "font-src https:",
