@@ -24,19 +24,28 @@ document.addEventListener('turbolinks:load', function() {
     var topic = event.target.id;
     if (currentToken) {
       if (enabled) {
-        // TODO: Flashes
         createSubscription(topic)
           .then(function(result) {
             console.log('added', result);
+            snackbar.show({ message: 'Notifications enabled' });
           });
       } else {
         deleteSubscription(topic)
           .then(function(result) {
             console.log('removed', result);
+            snackbar.show({ message: 'Notifications disabled' });
           });
       }
     } else {
-      requestPermission();
+      requestPermission().then(function() {
+        return getToken();
+      }).then(function() {
+        createSubscription(topic)
+          .then(function(result) {
+            console.log('added', result);
+            snackbar.show({ message: 'Notifications enabled' });
+          });
+      });
     }
   }
 
@@ -72,6 +81,7 @@ document.addEventListener('turbolinks:load', function() {
   }
 
   function createSubscription(topic) {
+    console.log('creating for ', topic);
     var data = {
       subscription: {
         token: currentToken,
@@ -118,10 +128,9 @@ document.addEventListener('turbolinks:load', function() {
   }
 
   function requestPermission() {
-    messaging.requestPermission()
+    return messaging.requestPermission()
       .then(function() {
         console.log('Notification permission granted.');
-        getToken();
       })
       .catch(function(err) {
         console.log('Unable to get permission to notify.', err);
@@ -129,7 +138,7 @@ document.addEventListener('turbolinks:load', function() {
   }
 
   function getToken() {
-    messaging.getToken()
+    return messaging.getToken()
       .then(function(token) {
         currentToken = token
         if (currentToken) {
