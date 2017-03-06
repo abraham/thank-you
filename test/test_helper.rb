@@ -115,7 +115,7 @@ module GoogleHelper
     stub_request(:post, 'https://fcm.googleapis.com/fcm/send')
       .with(body: {
               to: "/topics/#{topic}",
-              notification: {
+              data: {
                 title: "@#{deed.user.screen_name} added a new Deed on Thank You",
                 body: deed.display_text,
                 icon: deed.user.avatar_url,

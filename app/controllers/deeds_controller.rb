@@ -94,7 +94,7 @@ class DeedsController < ApplicationController
         icon: current_user.avatar_url,
         click_action: deed_url(@deed)
       }
-      fcm.send_to_topic('deeds', notification: notification)
+      fcm.send_to_topic('deeds', data: notification)
       redirect_to @deed, flash: { notice: 'Published' }
     else
       render :edit
