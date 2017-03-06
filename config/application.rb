@@ -14,7 +14,8 @@ module ThankYou
 
     csp = [
       "default-src 'self'",
-      "script-src 'self' https://www.google-analytics.com/",
+      "script-src 'self' https://www.google-analytics.com/ https://www.gstatic.com/",
+      "connect-src 'self' https://fcm.googleapis.com/",
       "img-src https:",
       "font-src https:",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com/",
