@@ -6,6 +6,8 @@ git_source(:github) do |repo_name|
 end
 
 gem 'coffee-rails', '~> 4.2'
+gem 'fcm', '~> 0'
+gem 'google_instance_id', '~> 0'
 gem 'jbuilder', '~> 2.5'
 gem 'oauth', '~> 0'
 gem 'pg'
