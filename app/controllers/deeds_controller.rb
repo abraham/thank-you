@@ -101,7 +101,7 @@ class DeedsController < ApplicationController
   def fcm_payload
     {
       notification: {
-        title: "@#{current_user.screen_name} added a new Deed on Thank You",
+        title: "@#{current_user.screen_name} added a new Deed",
         body: @deed.display_text,
         icon: current_user.avatar_url,
         click_action: deed_url(@deed)
@@ -114,7 +114,7 @@ class DeedsController < ApplicationController
       data: {
         version: 1,
         notification: {
-          title: "@#{current_user.screen_name} added a new Deed on Thank You",
+          title: "@#{current_user.screen_name} added a new Deed",
           body: @deed.display_text,
           icon: current_user.avatar_url,
           click_action: deed_url(@deed)

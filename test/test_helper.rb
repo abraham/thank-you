@@ -148,7 +148,7 @@ module GoogleHelper
               data: {
                 version: 1,
                 notification: {
-                  title: "@#{deed.user.screen_name} added a new Deed on Thank You",
+                  title: "@#{deed.user.screen_name} added a new Deed",
                   body: deed.display_text,
                   icon: deed.user.avatar_url,
                   click_action: deed_url(deed)
