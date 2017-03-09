@@ -14,8 +14,9 @@ if (importScripts) {
     console.log('[Service Worker] Push Received.');
     console.log('[Service Worker] Push had this data: ' + event.data.text());
 
-    if (message.data && message.data.version == 1) {
-      var notification = message.data.notification
+    if (message.data && [1, '1'].includes(message.data.version)) {
+      var notification = JSON.parse(message.data.notification);
+      notification.data = notification.click_action;
       event.waitUntil(self.registration.showNotification(notification.title, notification));
     }
   });
