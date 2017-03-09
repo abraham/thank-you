@@ -24,6 +24,7 @@ namespace :notifications do
     payload = {
       data: {
         version: 1,
+        topic: 'test',
         notification: {
           title: 'Test notification v1',
           body: 'This is just a test',

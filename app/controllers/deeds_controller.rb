@@ -89,7 +89,7 @@ class DeedsController < ApplicationController
     if @deed.published!
       fcm = FCM.new(Rails.application.secrets.firebase_messaging_key)
 
-      fcm.send_to_topic('deeds', fcm_payload_v1)
+      fcm.send_to_topic('deeds', fcm_payload_v1('deeds'))
       redirect_to @deed, flash: { notice: 'Published' }
     else
       render :edit
@@ -109,10 +109,11 @@ class DeedsController < ApplicationController
     }
   end
 
-  def fcm_payload_v1
+  def fcm_payload_v1(topic)
     {
       data: {
         version: 1,
+        topic: topic,
         notification: {
           title: "@#{current_user.screen_name} added a new Deed",
           body: @deed.display_text,

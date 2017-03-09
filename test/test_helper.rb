@@ -147,6 +147,7 @@ module GoogleHelper
               to: "/topics/#{topic}",
               data: {
                 version: 1,
+                topic: topic,
                 notification: {
                   title: "@#{deed.user.screen_name} added a new Deed",
                   body: deed.display_text,

@@ -21,6 +21,18 @@ if (importScripts) {
     }
   });
 
+  messaging.setBackgroundMessageHandler(function(payload) {
+    console.log('[firebase-messaging-sw.js] Received background message ', payload);
+
+    var notificationTitle = 'Background Message Title';
+    var notificationOptions = {
+      body: 'Background Message body.',
+      icon: '/firebase-logo.png'
+    };
+
+    return self.registration.showNotification(notificationTitle, notificationOptions);
+  });
+
   self.addEventListener('notificationclick', function(event) {
     event.notification.close();
     if (event.notification.data) {
