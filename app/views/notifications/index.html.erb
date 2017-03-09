@@ -1,14 +1,46 @@
 <div class="notifications mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
   <h1>Notifications</h1>
 
-  <div class="mdc-switch mdc-switch--disabled">
-    <input type="checkbox" id="deeds" class="mdc-switch__native-control" disabled />
-    <div class="mdc-switch__background">
-      <div class="mdc-switch__knob"></div>
-    </div>
-  </div>
-  <label for="deeds" class="mdc-switch-label">Tell me about new Deeds</label>
-  <p class='not-supported hidden'>It looks like your browser doesn't support push notifications.</p>
+  <%= form_for @subscription, url: subscriptions_path do |f| %>
+    <%= f.hidden_field :token %>
+
+    <ul class="mdc-list">
+      <li class="example-deed mdc-list-item">
+        <div class="mdc-list-item__text">
+          <div class="mdc-list-item__text__primary">
+            <div class="mdc-switch mdc-switch--disabled">
+              <input type="checkbox" id="notifications" class="mdc-switch__native-control" disabled />
+              <div class="mdc-switch__background">
+                <div class="mdc-switch__knob"></div>
+              </div>
+            </div>
+            <label for="notifications" class="mdc-switch-label">Browser push notifications</label>
+          </div>
+          <div class="mdc-list-item__text__secondary not-supported hidden">
+            It looks like your browser doesn't support push notifications.
+          </div>
+        </div>
+      </li>
+
+      <% @topics.each do |topic| %>
+        <li class="example-deed mdc-list-item">
+          <div class="mdc-list-item__text">
+            <div class="mdc-list-item__text__primary">
+              <div class="mdc-switch mdc-switch--disabled">
+                <% checked = @subscription.topics.present? && @subscription.topics.include?(topic[:id].to_s) %>
+                <input type="checkbox" id="<%= topic[:id] %>" class="topic mdc-switch__native-control" <%= 'checked' if checked %> disabled />
+                <div class="mdc-switch__background">
+                  <div class="mdc-switch__knob"></div>
+                </div>
+              </div>
+              <label for="<%= topic[:id] %>" class="mdc-switch-label"><%= topic[:text] %></label>
+            </div>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+
   <p>
     Notifications are browser and device specific. If you clear your browser data, change browser, or get a new phone you will have to enable them again. Currently Chrome, Firefox, and Opera are supported.
   </p>

@@ -2,6 +2,7 @@ class NotificationsController < ApplicationController
   before_action :enable_test
 
   def index
+    @subscription = current_subscription || Subscription.new
     @topics = [
       {
         id: :deeds,

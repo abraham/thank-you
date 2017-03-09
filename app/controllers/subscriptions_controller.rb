@@ -20,6 +20,7 @@ class SubscriptionsController < ApplicationController
   end
 
   def destroy
+    session[:subscription_id] = nil
     current_subscription.destroy
     render json: {}
   end
