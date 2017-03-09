@@ -100,14 +100,17 @@ class DeedsController < ApplicationController
 
   def fcm_payload(topic)
     {
-      notification: {
-        title: "@#{current_user.screen_name} added a new Deed on Thank You",
-        body: @deed.display_text,
-        icon: current_user.avatar_url,
-        click_action: deed_url(@deed)
-      },
       data: {
-        topic: topic
+        version: 1,
+        topic: topic,
+        notification: {
+          title: "@#{current_user.screen_name} added a new Deed on Thank You",
+          body: @deed.display_text,
+          icon: current_user.avatar_url,
+          data: {
+            click_action: deed_url(@deed)
+          }
+        }
       }
     }
   end
