@@ -1,49 +1,67 @@
 class SubscriptionsController < ApplicationController
-  before_action :find_token
-  before_action :require_token
+  before_action :build_api
+  before_action :require_subscription, except: [:create]
+  before_action :require_token, only: [:create]
 
   def create
-    render :nothing, status: 500 unless valid_topic?(params[:subscription][:topic])
-    topic = @api.add_topic(@token, params[:subscription][:topic])
-    if topic
-      render json: { added: params[:subscription][:topic] }
+    info = @api.info(params[:subscription][:token])
+    subscription = Subscription.find_or_create_by(token: params[:subscription][:token]) do |sub|
+      sub.active_at = Time.now.utc
+      sub.user = current_user
+      sub.topics = topics_from_info(info)
+    end
+
+    if info && !subscription.new_record?
+      session[:subscription_id] = subscription.id
+      render json: subscription
     else
-      render :nothing, status: 500
+      render json: {}, status: 500
     end
   end
 
   def destroy
-    render :nothing, status: 500 unless valid_topic?(params[:subscription][:topic])
-    topic = @api.remove_topic(@token, params[:subscription][:topic])
-    if topic
-      render json: { removed: params[:subscription][:topic] }
-    else
-      render :nothing, status: 500
-    end
+    current_subscription.destroy
+    render json: {}
   end
 
   def show
-    topic = @api.info(@token)
-    if topic
-      render json: topic.dig(:rel, :topics) || {}
-    else
-      render :nothing, status: 500
+    render json: current_subscription
+  end
+
+  def update
+    subscription = current_subscription
+    params[:subscription][:changes].each do |change|
+      if change[:change] == 'add'
+        result = @api.add_topic(current_subscription.token, change[:topic])
+        subscription.topics << change[:topic] if result.status_code == 200
+      elsif change[:change] == 'remove'
+        result = @api.remove_topic(current_subscription.token, change[:topic])
+        subscription.topics.delete(change[:topic]) if result.status_code == 200
+      end
     end
+    subscription.save
+    render json: current_subscription
   end
 
   private
 
-  def valid_topic?(topic)
-    ['deeds'].include?(topic)
+  def topics_from_info(info)
+    (info.dig(:rel, :topics) || {}).keys
   end
 
-  def find_token
-    return unless params[:subscription] && params[:subscription][:token]
-    @api = GoogleInstanceId.new(Rails.application.secrets.firebase_messaging_key)
-    @token = params[:subscription][:token]
+  def valid_topic?(topic)
+    ['deeds', 'test'].include?(topic)
   end
 
   def require_token
-    render_forbidden unless @api && @token
+    render_forbidden_json unless params[:subscription] && params[:subscription][:token]
+  end
+
+  def require_subscription
+    render_forbidden_json unless current_subscription
+  end
+
+  def build_api
+    @api = GoogleInstanceId.new(Rails.application.secrets.firebase_messaging_key)
   end
 end

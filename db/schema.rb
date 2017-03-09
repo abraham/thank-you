@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170225235024) do
+ActiveRecord::Schema.define(version: 20170307033025) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,6 +38,16 @@ ActiveRecord::Schema.define(version: 20170225235024) do
     t.datetime "updated_at", null: false
     t.index ["deed_id"], name: "index_links_on_deed_id"
     t.index ["user_id"], name: "index_links_on_user_id"
+  end
+
+  create_table "subscriptions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id"
+    t.string "token", null: false
+    t.text "topics", array: true
+    t.datetime "active_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 
   create_table "thanks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -75,5 +85,6 @@ ActiveRecord::Schema.define(version: 20170225235024) do
   add_foreign_key "deeds", "users"
   add_foreign_key "links", "deeds"
   add_foreign_key "links", "users"
+  add_foreign_key "subscriptions", "users"
   add_foreign_key "thanks", "users"
 end

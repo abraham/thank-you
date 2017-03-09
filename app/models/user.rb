@@ -4,6 +4,7 @@ class User < ApplicationRecord
 
   has_many :deeds
   has_many :links
+  has_many :subscriptions
   has_many :thanks
 
   validates :access_token_secret, presence: true

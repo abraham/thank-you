@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   before_action :require_active_user
 
   helper_method :current_user
+  helper_method :current_subscription
 
   private
 
@@ -17,6 +18,10 @@ class ApplicationController < ActionController::Base
 
   def current_user
     @_current_user ||= session[:user_id] && User.find(session[:user_id])
+  end
+
+  def current_subscription
+    @_current_subscription ||= session[:subscription_id] && Subscription.find(session[:subscription_id])
   end
 
   def require_active_user
@@ -50,5 +55,9 @@ class ApplicationController < ActionController::Base
 
   def render_forbidden
     render :not_found, status: 403
+  end
+
+  def render_forbidden_json
+    render json: {}, status: 403
   end
 end

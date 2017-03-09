@@ -22,7 +22,7 @@ Rails.application.routes.draw do
     resources :links, only: [:new, :create]
   end
 
-  resource :subscriptions, only: [:create, :destroy, :show]
+  resource :subscriptions, only: [:create, :destroy, :show, :update]
 
   resource :sessions, only: [:new, :create, :destroy] do
     get :finish

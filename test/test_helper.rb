@@ -99,16 +99,46 @@ module GoogleHelper
   GOOGLE_API_KEY = 'fake_key'.freeze
   GOOGLE_TOKEN = 'secret-token'.freeze
 
-  def stub_topic_subscription(topic)
+  def stub_add_topic(token, topic)
     stub_request(:post, 'https://iid.googleapis.com/iid/v1:batchAdd')
       .with(headers: {
               'Authorization' => "key=#{GOOGLE_API_KEY}"
             },
             body: {
-              registration_tokens: ['secret-token'],
+              registration_tokens: [token],
               to: "/topics/#{topic}"
             })
       .to_return(status: 200, body: { results: [{}] }.to_json)
+  end
+
+  def stub_remove_topic(token, topic)
+    stub_request(:post, 'https://iid.googleapis.com/iid/v1:batchRemove')
+      .with(headers: {
+              'Authorization' => "key=#{GOOGLE_API_KEY}"
+            },
+            body: {
+              registration_tokens: [token],
+              to: "/topics/#{topic}"
+            })
+      .to_return(status: 200, body: { results: [{}] }.to_json)
+  end
+
+  def stub_topic_info(token, topics)
+    data = {
+      connectDate: '2017-03-06',
+      application: 'com.chrome.macosx',
+      subtype: 'wp:http://localhost:5000/#A869D94E-5ADE-4F90-A488-78C0F09F1-V2',
+      authorizedEntity: '133536989471',
+      rel: {
+        topics: Hash[topics.map { |topic| [topic, { addDate: '2017-03-06' }] }]
+      },
+      connectionType: 'WIFI',
+      platform: 'WEBPUSH'
+    }
+
+    stub_request(:get, "https://iid.googleapis.com/iid/info/#{token}?details=true")
+      .with(headers: { 'Authorization' => "key=#{GOOGLE_API_KEY}" })
+      .to_return(status: 200, body: data.to_json)
   end
 
   def stub_send_push(topic, deed)
