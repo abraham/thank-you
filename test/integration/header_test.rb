@@ -33,6 +33,16 @@ class HeaderTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'user has notifications' do
+    sign_in_as :user
+    get root_url
+    assert_select 'header' do
+      assert_select 'div.mdc-simple-menu' do
+        assert_select "a[href=\"#{notifications_path}\"]", 'Notifications'
+      end
+    end
+  end
+
   test 'user has sign out form' do
     sign_in_as :user
     get root_url
