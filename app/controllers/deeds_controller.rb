@@ -88,13 +88,8 @@ class DeedsController < ApplicationController
   def publish
     if @deed.published!
       fcm = FCM.new(Rails.application.secrets.firebase_messaging_key)
-      notification = {
-        title: "@#{current_user.screen_name} added a new Deed on Thank You",
-        body: @deed.display_text,
-        icon: current_user.avatar_url,
-        click_action: deed_url(@deed)
-      }
-      fcm.send_to_topic('deeds', data: notification)
+
+      fcm.send_to_topic('deeds', fcm_payload(:deeds))
       redirect_to @deed, flash: { notice: 'Published' }
     else
       render :edit
@@ -102,6 +97,20 @@ class DeedsController < ApplicationController
   end
 
   private
+
+  def fcm_payload(topic)
+    {
+      notification: {
+        title: "@#{current_user.screen_name} added a new Deed on Thank You",
+        body: @deed.display_text,
+        icon: current_user.avatar_url,
+        click_action: deed_url(@deed)
+      },
+      data: {
+        topic: topic
+      }
+    }
+  end
 
   def find_example_deeds
     @examples_deeds = [{

@@ -14,9 +14,9 @@ if (importScripts) {
     console.log('[Service Worker] Push Received.');
     console.log('[Service Worker] Push had this data: ' + event.data.text());
 
-    if (message.data) {
+    if (message.data && message.data.topic == 'test') {
       message.data.data = message.data.click_action;
-      event.waitUntil(self.registration.showNotification(message.data.title, message.data));
+      event.waitUntil(self.registration.showNotification('Test: ' + message.data.title, message.data));
     }
   });
 
