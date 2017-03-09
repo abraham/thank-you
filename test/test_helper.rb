@@ -145,11 +145,14 @@ module GoogleHelper
     stub_request(:post, 'https://fcm.googleapis.com/fcm/send')
       .with(body: {
               to: "/topics/#{topic}",
-              notification: {
-                title: "@#{deed.user.screen_name} added a new Deed on Thank You",
-                body: deed.display_text,
-                icon: deed.user.avatar_url,
-                click_action: deed_url(deed)
+              data: {
+                version: 1,
+                notification: {
+                  title: "@#{deed.user.screen_name} added a new Deed on Thank You",
+                  body: deed.display_text,
+                  icon: deed.user.avatar_url,
+                  click_action: deed_url(deed)
+                }
               }
             }.to_json,
             headers: { 'Authorization' => 'key=fake_key' })
