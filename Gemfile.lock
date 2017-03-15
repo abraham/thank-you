@@ -136,7 +136,7 @@ GEM
     pg (0.20.0)
     powerpack (0.1.1)
     public_suffix (2.0.5)
-    puma (3.8.1)
+    puma (3.8.2)
     rack (2.0.1)
     rack-host-redirect (1.2.1)
       rack
