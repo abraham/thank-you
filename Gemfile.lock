@@ -69,7 +69,7 @@ GEM
     concurrent-ruby (1.0.5)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
-    domain_name (0.5.20170223)
+    domain_name (0.5.20170404)
       unf (>= 0.0.5, < 1.0.0)
     equalizer (0.0.11)
     erubi (1.6.0)
