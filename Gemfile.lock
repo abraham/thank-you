@@ -238,7 +238,7 @@ GEM
     unf_ext (0.0.7.3)
     unicode-display_width (1.2.1)
     uniform_notifier (1.10.0)
-    webmock (2.3.2)
+    webmock (3.0.1)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff
