@@ -202,7 +202,7 @@ GEM
       tilt
     sentry-raven (2.4.0)
       faraday (>= 0.7.6, < 1.0)
-    sexp_processor (4.8.0)
+    sexp_processor (4.9.0)
     simple_oauth (0.3.1)
     sprockets (3.7.1)
       concurrent-ruby (~> 1.0)
