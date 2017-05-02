@@ -14,7 +14,7 @@ gem 'pg'
 gem 'puma', '~> 3.0'
 gem 'rack-host-redirect'
 gem 'rails-html-sanitizer'
-gem 'rails', '5.1.0.beta1'
+gem 'rails', '~> 5.1.0'
 gem 'sassc-rails' # Use this instead of ruby-sass because of bug processing MDC
 gem 'sentry-raven'
 gem 'turbolinks', '~> 5'
