@@ -26,7 +26,7 @@ gem 'webpacker', '~> 1'
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'factory_girl'
-  gem 'faker', github: 'abraham/faker', branch: 'twitter'
+  gem 'faker'
   gem 'webmock'
 end
 
