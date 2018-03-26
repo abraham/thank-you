@@ -5,23 +5,25 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'coffee-rails', '~> 4.2'
-gem 'fcm', '~> 0'
-gem 'google_instance_id', '~> 0'
-gem 'jbuilder', '~> 2.5'
-gem 'oauth', '~> 0'
-gem 'pg'
-gem 'puma', '~> 3.7'
+gem 'fcm'
+gem 'google_instance_id'
+gem 'jbuilder'
+gem 'oauth'
+gem 'pg', '~> 0'
+gem 'puma'
 gem 'rack-host-redirect'
 gem 'rails-html-sanitizer'
-gem 'rails', '~> 5.1.4'
-gem 'sass-rails', '~> 5.0'
+gem 'rails'
+gem 'sass-rails'
 gem 'sentry-raven'
-gem 'turbolinks', '~> 5'
+gem 'turbolinks'
 gem 'twitter-text', '~> 1'
-gem 'twitter', '~> 6'
-gem 'uglifier', '>= 1.3.0'
+gem 'twitter'
+gem 'uglifier'
 gem 'webpacker'
+
+# Temp pins
+gem 'http', '~> 2'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
