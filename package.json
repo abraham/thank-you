@@ -6,7 +6,9 @@
     "@rails/webpacker": "^3.4.1",
     "glob": "^7.1.1",
     "material-components-web": "^0.5.0",
-    "twitter-text": "^1.14.3"
+    "ts-loader": "3.5.0",
+    "twitter-text": "^1.14.3",
+    "typescript": "^2.7.2"
   },
   "devDependencies": {
     "webpack-dev-server": "2.11.2"
