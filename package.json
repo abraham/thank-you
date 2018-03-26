@@ -1,15 +1,14 @@
 {
-  "name": "app-name-here",
-  "description": "dummy package.json for heroku/nodejs buildpack support",
+  "name": "thank-you",
+  "description": "Thank You aims to encourage positive action by recognizing people on Twitter for their good deeds",
   "private": true,
-  "engines": {
-    "node": "6.5.0",
-    "yarn": "0.18.1"
-  },
-  "scripts": {
-    "heroku-postbuild": "cd vendor && yarn"
-  },
   "dependencies": {
-    "glob": "^7.1.1"
+    "@rails/webpacker": "^3.4.1",
+    "glob": "^7.1.1",
+    "material-components-web": "^0.5.0",
+    "twitter-text": "^1.14.3"
+  },
+  "devDependencies": {
+    "webpack-dev-server": "2.11.2"
   }
 }

@@ -11,17 +11,17 @@ gem 'google_instance_id', '~> 0'
 gem 'jbuilder', '~> 2.5'
 gem 'oauth', '~> 0'
 gem 'pg'
-gem 'puma', '~> 3.0'
+gem 'puma', '~> 3.7'
 gem 'rack-host-redirect'
 gem 'rails-html-sanitizer'
-gem 'rails', '~> 5.1.0'
-gem 'sassc-rails' # Use this instead of ruby-sass because of bug processing MDC
+gem 'rails', '~> 5.1.4'
+gem 'sass-rails', '~> 5.0'
 gem 'sentry-raven'
 gem 'turbolinks', '~> 5'
 gem 'twitter-text', '~> 1'
 gem 'twitter', '~> 6'
-gem 'uglifier', '~> 3'
-gem 'webpacker', '~> 1'
+gem 'uglifier', '>= 1.3.0'
+gem 'webpacker'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

@@ -6,8 +6,7 @@ machine:
 dependencies:
   pre:
     - gem install bundler
-  post:
-    - npm run heroku-postbuild
+    - yarn
 test:
   override:
     - bin/rails test

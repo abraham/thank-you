@@ -15,7 +15,9 @@
 //= require turbolinks
 //= require_tree .
 
-Raven.config('https://5e69813822924122ae73456b7057c338@sentry.io/135599').install()
+console.log('Hello World from The Asset Pipeline');
+
+Raven.config('https://5e69813822924122ae73456b7057c338@sentry.io/135599').install();
 
 document.addEventListener('turbolinks:load', function() {
   mdc.autoInit();
