@@ -2,4 +2,11 @@ $mdc-theme-primary: #2196F3;
 $mdc-theme-accent: #F44336;
 $mdc-theme-background: #fff;
 
+// Hack to make styling work correctly. This or the vars above should be removed.
+body {
+  --mdc-theme-primary: #2196F3;
+  --mdc-theme-accent: #F44336;
+  --mdc-theme-background: #fff;
+}
+
 @import "@material/theme/mdc-theme";
