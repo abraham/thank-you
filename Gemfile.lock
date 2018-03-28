@@ -131,7 +131,7 @@ GEM
       rack
     rack-proxy (0.6.4)
       rack
-    rack-test (0.8.3)
+    rack-test (1.0.0)
       rack (>= 1.0, < 3)
     rails (5.1.5)
       actioncable (= 5.1.5)
@@ -272,6 +272,7 @@ DEPENDENCIES
   uglifier
   webmock
   webpacker
+
 
 RUBY VERSION
    ruby 2.4.3p205
