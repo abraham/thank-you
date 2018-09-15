@@ -1,0 +1,128 @@
+version: 2
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - test
+      - security
+      - seed
+      - lint
+jobs:
+  test:
+    working_directory: ~/thank-you
+    docker: &docker
+      - image: circleci/ruby:2.5.1-node
+        environment:
+          BUNDLE_JOBS: 3
+          BUNDLE_RETRY: 3
+          BUNDLE_PATH: vendor/bundle
+          PGHOST: localhost
+          PGUSER: thank-you
+          RAILS_ENV: test
+      - image: circleci/postgres:10-alpine-ram
+        environment:
+          POSTGRES_USER: thank-you
+          POSTGRES_DB: thank-you_test
+          POSTGRES_PASSWORD: ""
+    steps:
+      - checkout
+      - run:
+          name: Which bundler?
+          command: bundle -v
+      - run:
+          name: Which yarn?
+          command: yarn -v
+
+      # bundle cache and install
+      - type: cache-restore
+        name: Restore gem cache
+        key: thank-you-gems-{{ checksum "Gemfile.lock" }}
+      - run: bundle check || bundle install
+      - type: cache-save
+        name: Store gem cache
+        key: thank-you-gems-{{ checksum "Gemfile.lock" }}
+        paths:
+          - vendor/bundle
+
+      # yarn cache and install
+      - type: cache-restore
+        name: Restore node cache
+        key: thank-you-node-{{ checksum "yarn.lock" }}
+      - run: yarn install
+      - type: cache-save
+        name: Store node cache
+        key: thank-you-node-{{ checksum "yarn.lock" }}
+        paths:
+          - node_modules
+
+      - run:
+          name: Wait for db
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run: bin/rails db:create db:migrate
+      - run: bin/rails test
+  seed:
+    working_directory: ~/thank-you
+    docker: *docker
+    steps:
+      - checkout
+      - run:
+          name: Which bundler?
+          command: bundle -v
+
+      # bundle cache and install
+      - type: cache-restore
+        name: Restore gem cache
+        key: thank-you-gems-{{ checksum "Gemfile.lock" }}
+      - run: bundle check || bundle install
+      - type: cache-save
+        name: Store gem cache
+        key: thank-you-gems-{{ checksum "Gemfile.lock" }}
+        paths:
+          - vendor/bundle
+
+      - run:
+          name: Wait for db
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run: bin/rails db:setup
+  security:
+    working_directory: ~/thank-you
+    docker: *docker
+    steps:
+      - checkout
+      - run:
+          name: Which bundler?
+          command: bundle -v
+
+      # bundle cache and install
+      - type: cache-restore
+        name: Restore gem cache
+        key: thank-you-gems-{{ checksum "Gemfile.lock" }}
+      - run: bundle check || bundle install
+      - type: cache-save
+        name: Store gem cache
+        key: thank-you-gems-{{ checksum "Gemfile.lock" }}
+        paths:
+          - vendor/bundle
+
+      - run: bundle exec brakeman
+  lint:
+    working_directory: ~/thank-you
+    docker: *docker
+    steps:
+      - checkout
+      - run:
+          name: Which bundler?
+          command: bundle -v
+
+      # bundle cache and install
+      - type: cache-restore
+        name: Restore gem cache
+        key: thank-you-gems-{{ checksum "Gemfile.lock" }}
+      - run: bundle check || bundle install
+      - type: cache-save
+        name: Store gem cache
+        key: thank-you-gems-{{ checksum "Gemfile.lock" }}
+        paths:
+          - vendor/bundle
+
+      - run: bundle exec rubocop
