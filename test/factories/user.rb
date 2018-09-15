@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :user do
-    status :active
-    role :user
+    status { :active }
+    role { :user }
     data { Faker::Twitter.user(include_email: true) }
     twitter_id { data[:id].to_s }
     screen_name { data[:screen_name] }
@@ -12,28 +12,32 @@ FactoryBot.define do
     access_token_secret { Faker::Internet.password(40, 50) }
     default_avatar { data[:default_profile_image] }
 
-    trait :user do; end
+    trait :user do
+      role { :user }
+    end
 
     trait :editor do
-      role :editor
+      role { :editor }
     end
 
     trait :moderator do
-      role :moderator
+      role { :moderator }
     end
 
     trait :admin do
-      role :admin
+      role { :admin }
     end
 
-    trait :active do; end
+    trait :active do
+      status { :active }
+    end
 
     trait :disabled do
-      status :disabled
+      status { :disabled }
     end
 
     trait :expired do
-      status :expired
+      status { :expired }
     end
   end
 end

@@ -1,16 +1,16 @@
 FactoryBot.define do
   factory :deed do
-    status :published
+    status { :published }
     text { Faker::Hipster.sentence }
     names { [Faker::Twitter.screen_name] }
     user
 
     transient do
-      thanks_count 0
+      thanks_count { 0 }
     end
 
     trait :draft do
-      status :draft
+      status { :draft }
     end
 
     trait :with_tweet do
@@ -27,7 +27,7 @@ FactoryBot.define do
 
     trait :popular do
       transient do
-        thanks_count 5
+        thanks_count { 5 }
       end
     end
 
