@@ -48,7 +48,7 @@ class TweetTest < ActionDispatch::IntegrationTest
     assert_select ".tweet-#{deed.twitter_id}" do
       assert_select '.mdc-card__media', 1
       assert_select 'style', /#{Regexp.escape(".tweet-#{deed.twitter_id} .mdc-card__media")}/
-      assert_select 'style', /#{Regexp.escape('background-image: url("http://lorempixel.com/1064/600");')}/
+      assert_select 'style', /#{Regexp.escape('background-image: url("https://lorempixel.com/1064/600");')}/
       assert_select 'style', /background-size: cover;/
       assert_select 'style', /background-repeat: no-repeat;/
       assert_select 'style', /height: 300px;/
