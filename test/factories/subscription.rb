@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :subscription do
     active_at { Time.now.utc }
     topics { [Faker::Lorem.word] }

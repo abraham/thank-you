@@ -1,5 +1,5 @@
 require File.expand_path('../../config/environment', __FILE__)
-require 'factory_girl'
+require 'factory_bot'
 require 'rails/test_help'
 require 'webmock/minitest'
 
@@ -168,9 +168,9 @@ class ActionDispatch::IntegrationTest
 end
 
 class ActiveSupport::TestCase
-  include FactoryGirl::Syntax::Methods
+  include FactoryBot::Syntax::Methods
   include GoogleHelper
   include TwitterHelper
 
-  FactoryGirl.find_definitions
+  FactoryBot.find_definitions
 end

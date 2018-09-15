@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :thank do
     screen_name = Faker::Twitter.screen_name
     data { Faker::Twitter.status }
