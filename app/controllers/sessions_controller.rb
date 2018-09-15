@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SessionsController < ApplicationController
   before_action :require_anonymous, except: :destroy
   before_action :require_not_denied, only: :finish
@@ -65,6 +67,7 @@ class SessionsController < ApplicationController
 
   def require_not_denied
     return unless params[:denied]
+
     flash[:warning] = 'Twitter access is needed to sign in.'
     redirect_to new_sessions_path
   end

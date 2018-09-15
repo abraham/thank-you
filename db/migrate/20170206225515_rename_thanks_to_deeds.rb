@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RenameThanksToDeeds < ActiveRecord::Migration[5.1]
   def change
     rename_table :thanks, :deeds

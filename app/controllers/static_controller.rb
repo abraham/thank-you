@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StaticController < ApplicationController
   protect_from_forgery except: [:firebase_messaging_sw]
 

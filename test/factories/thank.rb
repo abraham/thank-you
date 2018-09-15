@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :thank do
     screen_name = Faker::Twitter.screen_name

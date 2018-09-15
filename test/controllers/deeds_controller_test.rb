@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class DeedsControllerTest < ActionDispatch::IntegrationTest
@@ -97,7 +99,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test '#index should show newer button' do
-    newer_deeds = create_list(:deed, 10)
+    create_list(:deed, 10)
     middle_deeds = create_list(:deed, 10, created_at: 1.day.ago)
     create_list(:deed, 5, created_at: 2.days.ago)
     get root_path(before: middle_deeds.last.created_at)
@@ -377,7 +379,7 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
       status = Faker::Twitter.status
       stub_statuses_show status
       post etl_deeds_path params: { deed: { twitter_id: status[:id] } }
-      deed = Deed.find_by_twitter_id(status[:id])
+      deed = Deed.find_by(twitter_id: status[:id])
       assert_redirected_to edit_deed_url(deed)
       assert role.to_s, user.role
     end
@@ -388,10 +390,10 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     user = sign_in_as :admin
     status = Faker::Twitter.status
     stub_statuses_show status
-    assert_difference 'user.deeds.count', 1 do
+    assert_difference -> { user.deeds.count }, 1 do
       post etl_deeds_path params: { deed: { twitter_id: status[:id] } }
     end
-    deed = Deed.find_by_twitter_id(status[:id])
+    deed = Deed.find_by(twitter_id: status[:id])
     assert_redirected_to edit_deed_url(deed)
     assert_equal status[:id].to_s, deed.twitter_id
     assert_equal [status[:user][:screen_name]], deed.names
@@ -404,10 +406,10 @@ class DeedsControllerTest < ActionDispatch::IntegrationTest
     status = Faker::Twitter.status
     stub_statuses_show status
     twitter_id = "https://twitter.com/#{status[:user][:screen_name]}/status/#{status[:id]}"
-    assert_difference 'user.deeds.count', 1 do
+    assert_difference -> { user.deeds.count }, 1 do
       post etl_deeds_path params: { deed: { twitter_id: twitter_id } }
     end
-    deed = Deed.find_by_twitter_id(status[:id])
+    deed = Deed.find_by(twitter_id: status[:id])
     assert_redirected_to edit_deed_url(deed)
     assert_equal status[:id].to_s, deed.twitter_id
     assert_equal [status[:user][:screen_name]], deed.names

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SubscriptionsController < ApplicationController
   before_action :build_api
   before_action :require_subscription, except: [:create]
@@ -15,7 +17,7 @@ class SubscriptionsController < ApplicationController
       session[:subscription_id] = subscription.id
       render json: subscription
     else
-      render json: {}, status: 500
+      render json: {}, status: :internal_server_error
     end
   end
 

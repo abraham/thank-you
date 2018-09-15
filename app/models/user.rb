@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
   enum status: { active: 0, disabled: 1, expired: 2 }
   enum role: { user: 0, editor: 1, moderator: 2, admin: 3 }
 
-  has_many :deeds
-  has_many :links
-  has_many :subscriptions
-  has_many :thanks
+  has_many :deeds, dependent: :restrict_with_exception
+  has_many :links, dependent: :restrict_with_exception
+  has_many :subscriptions, dependent: :restrict_with_exception
+  has_many :thanks, dependent: :restrict_with_exception
 
   validates :access_token_secret, presence: true
   validates :access_token, presence: true
@@ -51,6 +53,7 @@ class User < ApplicationRecord
 
   def tweet(text, in_reply_to_status_id)
     raise 'Posting to Twitter disabled' unless AppConfig.posting_to_twitter_enabled
+
     client.update(text, in_reply_to_status_id: in_reply_to_status_id)
   end
 

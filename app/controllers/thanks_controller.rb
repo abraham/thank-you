@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ThanksController < ApplicationController
   before_action :require_signin
   before_action :find_deed, only: [:create, :new]
@@ -25,12 +27,14 @@ class ThanksController < ApplicationController
 
   def deed_published
     return if @deed.published?
+
     flash[:error] = 'Deed must be published first.'
     redirect_to deed_path(@deed)
   end
 
   def not_already_thanked
     return unless current_user.thanked?(@deed)
+
     flash[:error] = 'Already thanked'
     redirect_to deed_path(@deed)
   end

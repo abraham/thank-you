@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DeedsController < ApplicationController
   before_action :find_deed, only: [:show, :edit, :update, :publish]
   before_action :require_signin, except: [:index, :popular, :show]
@@ -20,8 +22,8 @@ class DeedsController < ApplicationController
 
   def index
     @next = true if params[:before] && !params[:after]
-    @before = Time.parse(params[:before]) if params[:before]
-    @after = Time.parse(params[:after]) if params[:after]
+    @before = Time.zone.parse(params[:before]) if params[:before]
+    @after = Time.zone.parse(params[:after]) if params[:after]
 
     @deeds = Deed.newest.published.where(Deed.arel_table[:created_at].lt(@before || Time.now.utc))
                  .limit(PAGE_COUNT)
@@ -45,12 +47,12 @@ class DeedsController < ApplicationController
 
   def show
     render_not_found unless @deed.published? || user_can_modify_deed?
-    @thanked = current_user && current_user.thanked?(@deed)
+    @thanked = current_user&.thanked?(@deed)
   end
 
   def edit
     redirect_to @deed, flash: { notice: "Published Deeds can't be edited." } unless @deed.draft?
-    @thanked = current_user && current_user.thanked?(@deed)
+    @thanked = current_user&.thanked?(@deed)
   end
 
   def start
@@ -127,13 +129,13 @@ class DeedsController < ApplicationController
   def find_example_deeds
     @examples_deeds = [{
       text: 'Local community impact',
-      deed: Deed.find_by_id('fe5b2ec6-1ad2-4bef-b8ab-506505501c46')
+      deed: Deed.find_by(id: 'fe5b2ec6-1ad2-4bef-b8ab-506505501c46')
     }, {
       text: 'Standing up to authority',
-      deed: Deed.find_by_id('12b168b4-a994-4a0a-884a-5c5711e0b18f')
+      deed: Deed.find_by(id: '12b168b4-a994-4a0a-884a-5c5711e0b18f')
     }, {
       text: 'Supporting underrepresented groups',
-      deed: Deed.find_by_id('996b8041-e52f-49cc-8ea0-3aee5ad00bbe')
+      deed: Deed.find_by(id: '996b8041-e52f-49cc-8ea0-3aee5ad00bbe')
     }]
   end
 
@@ -142,7 +144,7 @@ class DeedsController < ApplicationController
   end
 
   def user_can_modify_deed?
-    current_user && current_user.edit?(@deed)
+    current_user&.edit?(@deed)
   end
 
   def deeds_params

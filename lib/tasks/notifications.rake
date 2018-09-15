@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :notifications do
   desc 'Send test push notification'
   task send: :environment do

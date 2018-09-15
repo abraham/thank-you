@@ -1,4 +1,6 @@
-require File.expand_path('../../config/environment', __FILE__)
+# frozen_string_literal: true
+
+require File.expand_path('../config/environment', __dir__)
 require 'factory_bot'
 require 'rails/test_help'
 require 'webmock/minitest'
@@ -18,6 +20,7 @@ module SessionsHelper
   def sign_in_as(role, status = :active)
     sign_out
     return if role == :anonymous
+
     user = create(:user, role, status)
     start_sign_in(TwitterHelper::TWITTER_TOKEN, TwitterHelper::TWITTER_SECRET)
     finish_sign_in(TwitterHelper::TWITTER_TOKEN, user.data)
@@ -30,8 +33,8 @@ module SessionsHelper
 end
 
 module TwitterHelper
-  TWITTER_SECRET = 'Kd75W4OQfb2oJTV0vzGzeXftVAwgMnEK9MumzYcM'.freeze
-  TWITTER_TOKEN = 'Z6eEdO8MOmk394WozF5oKyuAv855l4Mlqo7hhlSLik'.freeze
+  TWITTER_SECRET = 'Kd75W4OQfb2oJTV0vzGzeXftVAwgMnEK9MumzYcM'
+  TWITTER_TOKEN = 'Z6eEdO8MOmk394WozF5oKyuAv855l4Mlqo7hhlSLik'
 
   def stub_request_token(token, secret)
     params = [
@@ -96,8 +99,8 @@ module TwitterHelper
 end
 
 module GoogleHelper
-  GOOGLE_API_KEY = 'fake_key'.freeze
-  GOOGLE_TOKEN = 'secret-token'.freeze
+  GOOGLE_API_KEY = 'fake_key'
+  GOOGLE_TOKEN = 'secret-token'
 
   def stub_add_topic(token, topic)
     stub_request(:post, 'https://iid.googleapis.com/iid/v1:batchAdd')
@@ -144,33 +147,37 @@ module GoogleHelper
   def stub_send_push(topic, deed)
     stub_request(:post, 'https://fcm.googleapis.com/fcm/send')
       .with(body: {
-              to: "/topics/#{topic}",
-              data: {
-                version: 1,
-                topic: topic,
-                notification: {
-                  title: "@#{deed.user.screen_name} added a new Deed",
-                  body: deed.display_text,
-                  icon: deed.user.avatar_url,
-                  click_action: deed_url(deed)
-                }
-              }
-            }.to_json,
+        to: "/topics/#{topic}",
+        data: {
+          version: 1,
+          topic: topic,
+          notification: {
+            title: "@#{deed.user.screen_name} added a new Deed",
+            body: deed.display_text,
+            icon: deed.user.avatar_url,
+            click_action: deed_url(deed)
+          }
+        }
+      }.to_json,
             headers: { 'Authorization' => 'key=fake_key' })
       .to_return(status: 200, body: '')
   end
 end
 
-class ActionDispatch::IntegrationTest
-  include SessionsHelper
-  include GoogleHelper
-  include TwitterHelper
+module ActionDispatch
+  class IntegrationTest
+    include SessionsHelper
+    include GoogleHelper
+    include TwitterHelper
+  end
 end
 
-class ActiveSupport::TestCase
-  include FactoryBot::Syntax::Methods
-  include GoogleHelper
-  include TwitterHelper
+module ActiveSupport
+  class TestCase
+    include FactoryBot::Syntax::Methods
+    include GoogleHelper
+    include TwitterHelper
 
-  FactoryBot.find_definitions
+    FactoryBot.find_definitions
+  end
 end
