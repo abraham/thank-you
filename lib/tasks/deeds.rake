@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :deeds do
   desc 'Update the Thank You count on Deeds'
   task update_thanks_count: :environment do

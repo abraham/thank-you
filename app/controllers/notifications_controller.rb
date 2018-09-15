@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NotificationsController < ApplicationController
   before_action :enable_test
 
@@ -10,7 +12,7 @@ class NotificationsController < ApplicationController
       }
     ]
 
-    return unless (current_user && current_user.admin?) || @test_push
+    return unless (current_user&.admin?) || @test_push
 
     @topics << {
       id: :test,

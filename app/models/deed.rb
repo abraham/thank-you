@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class Deed < ApplicationRecord
   enum status: { draft: 0, published: 1, archived: 2, disabled: 3 }
 
   belongs_to :user, counter_cache: true
-  has_many :thanks
-  has_many :links
+  has_many :thanks, dependent: :restrict_with_exception
+  has_many :links, dependent: :restrict_with_exception
 
   validate :names_size
   validates :data, presence: true, if: :twitter_id
@@ -31,6 +33,7 @@ class Deed < ApplicationRecord
 
   def etl
     return unless etl?
+
     twitter_status = user.client.status(twitter_id)
     self.data = twitter_status.to_hash
     self.twitter_id = twitter_status.id
@@ -62,7 +65,8 @@ class Deed < ApplicationRecord
   end
 
   def clean_names
-    return unless names.present?
+    return if names.blank?
+
     self.names = names.reject { |name| name.nil? || name.blank? }
     self.names = names.map { |name| name.gsub(/[^a-z0-9_]/i, '') }
   end

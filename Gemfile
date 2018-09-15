@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
 git_source(:github) do |repo_name|
@@ -12,13 +14,13 @@ gem 'oauth'
 gem 'pg', '~> 1'
 gem 'puma'
 gem 'rack-host-redirect'
-gem 'rails-html-sanitizer'
 gem 'rails'
+gem 'rails-html-sanitizer'
 gem 'sass-rails'
 gem 'sentry-raven'
 gem 'turbolinks'
-gem 'twitter-text', '~> 1'
 gem 'twitter'
+gem 'twitter-text', '~> 1'
 gem 'uglifier'
 gem 'webpacker'
 

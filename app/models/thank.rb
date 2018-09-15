@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Thank < ApplicationRecord
   include Twitter::Validation
 
@@ -19,6 +21,7 @@ class Thank < ApplicationRecord
 
   def tweet
     return false unless tweetable?
+
     status = user.tweet(full_text, deed.twitter_id)
     self.data = status.to_hash
     self.twitter_id = status.id

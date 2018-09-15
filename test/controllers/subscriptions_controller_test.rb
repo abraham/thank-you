@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class SubscriptionsControllerTest < ActionDispatch::IntegrationTest
@@ -99,6 +101,6 @@ class SubscriptionsControllerTest < ActionDispatch::IntegrationTest
     token = Faker::Internet.password(40, 60)
     stub_topic_info token, topics
     post subscriptions_url params: { subscription: { token: token } }
-    Subscription.find_by_token(token)
+    Subscription.find_by(token: token)
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class LinksController < ApplicationController
   before_action :require_signin
   before_action :find_deed
@@ -29,7 +31,7 @@ class LinksController < ApplicationController
   end
 
   def user_can_modify_deed?
-    current_user && current_user.edit?(@deed)
+    current_user&.edit?(@deed)
   end
 
   def require_edit_access

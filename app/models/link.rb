@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Link < ApplicationRecord
   belongs_to :deed
   belongs_to :user
@@ -11,7 +13,8 @@ class Link < ApplicationRecord
   private
 
   def url_protocol
-    return if url && url.starts_with?('http://', 'https://')
+    return if url&.starts_with?('http://', 'https://')
+
     errors.add(:url, 'must be a valid URL')
   end
 end

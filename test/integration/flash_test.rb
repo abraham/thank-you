@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class FlashTest < ActionDispatch::IntegrationTest
@@ -11,6 +13,7 @@ class FlashTest < ActionDispatch::IntegrationTest
         assert_select 'button[type=button].mdc-button.mdc-snackbar__action-button', 1
       end
     end
-    assert_select 'div.snackbar-message[data-message="You must be signed in to do that."][data-type=warning][data-multiline=false]', 1
+    message = 'You must be signed in to do that.'
+    assert_select "div.snackbar-message[data-message=\"#{message}\"][data-type=warning][data-multiline=false]", 1
   end
 end
