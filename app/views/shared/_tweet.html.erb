@@ -16,7 +16,7 @@
 
   <div class="mdc-card__horizontal-block">
     <div>
-      <%= link_to image_tag(tweet.user.profile_image_uri_https(:bigger), class: 'avatar mdc-card__media-item mdc-card__media-item'), tweet.user.uri.to_s, target: '_blank' %>
+      <%= link_to image_tag(tweet.user.profile_image_uri_https(:bigger).to_s, class: 'avatar mdc-card__media-item mdc-card__media-item'), tweet.user.uri.to_s, target: '_blank' %>
       <section class="mdc-card__primary">
         <div class="mdc-card__title"><strong><%= link_to tweet.user.name, tweet.user.uri.to_s, target: '_blank', class: 'title' %></strong></div>
         <div class="mdc-card__subtitle"><%= link_to "@#{tweet.user.screen_name}", tweet.user.uri.to_s, target: '_blank', class: 'mute' %></div>
