@@ -1,6 +1,6 @@
 machine:
   node:
-    version: 6.9.5
+    version: 8
   ruby:
     version: 2.5.1
 dependencies:
