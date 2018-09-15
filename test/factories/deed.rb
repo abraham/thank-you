@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :deed do
     status :published
     text { Faker::Hipster.sentence }

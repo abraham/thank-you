@@ -27,7 +27,7 @@ gem 'http', '~> 2'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
-  gem 'factory_girl'
+  gem 'factory_bot'
   gem 'faker'
   gem 'webmock'
 end
