@@ -70,7 +70,7 @@ GEM
     fcm (0.0.2)
       httparty
       json
-    ffi (1.9.23)
+    ffi (1.9.25)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
     google_instance_id (0.1.3)
