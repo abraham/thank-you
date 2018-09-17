@@ -52,7 +52,7 @@ GEM
     bullet (5.7.6)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11.0)
-    byebug (10.0.1)
+    byebug (10.0.2)
     code_analyzer (0.4.8)
       sexp_processor
     concurrent-ruby (1.0.5)
