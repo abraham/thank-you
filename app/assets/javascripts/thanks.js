@@ -1,6 +1,6 @@
 // Place all the behaviors and hooks related to the matching controller here.
 // All this logic will automatically be available in application.js.
-//= require twitter-text/twitter-text
+//= require twitter-text/build/twitter-text
 
 document.addEventListener('turbolinks:load', function() {
   var thankForm = document.querySelector('form#new_thank');
