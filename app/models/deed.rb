@@ -37,8 +37,8 @@ class Deed < ApplicationRecord
     twitter_status = user.client.status(twitter_id)
     self.data = twitter_status.to_hash
     self.twitter_id = twitter_status.id
-  rescue Twitter::Error => error
-    errors.add(:twitter_id, "error: #{error.message}")
+  rescue Twitter::Error => e
+    errors.add(:twitter_id, "error: #{e.message}")
   end
 
   def tweet

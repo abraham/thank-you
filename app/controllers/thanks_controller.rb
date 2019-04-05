@@ -14,8 +14,8 @@ class ThanksController < ApplicationController
     else
       render :new
     end
-  rescue Twitter::Error => error
-    @thank.errors.add(:twitter_id, "error: #{error.message}")
+  rescue Twitter::Error => e
+    @thank.errors.add(:twitter_id, "error: #{e.message}")
     render :new
   end
 
