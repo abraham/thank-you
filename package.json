@@ -6,7 +6,7 @@
     "@rails/webpacker": "^4.0.6",
     "glob": "^7.1.4",
     "material-components-web": "^0.5.0",
-    "ts-loader": "6.0.1",
+    "ts-loader": "6.0.2",
     "twitter-text": "^1.14.3",
     "typescript": "^3.5.1"
   },
