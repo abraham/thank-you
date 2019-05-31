@@ -909,9 +909,9 @@
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/@material/typography/-/typography-0.3.0.tgz#f828c2d3215bfd66c58072709b4260c64125390a"
 
-"@rails/webpacker@^4.0.4":
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/@rails/webpacker/-/webpacker-4.0.4.tgz#802761597c66c9f85732497d81cd0fb57cba47ee"
+"@rails/webpacker@^4.0.6":
+  version "4.0.6"
+  resolved "https://registry.yarnpkg.com/@rails/webpacker/-/webpacker-4.0.6.tgz#10c3dc85404a43102640e10ba2518de2cb43e4f3"
   dependencies:
     "@babel/core" "^7.4.5"
     "@babel/plugin-proposal-class-properties" "^7.4.4"
