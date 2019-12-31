@@ -49,7 +49,7 @@ GEM
     brakeman (4.7.2)
     buftok (0.2.0)
     builder (3.2.3)
-    bullet (6.0.2)
+    bullet (6.1.0)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
     byebug (11.0.1)
@@ -231,7 +231,7 @@ GEM
       unf_ext
     unf_ext (0.0.7.5)
     unicode-display_width (1.6.0)
-    uniform_notifier (1.12.1)
+    uniform_notifier (1.13.0)
     webmock (3.7.6)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
