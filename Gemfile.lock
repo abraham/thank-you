@@ -182,6 +182,13 @@ GEM
       rainbow (>= 2.2.2, < 4.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 1.7)
+    rubocop-performance (1.5.0)
+      rubocop (>= 0.71.0)
+    rubocop-rails (2.4.1)
+      rack (>= 1.1)
+      rubocop (>= 0.72.0)
+    rubocop-rspec (1.36.0)
+      rubocop (>= 0.68.1)
     ruby-progressbar (1.10.1)
     safe_yaml (1.0.5)
     sass-rails (6.0.0)
@@ -266,6 +273,9 @@ DEPENDENCIES
   rails-html-sanitizer
   rails_best_practices
   rubocop
+  rubocop-performance
+  rubocop-rails
+  rubocop-rspec
   sass-rails
   sentry-raven
   turbolinks
@@ -280,4 +290,4 @@ RUBY VERSION
    ruby 2.5.1p57
 
 BUNDLED WITH
-   1.16.4
+   1.17.2
