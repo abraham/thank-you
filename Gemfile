@@ -42,6 +42,7 @@ group :development do
   gem 'listen', '>= 3.0.5', '< 3.3'
   gem 'rails_best_practices'
   gem 'rubocop'
+  gem 'rubocop-minitest', require: false
   gem 'rubocop-performance'
   gem 'rubocop-rails'
   gem 'rubocop-rspec'
