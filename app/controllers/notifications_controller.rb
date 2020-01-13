@@ -12,7 +12,7 @@ class NotificationsController < ApplicationController
       }
     ]
 
-    return unless (current_user&.admin?) || @test_push
+    return unless current_user&.admin? || @test_push
 
     @topics << {
       id: :test,
