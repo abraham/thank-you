@@ -207,7 +207,7 @@ GEM
       rubocop-performance (= 1.5.2)
     rubocop-performance (1.5.2)
       rubocop (>= 0.71.0)
-    rubocop-rails (2.4.1)
+    rubocop-rails (2.4.2)
       rack (>= 1.1)
       rubocop (>= 0.72.0)
     rubocop-rspec (1.37.1)
@@ -260,7 +260,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.6)
-    unicode-display_width (1.6.0)
+    unicode-display_width (1.6.1)
     uniform_notifier (1.13.0)
     webmock (3.8.0)
       addressable (>= 2.3.6)
