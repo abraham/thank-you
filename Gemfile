@@ -22,7 +22,7 @@ gem 'sass-rails'
 gem 'sentry-raven'
 gem 'turbolinks'
 gem 'twitter'
-gem 'twitter-text', '~> 1'
+gem 'twitter-text', '~> 3'
 gem 'uglifier'
 gem 'webpacker'
 

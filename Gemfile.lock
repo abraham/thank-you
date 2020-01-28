@@ -109,6 +109,7 @@ GEM
       multi_xml (>= 0.5.2)
     i18n (1.8.2)
       concurrent-ruby (~> 1.0)
+    idn-ruby (0.1.0)
     jaro_winkler (1.5.4)
     jbuilder (2.9.1)
       activesupport (>= 4.2.0)
@@ -251,7 +252,8 @@ GEM
       memoizable (~> 0.4.2)
       naught (~> 1.1)
       simple_oauth (~> 0.3.1)
-    twitter-text (1.14.7)
+    twitter-text (3.0.0)
+      idn-ruby
       unf (~> 0.1.0)
     tzinfo (1.2.6)
       thread_safe (~> 0.1)
@@ -305,7 +307,7 @@ DEPENDENCIES
   sentry-raven
   turbolinks
   twitter
-  twitter-text (~> 1)
+  twitter-text (~> 3)
   tzinfo-data
   uglifier
   webmock
