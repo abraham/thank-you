@@ -27,7 +27,7 @@ gem 'uglifier'
 gem 'webpacker'
 
 # Temp pins
-gem 'http', '~> 2'
+gem 'http', '~> 4'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
