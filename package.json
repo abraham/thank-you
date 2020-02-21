@@ -5,7 +5,7 @@
   "dependencies": {
     "@rails/webpacker": "^4.2.2",
     "glob": "^7.1.6",
-    "material-components-web": "^0.5.0",
+    "material-components-web": "^5.0.0",
     "ts-loader": "6.2.1",
     "twitter-text": "^1.14.3",
     "typescript": "^3.8.2"
